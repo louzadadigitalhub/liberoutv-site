@@ -1,0 +1,673 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LIBEROU TV - player for Samsung, LG, Roku and Android TV</title>
+<meta name="description" content="LIBEROU TV is a free media player for Samsung, LG, Roku and Android TV. It does not include any catalog. Sign in with the login you already have.">
+<link rel="icon" href="img/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png">
+<link rel="apple-touch-icon" href="img/favicon-180.png">
+<style>
+@font-face { font-family: Poppins; font-weight: 400; src: url("fonts/Poppins-Regular.ttf"); font-display: swap; }
+@font-face { font-family: Poppins; font-weight: 500; src: url("fonts/Poppins-Medium.ttf"); font-display: swap; }
+@font-face { font-family: Poppins; font-weight: 600; src: url("fonts/Poppins-SemiBold.ttf"); font-display: swap; }
+@font-face { font-family: Poppins; font-weight: 700; src: url("fonts/Poppins-Bold.ttf"); font-display: swap; }
+
+:root {
+  --bg: #0b0b0d;
+  --ink: #f4f4f5;
+  --mute: #c4c4c8;
+  --faint: #8d8d93;
+  --line: rgba(255,255,255,.12);
+  --brand: #e31c3a;
+  --brand-hot: #ff2d3a;
+  --brand-hover: #f0344a;
+
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 32px;
+  --space-5: 48px;
+  --space-6: 64px;
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-pill: 999px;
+
+  --text-label: 12px;
+  --text-ui: 14px;
+  --text-nav: 15px;
+  --text-body: 18px;
+  --text-lead: 20px;
+
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-ui: .4s;
+  --dur-entrance: 1.2s;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; color-scheme: dark; scrollbar-color: #5a1a22 transparent; }
+html, body {
+  min-height: 100%;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: Poppins, system-ui, sans-serif;
+  overflow-x: clip;
+}
+::selection { background: var(--brand); color: #fff; }
+:focus-visible { outline: 2px solid var(--brand-hot); outline-offset: 3px; }
+img { max-width: 100%; display: block; }
+a { color: inherit; }
+button { font-family: inherit; }
+
+.wrap { width: min(1340px, calc(100% - var(--space-5))); margin: 0 auto; }
+
+.stage { position: relative; isolation: isolate; min-height: 100dvh; display: flex; flex-direction: column; }
+.stage-bg {
+  position: absolute; inset: 0; z-index: -1; overflow: hidden; pointer-events: none;
+}
+.stage-bg img {
+  width: 100%; height: 100%; object-fit: cover; object-position: 78% center;
+}
+.stage-bg::after {
+  content: "";
+  position: absolute; inset: 0;
+  background:
+    linear-gradient(90deg, #0b0b0d 0%, rgba(11,11,13,.72) 28%, rgba(11,11,13,.18) 58%, transparent 78%),
+    linear-gradient(180deg, rgba(11,11,13,.35) 0%, transparent 18%, transparent 78%, #0b0b0d 100%);
+}
+
+.nav { padding: 22px 0 8px; }
+.nav-in {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--space-2);
+}
+.brand { display: flex; align-items: center; text-decoration: none; height: 28px; }
+.brand img { height: 28px; width: auto; }
+.nav-links { display: flex; align-items: center; gap: 28px; font-size: var(--text-nav); color: rgba(255,255,255,.78); font-weight: 500; }
+.nav-links a { text-decoration: none; }
+.nav-links a:hover { color: var(--ink); }
+.nav-split { width: 1px; height: 18px; background: var(--line); }
+.lang { display: flex; gap: 6px; }
+.lang button {
+  background: transparent; color: var(--faint); border: 1px solid transparent;
+  padding: 6px 12px; font-size: 12px; font-weight: 600; cursor: pointer;
+  border-radius: var(--radius-pill);
+}
+.lang button[aria-pressed="true"] {
+  background: #161616; color: var(--ink); border-color: rgba(255,255,255,.14);
+}
+.lang button:not([aria-pressed="true"]):hover { color: var(--ink); }
+
+.hero {
+  flex: 1;
+  display: grid;
+  grid-template-columns: minmax(360px, 0.95fr) 1.05fr;
+  gap: 12px;
+  align-items: center;
+  padding: 18px 0 0;
+}
+.eyebrow {
+  display: flex; align-items: center; gap: 12px;
+  color: rgba(255,255,255,.72);
+  font-size: 12px; font-weight: 600; letter-spacing: .16em;
+  text-transform: uppercase; margin-bottom: 22px;
+}
+.eyebrow::before {
+  content: ""; width: 28px; height: 2px; background: var(--brand-hot); border-radius: 2px;
+}
+.hero h1 {
+  font-size: clamp(34px, 4vw, 54px);
+  line-height: 1.04; letter-spacing: -.035em; font-weight: 700;
+  margin: 0 0 22px;
+}
+.hero h1 .line { display: block; }
+.hero h1 .accent { color: var(--brand-hot); }
+.hero p.lead {
+  color: var(--mute); font-size: clamp(16px, 1.35vw, 20px); line-height: 1.55;
+  max-width: 36ch; margin-bottom: 28px; font-weight: 400;
+}
+.hero-actions { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+.caption {
+  margin-top: 22px; color: var(--faint); font-size: 14px; line-height: 1.5;
+}
+
+.btn {
+  display: inline-flex; align-items: center; gap: 12px;
+  text-decoration: none; border-radius: var(--radius-pill);
+  padding: 14px 14px 14px 26px;
+  font-weight: 600; font-size: 15px;
+  transition: transform var(--dur-ui) var(--ease), background var(--dur-ui) var(--ease);
+}
+.btn:active { transform: scale(.98); }
+.btn-primary { background: var(--brand); color: #fff; }
+.btn-primary:hover { background: var(--brand-hover); }
+.btn-ico {
+  width: 32px; height: 32px; border-radius: var(--radius-pill);
+  background: rgba(255,255,255,.16);
+  display: grid; place-items: center;
+}
+.btn-ico svg { display: block; }
+.btn-ghost {
+  background: transparent; color: var(--ink); padding: 0; gap: 14px; font-weight: 500;
+}
+.btn-ghost:hover { color: #fff; }
+.play-ring {
+  width: 46px; height: 46px; border-radius: 50%;
+  border: 1px solid rgba(255,255,255,.28);
+  display: grid; place-items: center;
+  transition: border-color var(--dur-ui) var(--ease);
+}
+.btn-ghost:hover .play-ring { border-color: rgba(255,255,255,.55); }
+
+.hero-art { position: relative; }
+.hero-art picture, .hero-art img {
+  width: 104%;
+  max-width: none;
+  height: auto;
+  filter: drop-shadow(0 28px 48px rgba(0,0,0,.5));
+}
+
+.reveal { opacity: 0; transform: translateY(24px); animation: up var(--dur-entrance) var(--ease) forwards; }
+.d1 { animation-delay: .1s; }
+.d2 { animation-delay: .2s; }
+.d3 { animation-delay: .28s; }
+@keyframes up { to { opacity: 1; transform: none; } }
+
+.marks {
+  padding: 4px 0 32px;
+}
+.marks-rule {
+  height: 1px; background: var(--line); margin-bottom: 22px;
+}
+.marks-label {
+  text-align: center; color: var(--faint);
+  font-size: 11px; letter-spacing: .18em; font-weight: 600;
+  text-transform: uppercase;
+  margin-bottom: 22px;
+}
+.marks-row {
+  display: flex; justify-content: center; align-items: center;
+  gap: clamp(28px, 6vw, 72px); flex-wrap: wrap;
+}
+.marks-row a {
+  display: inline-flex; align-items: center;
+  text-decoration: none; opacity: .92;
+  transition: opacity var(--dur-ui) var(--ease), transform var(--dur-ui) var(--ease);
+}
+.marks-row a:hover { opacity: 1; transform: translateY(-1px); }
+.marks-row img { width: auto; display: block; }
+.mark-samsung img { height: 20px; }
+.mark-lg img { height: 34px; }
+.mark-roku img { height: 22px; }
+.mark-android img { height: 20px; }
+
+.panel { padding: var(--space-6) 0; }
+.panel h2 {
+  font-size: clamp(26px, 3vw, 40px);
+  letter-spacing: -.02em; line-height: 1.15;
+  max-width: 16ch; margin-bottom: 10px;
+}
+.panel .sub { color: var(--mute); max-width: 48ch; line-height: 1.6; margin-bottom: var(--space-4); }
+
+.panel .eyebrow { color: var(--brand-hot); margin-bottom: 20px; }
+.panel h2 .accent { color: var(--brand-hot); }
+.panel h2 .line { display: block; }
+.panel h2 { max-width: 22ch; }
+.panel .rule { border-top: 1px solid var(--line); margin-bottom: 4px; }
+
+/* cartoes de dispositivo */
+.device-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-3);
+}
+.device-card {
+  display: flex; flex-direction: column;
+  border: 1px solid var(--line); border-radius: var(--radius-lg);
+  background: rgba(255,255,255,.03);
+  padding: var(--space-4) var(--space-3) var(--space-3);
+  transition:
+    border-color var(--dur-ui) var(--ease),
+    background var(--dur-ui) var(--ease),
+    transform var(--dur-ui) var(--ease);
+}
+.device-card:hover,
+.device-card:focus-within {
+  transform: translateY(-3px);
+  border-color: var(--brand);
+  background: rgba(227,28,58,.08);
+}
+.device-mark {
+  display: flex; align-items: center; justify-content: center;
+  height: 48px; margin-bottom: var(--space-3);
+}
+.device-mark img { width: auto; display: block; }
+.device-card[data-mark="samsung"] .device-mark img { height: 19px; }
+.device-card[data-mark="lg"] .device-mark img { height: 32px; }
+.device-card[data-mark="roku"] .device-mark img { height: 21px; }
+.device-card[data-mark="android"] .device-mark img { height: 19px; }
+.device-card strong { display: block; font-size: 15px; line-height: 1.45; margin-bottom: 6px; }
+.device-card .hint {
+  color: var(--faint); font-size: var(--text-ui); line-height: 1.5;
+  margin-bottom: var(--space-3);
+}
+.device-card .card-rule { margin-top: auto; border-top: 1px solid var(--line); }
+.device-card .card-link {
+  display: inline-flex; align-items: center; gap: 8px; padding-top: 14px;
+  color: var(--ink); font-size: var(--text-ui); font-weight: 600; text-decoration: none;
+  transition: color var(--dur-ui) var(--ease);
+}
+.device-card .card-link svg { flex: none; }
+.device-card:hover .card-link,
+.device-card:focus-within .card-link { color: var(--brand-hot); }
+
+/* passos */
+.steps {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+.steps article { padding: var(--space-4) var(--space-4) var(--space-4) 0; }
+.steps article + article {
+  padding-left: var(--space-4); border-left: 1px solid var(--line);
+}
+.step-top {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: var(--space-2); max-width: 34ch; margin-bottom: 22px;
+}
+.step-num {
+  font-size: 46px; font-weight: 700; line-height: 1; letter-spacing: -.04em;
+  color: rgba(255,255,255,.10);
+  -webkit-text-stroke: 1px rgba(255,255,255,.24);
+}
+.step-ico {
+  display: flex; align-items: center; justify-content: center;
+  width: 44px; height: 44px; flex: none;
+  border: 1px solid rgba(227,28,58,.45); border-radius: var(--radius-md);
+  color: var(--brand-hot);
+}
+.steps strong { display: block; font-size: 18px; margin-bottom: 8px; }
+.steps p { color: var(--mute); font-size: var(--text-ui); line-height: 1.6; max-width: 34ch; }
+
+.free-note {
+  display: flex; align-items: center; gap: 12px;
+  border-top: 1px solid var(--line); padding-top: var(--space-3);
+  color: var(--mute); font-size: var(--text-ui); line-height: 1.5;
+}
+.free-note svg { flex: none; color: var(--brand-hot); }
+
+.legal-box {
+  margin-top: var(--space-5);
+  background: rgba(227, 28, 58, .08);
+  border: 1px solid rgba(227, 28, 58, .28);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+}
+.legal-box p { color: var(--ink); font-size: 14px; line-height: 1.6; max-width: 70ch; }
+
+.foot {
+  border-top: 1px solid var(--line);
+  padding: var(--space-4) 0 var(--space-5);
+  display: flex; justify-content: space-between; gap: var(--space-3); flex-wrap: wrap;
+  color: var(--faint); font-size: 14px;
+}
+.foot a { color: var(--mute); text-decoration: none; }
+.foot a:hover { color: var(--ink); }
+.foot nav { display: flex; gap: var(--space-3); flex-wrap: wrap; }
+
+@media (max-width: 980px) {
+  .hero { grid-template-columns: 1fr; gap: 28px; padding: 12px 0 8px; }
+  .hero-art picture, .hero-art img { width: 100%; }
+  .device-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 860px) {
+  .wrap { width: calc(100% - 32px); }
+  .nav-links a.hide-sm { display: none; }
+  .nav-split { display: none; }
+  .hero h1 { font-size: 36px; }
+  .steps { grid-template-columns: 1fr; }
+  .steps article { padding-right: 0; border-top: 1px solid var(--line); }
+  .steps article + article { padding-left: 0; border-left: 0; }
+  .brand img { height: 24px; }
+  .marks-row { gap: 22px 32px; }
+  .mark-samsung img { height: 14px; }
+  .mark-lg img { height: 28px; }
+  .mark-roku img { height: 18px; }
+  .mark-android img { height: 14px; }
+}
+@media (max-width: 520px) {
+  .device-grid { grid-template-columns: 1fr; }
+  .hero-actions { gap: 16px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; animation: none; }
+  html { scroll-behavior: auto; }
+}
+</style>
+</head>
+<body>
+  <div class="stage">
+    <div class="stage-bg" aria-hidden="true">
+      <picture>
+        <source srcset="img/hero-bg.webp" type="image/webp">
+        <img src="img/hero-bg.png" alt="" width="1672" height="941">
+      </picture>
+    </div>
+
+    <header class="nav">
+      <div class="wrap">
+        <div class="nav-in">
+          <a class="brand" href="index.html" aria-label="LIBEROU TV">
+            <img src="img/logo-nav.png" alt="LiberouTV">
+          </a>
+          <nav class="nav-links">
+            <a class="hide-sm" href="#how" data-i="navHow">How it works</a>
+            <a class="hide-sm" href="#stores" data-i="navDevices">Devices</a>
+            <a href="privacy.html" data-i="navPrivacy" data-en="privacy.html" data-pt="privacidade.html">Privacy</a>
+            <span class="nav-split" aria-hidden="true"></span>
+            <div class="lang" role="group" aria-label="Language">
+              <button type="button" id="btnPt" aria-pressed="false">PT</button>
+              <button type="button" id="btnEn" aria-pressed="true">EN</button>
+            </div>
+          </nav>
+        </div>
+      </div>
+    </header>
+
+    <section class="wrap hero">
+      <div>
+        <p class="eyebrow reveal" data-i="eyebrow">Your player. Your screens.</p>
+        <h1 class="reveal d1">
+          <span class="line" data-i="h1a">What you already subscribe to.</span>
+          <span class="line accent" data-i="h1b">On your best screen.</span>
+        </h1>
+        <p class="lead reveal d1" data-i="lead">Play your subscription with LiberouTV. Free for Samsung, LG, Roku and Android TV.</p>
+        <div class="hero-actions reveal d2">
+          <a class="btn btn-primary" href="#stores">
+            <span data-i="ctaDownload">Get the app</span>
+            <span class="btn-ico" aria-hidden="true">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path d="M3 11L11 3M11 3H4.5M11 3V9.5" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+          </a>
+          <a class="btn btn-ghost" href="#how">
+            <span class="play-ring" aria-hidden="true">
+              <svg width="12" height="14" viewBox="0 0 12 14" fill="#fff">
+                <path d="M1 1.6v10.8L11 7 1 1.6z"/>
+              </svg>
+            </span>
+            <span data-i="ctaHow">How it works</span>
+          </a>
+        </div>
+        <p class="caption reveal d2" data-i="caption">Use the login from your service to open the catalog.</p>
+      </div>
+      <div class="hero-art reveal d3">
+        <picture>
+          <source srcset="img/hero-tv.webp" type="image/webp">
+          <img src="img/hero-tv.png" width="1370" height="991" alt="LIBEROU TV on a television and a phone">
+        </picture>
+      </div>
+    </section>
+
+    <div class="wrap marks">
+      <div class="marks-rule"></div>
+      <p class="marks-label" data-i="available">Available on your favorite screens</p>
+      <div class="marks-row">
+        <a href="#stores" class="mark-samsung">
+          <picture>
+            <source srcset="img/mark-samsung.webp" type="image/webp">
+            <img src="img/mark-samsung.png" width="800" height="133" alt="Samsung">
+          </picture>
+        </a>
+        <a href="#stores" class="mark-lg">
+          <picture>
+            <source srcset="img/mark-lg.webp" type="image/webp">
+            <img src="img/mark-lg.png" width="800" height="362" alt="LG">
+          </picture>
+        </a>
+        <a href="#stores" class="mark-roku">
+          <picture>
+            <source srcset="img/mark-roku.webp" type="image/webp">
+            <img src="img/mark-roku.png" width="800" height="255" alt="Roku">
+          </picture>
+        </a>
+        <a href="#stores" class="mark-android">
+          <picture>
+            <source srcset="img/mark-android.webp" type="image/webp">
+            <img src="img/mark-android.png" width="800" height="133" alt="Android TV">
+          </picture>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <main>
+    <section class="wrap panel" id="stores">
+      <p class="eyebrow" data-i="storesEyebrow">Available on the official stores</p>
+      <h2>
+        <span class="line" data-i="storesTitle">Pick your screen.</span>
+        <span class="line accent" data-i="storesTitle2">Start watching.</span>
+      </h2>
+      <p class="sub" data-i="storesSub">Choose your device and see how to install LiberouTV.</p>
+      <div class="device-grid">
+        <article class="device-card" data-mark="samsung">
+          <div class="device-mark">
+            <picture>
+              <source srcset="img/mark-samsung.webp" type="image/webp">
+              <img src="img/mark-samsung.png" alt="Samsung">
+            </picture>
+          </div>
+          <strong data-i="samTitle"></strong>
+          <p class="hint" data-i="samHint"></p>
+          <div class="card-rule"></div>
+          <a class="card-link" href="#how">
+            <span data-i="howInstall">How to install</span>
+            <svg width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M3 11L11 3M11 3H4.5M11 3V9.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </article>
+        <article class="device-card" data-mark="lg">
+          <div class="device-mark">
+            <picture>
+              <source srcset="img/mark-lg.webp" type="image/webp">
+              <img src="img/mark-lg.png" alt="LG">
+            </picture>
+          </div>
+          <strong data-i="lgTitle"></strong>
+          <p class="hint" data-i="lgHint"></p>
+          <div class="card-rule"></div>
+          <a class="card-link" href="#how">
+            <span data-i="howInstall">How to install</span>
+            <svg width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M3 11L11 3M11 3H4.5M11 3V9.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </article>
+        <article class="device-card" data-mark="roku">
+          <div class="device-mark">
+            <picture>
+              <source srcset="img/mark-roku.webp" type="image/webp">
+              <img src="img/mark-roku.png" alt="Roku">
+            </picture>
+          </div>
+          <strong data-i="rokuTitle"></strong>
+          <p class="hint" data-i="rokuHint"></p>
+          <div class="card-rule"></div>
+          <a class="card-link" href="#how">
+            <span data-i="howInstall">How to install</span>
+            <svg width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M3 11L11 3M11 3H4.5M11 3V9.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </article>
+        <article class="device-card" data-mark="android">
+          <div class="device-mark">
+            <picture>
+              <source srcset="img/mark-android.webp" type="image/webp">
+              <img src="img/mark-android.png" alt="Android TV">
+            </picture>
+          </div>
+          <strong data-i="andTitle"></strong>
+          <p class="hint" data-i="andHint"></p>
+          <div class="card-rule"></div>
+          <a class="card-link" href="#how">
+            <span data-i="howInstall">How to install</span>
+            <svg width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M3 11L11 3M11 3H4.5M11 3V9.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </article>
+      </div>
+    </section>
+
+    <section class="wrap panel" id="how">
+      <h2>
+        <span data-i="howTitle">Ready in</span>
+        <span class="accent" data-i="howTitle2">3 steps.</span>
+      </h2>
+      <p class="sub" data-i="howSub">Install, sign in, watch. Payment stays with your provider, outside this app.</p>
+      <div class="rule"></div>
+      <div class="steps">
+        <article>
+          <div class="step-top">
+            <span class="step-num" aria-hidden="true">01</span>
+            <span class="step-ico" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="4" width="19" height="13" rx="2"/><path d="M8.5 21h7"/><path d="M12 7.5v5m0 0 2-2m-2 2-2-2"/></svg></span>
+          </div>
+          <strong data-i="s1t"></strong>
+          <p data-i="s1b"></p>
+        </article>
+        <article>
+          <div class="step-top">
+            <span class="step-num" aria-hidden="true">02</span>
+            <span class="step-ico" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8.5" cy="15.5" r="3.5"/><path d="m11 13 8.5-8.5"/><path d="m17 7 2.5 2.5"/><path d="M14.5 9.5 17 12"/></svg></span>
+          </div>
+          <strong data-i="s2t"></strong>
+          <p data-i="s2b"></p>
+        </article>
+        <article>
+          <div class="step-top">
+            <span class="step-num" aria-hidden="true">03</span>
+            <span class="step-ico" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M10 8.5 16 12l-6 3.5v-7Z"/></svg></span>
+          </div>
+          <strong data-i="s3t"></strong>
+          <p data-i="s3b"></p>
+        </article>
+      </div>
+      <p class="free-note">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 8h.01"/></svg>
+        <span data-i="freeNote">The app is free. A subscription is contracted with your provider.</span>
+      </p>
+      <div class="legal-box">
+        <p data-i="legal">LIBEROU TV does not host, bundle or distribute channels, films or series. Illegal streaming services are not supported. Rated 16+.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="wrap foot">
+    <p>© 2026 LIBEROU TV</p>
+    <nav>
+      <a href="privacy.html" data-i="navPrivacy" data-en="privacy.html" data-pt="privacidade.html">Privacy</a>
+      <a href="terms.html" data-i="navTerms" data-en="terms.html" data-pt="termos.html">Terms</a>
+      <a href="mailto:liberoutv@pm.me">liberoutv@pm.me</a>
+    </nav>
+  </footer>
+
+<script>
+var I18N = {
+  en: {
+    navHow: "How it works",
+    navDevices: "Devices",
+    navPrivacy: "Privacy",
+    navTerms: "Terms",
+    eyebrow: "Your player. Your screens.",
+    h1a: "What you already watch.",
+    h1b: "On your best screen.",
+    lead: "Play your subscription with LiberouTV. Free for Samsung, LG, Roku and Android TV.",
+    ctaDownload: "Get the app",
+    ctaHow: "How it works",
+    caption: "Use the login from your service to open the catalog.",
+    available: "Available on your favorite screens",
+    storesEyebrow: "Available on the official stores",
+    storesTitle: "Pick your screen.",
+    storesTitle2: "Start watching.",
+    storesSub: "Choose your device and see how to install LiberouTV.",
+    samTitle: "Smart TVs from 2018 on.",
+    samHint: "Search LiberouTV in Apps.",
+    lgTitle: "Smart TVs with webOS.",
+    lgHint: "Search LiberouTV in the LG Content Store.",
+    rokuTitle: "Roku players and Roku TVs.",
+    rokuHint: "Add LiberouTV in the Channel Store.",
+    andTitle: "Android TV and Google TV.",
+    andHint: "Search LiberouTV in the Play Store.",
+    howInstall: "How to install",
+    howTitle: "Ready in",
+    howTitle2: "3 steps.",
+    howSub: "Install, sign in, watch. Payment stays with your provider, outside this app.",
+    s1t: "Install on the TV",
+    s1b: "Open the store on your Samsung, LG, Roku or Android TV and search LiberouTV.",
+    s2t: "Sign in",
+    s2b: "Enter the username and password from your provider. Stored on the device only.",
+    s3t: "Watch that catalog",
+    s3b: "Live, movies and series come from the account you already pay for. Sign out in Profile to erase the login.",
+    freeNote: "The app is free. A subscription is contracted with your provider.",
+    legal: "LIBEROU TV does not host, bundle or distribute channels, films or series. Illegal streaming services are not supported. Rated 16+."
+  },
+  pt: {
+    navHow: "Como funciona",
+    navDevices: "Dispositivos",
+    navPrivacy: "Privacidade",
+    navTerms: "Termos",
+    eyebrow: "Seu player. Suas telas.",
+    h1a: "O que você já assina.",
+    h1b: "Na sua melhor tela.",
+    lead: "Reproduza sua assinatura com a LiberouTV. Grátis para Samsung, LG, Roku e Android TV.",
+    ctaDownload: "Baixar aplicativo",
+    ctaHow: "Como funciona",
+    caption: "Use o login do seu serviço para acessar o catálogo.",
+    available: "Disponível nas suas telas favoritas",
+    storesEyebrow: "Disponível nas lojas oficiais",
+    storesTitle: "Escolha sua tela.",
+    storesTitle2: "Comece a assistir.",
+    storesSub: "Selecione seu dispositivo e veja como instalar a LiberouTV.",
+    samTitle: "Smart TVs de 2018 em diante.",
+    samHint: "Busque LiberouTV em Apps.",
+    lgTitle: "Smart TVs LG com webOS.",
+    lgHint: "Busque LiberouTV na LG Content Store.",
+    rokuTitle: "Players e TVs Roku.",
+    rokuHint: "Adicione LiberouTV na Channel Store.",
+    andTitle: "Android TV e Google TV.",
+    andHint: "Busque LiberouTV na Play Store.",
+    howInstall: "Como instalar",
+    howTitle: "Pronto em",
+    howTitle2: "3 passos.",
+    howSub: "Instale, entre, assista. O pagamento fica com o seu provedor, fora deste app.",
+    s1t: "Instale na TV",
+    s1b: "Abra a loja na Samsung, LG, Roku ou Android TV e busque LiberouTV.",
+    s2t: "Entre",
+    s2b: "Informe usuário e senha do seu provedor. Fica só no aparelho.",
+    s3t: "Assista a esse catálogo",
+    s3b: "Ao vivo, filmes e séries vêm da conta que você já paga. Saia da conta no Perfil para apagar o login.",
+    freeNote: "O aplicativo é gratuito. A assinatura é contratada com seu provedor.",
+    legal: "O LIBEROU TV não hospeda, empacota nem distribui canais, filmes ou séries. Não apoiamos serviços ilegais. Classificação 16+."
+  }
+};
+
+function apply(lang) {
+  var pack = I18N[lang] || I18N.en;
+  document.documentElement.lang = lang === "pt" ? "pt-BR" : "en";
+  document.querySelectorAll("[data-i]").forEach(function (el) {
+    var key = el.getAttribute("data-i");
+    if (pack[key]) el.textContent = pack[key];
+  });
+  document.querySelectorAll("[data-en][data-pt]").forEach(function (el) {
+    el.setAttribute("href", el.getAttribute(lang === "pt" ? "data-pt" : "data-en"));
+  });
+  document.getElementById("btnEn").setAttribute("aria-pressed", lang === "en" ? "true" : "false");
+  document.getElementById("btnPt").setAttribute("aria-pressed", lang === "pt" ? "true" : "false");
+  try { localStorage.setItem("liberou-lang", lang); } catch (e) {}
+}
+document.getElementById("btnEn").addEventListener("click", function () { apply("en"); });
+document.getElementById("btnPt").addEventListener("click", function () { apply("pt"); });
+apply((function () {
+  try { return localStorage.getItem("liberou-lang"); } catch (e) { return null; }
+})() || "en");
+</script>
+</body>
+</html>
