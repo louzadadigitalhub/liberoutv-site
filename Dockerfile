@@ -8,6 +8,8 @@ COPY index.html privacidade.html privacy.html termos.html terms.html /usr/share/
 COPY assets/ /usr/share/nginx/html/assets/
 COPY fonts/ /usr/share/nginx/html/fonts/
 COPY img/ /usr/share/nginx/html/img/
+# as paginas de politica nao declaram icone, e o navegador pede este endereco
+COPY img/favicon.ico /usr/share/nginx/html/favicon.ico
 # configuracao com erro derruba a construcao, e a versao anterior segue no ar
 RUN nginx -t
 EXPOSE 80
