@@ -3,671 +3,1521 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>LIBEROU TV - player for Samsung, LG, Roku and Android TV</title>
-<meta name="description" content="LIBEROU TV is a free media player for Samsung, LG, Roku and Android TV. It does not include any catalog. Sign in with the login you already have.">
+<title>LIBEROU TV: a media player for your TV</title>
+<meta name="description" content="LIBEROU TV is a free media player for Samsung, LG, Roku and Android devices. It does not include any catalog. You sign in with the details from your provider.">
+<meta name="theme-color" content="#0c090a">
+<link rel="canonical" href="https://app.liberoutv.com/">
+<!-- DEPLOY STEP: og:url e og:image levam o endereco absoluto do site no ar -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="LIBEROU TV">
+<meta property="og:title" content="LIBEROU TV: a media player for your TV">
+<meta property="og:description" content="A free media player for Samsung, LG, Roku and Android devices. It does not include any catalog.">
+<meta property="og:url" content="https://app.liberoutv.com/">
+<meta property="og:image" content="https://app.liberoutv.com/assets/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="img/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png">
 <link rel="apple-touch-icon" href="img/favicon-180.png">
+<link rel="preload" href="fonts/poppins-700.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/poppins-400.woff2" as="font" type="font/woff2" crossorigin>
+<script>
+/* Os cinco portoes do topo estatico. Valem aqui e no script do fim da pagina. */
+(function (d) {
+  var G = [
+    "(max-width: 720px)",
+    "(orientation: portrait) and (max-width: 1024px)",
+    "(orientation: portrait) and (pointer: coarse)",
+    "(orientation: landscape) and (pointer: coarse) and (max-height: 560px)",
+    "(prefers-reduced-motion: reduce)"
+  ];
+  var motionOk = false;
+  try { motionOk = localStorage.getItem("liberou-motion") === "1"; } catch (e) {}
+  window.LTV_GATES = G;
+  window.LTV_MOTION_OK = motionOk;
+  var gated = G.some(function (q, i) { return window.matchMedia(q).matches && !(motionOk && i === 4); });
+  d.className += " js" + (gated ? "" : " scrub");
+})(document.documentElement);
+</script>
 <style>
-@font-face { font-family: Poppins; font-weight: 400; src: url("fonts/Poppins-Regular.ttf"); font-display: swap; }
-@font-face { font-family: Poppins; font-weight: 500; src: url("fonts/Poppins-Medium.ttf"); font-display: swap; }
-@font-face { font-family: Poppins; font-weight: 600; src: url("fonts/Poppins-SemiBold.ttf"); font-display: swap; }
-@font-face { font-family: Poppins; font-weight: 700; src: url("fonts/Poppins-Bold.ttf"); font-display: swap; }
+@font-face { font-family: Poppins; font-weight: 400; src: url("fonts/poppins-400.woff2") format("woff2"); font-display: swap; }
+@font-face { font-family: Poppins; font-weight: 500; src: url("fonts/poppins-500.woff2") format("woff2"); font-display: swap; }
+@font-face { font-family: Poppins; font-weight: 600; src: url("fonts/poppins-600.woff2") format("woff2"); font-display: swap; }
+@font-face { font-family: Poppins; font-weight: 700; src: url("fonts/poppins-700.woff2") format("woff2"); font-display: swap; }
+@font-face { font-family: "JetBrains Mono"; font-weight: 500; src: url("fonts/jetbrains-mono-500.woff2") format("woff2"); font-display: swap; }
 
 :root {
-  --bg: #0b0b0d;
-  --ink: #f4f4f5;
-  --mute: #c4c4c8;
-  --faint: #8d8d93;
-  --line: rgba(255,255,255,.12);
-  --brand: #e31c3a;
-  --brand-hot: #ff2d3a;
-  --brand-hover: #f0344a;
+  --canvas: #0c090a;
+  --panel: #151012;
+  --accent: #e31c3a;
+  --accent-hover: #f0344a;
+  --accent-muted: rgba(227,28,58,.26);
+  --text-primary: #f5f1f1;
+  --text-secondary: #c6bfc1;
+  --text-faint: #9a9093;
+  --line: rgba(255,238,240,.11);
+  --line-strong: rgba(255,238,240,.4);
 
-  --space-1: 8px;
-  --space-2: 16px;
-  --space-3: 24px;
-  --space-4: 32px;
-  --space-5: 48px;
-  --space-6: 64px;
-
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
-  --radius-pill: 999px;
-
-  --text-label: 12px;
-  --text-ui: 14px;
-  --text-nav: 15px;
-  --text-body: 18px;
-  --text-lead: 20px;
-
-  --ease: cubic-bezier(0.16, 1, 0.3, 1);
-  --dur-ui: .4s;
-  --dur-entrance: 1.2s;
+  --ease: cubic-bezier(.32, .72, 0, 1);
+  --ease-io: cubic-bezier(.65, 0, .35, 1);
+  --tshadow: 0 1px 2px rgba(8,4,5,.95), 0 3px 12px rgba(8,4,5,.78), 0 10px 44px rgba(8,4,5,.8);
+  --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; color-scheme: dark; scrollbar-color: #5a1a22 transparent; }
-html, body {
+html, body { overflow-x: hidden; overflow-x: clip; }
+body {
   min-height: 100%;
-  background: var(--bg);
-  color: var(--ink);
+  background: var(--canvas);
+  color: var(--text-primary);
   font-family: Poppins, system-ui, sans-serif;
-  overflow-x: clip;
+  font-size: 17px; line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
 }
-::selection { background: var(--brand); color: #fff; }
-:focus-visible { outline: 2px solid var(--brand-hot); outline-offset: 3px; }
+::selection { background: var(--accent); color: #fff; }
+:focus-visible { outline: 2px solid var(--accent-hover); outline-offset: 3px; border-radius: 4px; }
 img { max-width: 100%; display: block; }
 a { color: inherit; }
 button { font-family: inherit; }
+h1, h2, h3 { font-weight: 700; letter-spacing: -.03em; line-height: 1.06; text-wrap: balance; }
 
-.wrap { width: min(1340px, calc(100% - var(--space-5))); margin: 0 auto; }
+.wrap { width: min(1240px, calc(100% - 48px)); margin: 0 auto; }
+.sr {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip-path: inset(50%); white-space: nowrap;
+}
+.skip {
+  position: fixed; left: 16px; top: 12px; z-index: 30;
+  padding: 10px 16px; border-radius: 10px;
+  background: var(--text-primary); color: var(--canvas); font-weight: 600; text-decoration: none;
+  transform: translateY(-200%); transition: transform .4s var(--ease);
+}
+.skip:focus { transform: none; }
 
-.stage { position: relative; isolation: isolate; min-height: 100dvh; display: flex; flex-direction: column; }
-.stage-bg {
-  position: absolute; inset: 0; z-index: -1; overflow: hidden; pointer-events: none;
+.kicker {
+  display: inline-block; padding: 6px 12px; border-radius: 999px;
+  background: rgba(255,238,240,.04); box-shadow: inset 0 0 0 1px var(--line);
+  font-family: var(--mono); font-size: 10.5px; font-weight: 500;
+  letter-spacing: .2em; text-transform: uppercase; color: var(--text-secondary);
 }
-.stage-bg img {
-  width: 100%; height: 100%; object-fit: cover; object-position: 78% center;
-}
-.stage-bg::after {
-  content: "";
-  position: absolute; inset: 0;
-  background:
-    linear-gradient(90deg, #0b0b0d 0%, rgba(11,11,13,.72) 28%, rgba(11,11,13,.18) 58%, transparent 78%),
-    linear-gradient(180deg, rgba(11,11,13,.35) 0%, transparent 18%, transparent 78%, #0b0b0d 100%);
-}
-
-.nav { padding: 22px 0 8px; }
-.nav-in {
-  display: flex; align-items: center; justify-content: space-between; gap: var(--space-2);
-}
-.brand { display: flex; align-items: center; text-decoration: none; height: 28px; }
-.brand img { height: 28px; width: auto; }
-.nav-links { display: flex; align-items: center; gap: 28px; font-size: var(--text-nav); color: rgba(255,255,255,.78); font-weight: 500; }
-.nav-links a { text-decoration: none; }
-.nav-links a:hover { color: var(--ink); }
-.nav-split { width: 1px; height: 18px; background: var(--line); }
-.lang { display: flex; gap: 6px; }
-.lang button {
-  background: transparent; color: var(--faint); border: 1px solid transparent;
-  padding: 6px 12px; font-size: 12px; font-weight: 600; cursor: pointer;
-  border-radius: var(--radius-pill);
-}
-.lang button[aria-pressed="true"] {
-  background: #161616; color: var(--ink); border-color: rgba(255,255,255,.14);
-}
-.lang button:not([aria-pressed="true"]):hover { color: var(--ink); }
-
-.hero {
-  flex: 1;
-  display: grid;
-  grid-template-columns: minmax(360px, 0.95fr) 1.05fr;
-  gap: 12px;
-  align-items: center;
-  padding: 18px 0 0;
-}
-.eyebrow {
-  display: flex; align-items: center; gap: 12px;
-  color: rgba(255,255,255,.72);
-  font-size: 12px; font-weight: 600; letter-spacing: .16em;
-  text-transform: uppercase; margin-bottom: 22px;
-}
-.eyebrow::before {
-  content: ""; width: 28px; height: 2px; background: var(--brand-hot); border-radius: 2px;
-}
-.hero h1 {
-  font-size: clamp(34px, 4vw, 54px);
-  line-height: 1.04; letter-spacing: -.035em; font-weight: 700;
-  margin: 0 0 22px;
-}
-.hero h1 .line { display: block; }
-.hero h1 .accent { color: var(--brand-hot); }
-.hero p.lead {
-  color: var(--mute); font-size: clamp(16px, 1.35vw, 20px); line-height: 1.55;
-  max-width: 36ch; margin-bottom: 28px; font-weight: 400;
-}
-.hero-actions { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
-.caption {
-  margin-top: 22px; color: var(--faint); font-size: 14px; line-height: 1.5;
-}
+.lede { color: var(--text-secondary); font-size: clamp(16px, 1.3vw, 19px); line-height: 1.6; max-width: 44ch; }
 
 .btn {
   display: inline-flex; align-items: center; gap: 12px;
-  text-decoration: none; border-radius: var(--radius-pill);
-  padding: 14px 14px 14px 26px;
-  font-weight: 600; font-size: 15px;
-  transition: transform var(--dur-ui) var(--ease), background var(--dur-ui) var(--ease);
+  padding: 14px 14px 14px 26px; border-radius: 999px;
+  background: var(--accent); color: #fff;
+  font-weight: 600; font-size: 15px; text-decoration: none; text-shadow: none;
+  transition: transform .4s var(--ease), background-color .4s var(--ease);
 }
+.btn:hover { background: var(--accent-hover); }
 .btn:active { transform: scale(.98); }
-.btn-primary { background: var(--brand); color: #fff; }
-.btn-primary:hover { background: var(--brand-hover); }
 .btn-ico {
-  width: 32px; height: 32px; border-radius: var(--radius-pill);
-  background: rgba(255,255,255,.16);
-  display: grid; place-items: center;
+  width: 32px; height: 32px; border-radius: 50%; flex: none;
+  background: rgba(255,255,255,.16); display: grid; place-items: center;
+  transition: transform .4s var(--ease);
 }
-.btn-ico svg { display: block; }
-.btn-ghost {
-  background: transparent; color: var(--ink); padding: 0; gap: 14px; font-weight: 500;
-}
-.btn-ghost:hover { color: #fff; }
-.play-ring {
-  width: 46px; height: 46px; border-radius: 50%;
-  border: 1px solid rgba(255,255,255,.28);
-  display: grid; place-items: center;
-  transition: border-color var(--dur-ui) var(--ease);
-}
-.btn-ghost:hover .play-ring { border-color: rgba(255,255,255,.55); }
+.btn:hover .btn-ico { transform: translateY(2px) scale(1.06); }
 
-.hero-art { position: relative; }
-.hero-art picture, .hero-art img {
-  width: 104%;
-  max-width: none;
-  height: auto;
-  filter: drop-shadow(0 28px 48px rgba(0,0,0,.5));
+/* ambiente: a luz da tela atras da pagina inteira */
+.ambient { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+.ambient::before, .ambient::after {
+  content: ""; position: absolute; width: 90vmax; height: 90vmax; border-radius: 50%;
+  background: radial-gradient(circle, rgba(227,28,58,.13) 0%, rgba(227,28,58,0) 62%);
+  will-change: transform;
+}
+.ambient::before { left: -30vmax; top: -22vmax; animation: drift-a 96s var(--ease-io) -31s infinite alternate; }
+.ambient::after { right: -34vmax; bottom: -30vmax; animation: drift-b 118s var(--ease-io) -52s infinite alternate; }
+@keyframes drift-a { to { transform: translate3d(22vmax, 16vmax, 0); } }
+@keyframes drift-b { to { transform: translate3d(-18vmax, -20vmax, 0); } }
+.grain {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: .05;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .6 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
 }
 
-.reveal { opacity: 0; transform: translateY(24px); animation: up var(--dur-entrance) var(--ease) forwards; }
-.d1 { animation-delay: .1s; }
-.d2 { animation-delay: .2s; }
-.d3 { animation-delay: .28s; }
-@keyframes up { to { opacity: 1; transform: none; } }
+/* navegacao: uma ilha de vidro solta do topo */
+.nav { position: fixed; inset: 14px 0 auto 0; z-index: 20; pointer-events: none; }
+.nav-in {
+  pointer-events: auto; position: relative; width: min(1040px, calc(100% - 28px));
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding: 9px 10px 9px 20px; border-radius: 999px;
+  background: rgba(18,12,14,.6);
+  box-shadow: inset 0 0 0 1px var(--line), inset 0 1px 0 rgba(255,255,255,.07), 0 18px 50px rgba(0,0,0,.35);
+  -webkit-backdrop-filter: blur(18px) saturate(1.2); backdrop-filter: blur(18px) saturate(1.2);
+}
+.brand { display: flex; align-items: center; height: 30px; }
+.brand img { height: 30px; width: auto; }
+.nav-links { display: flex; align-items: center; gap: 28px; font-size: 15px; font-weight: 500; color: var(--text-secondary); }
+.nav-links a { text-decoration: none; transition: color .4s var(--ease); }
+.nav-links a:hover { color: var(--text-primary); }
+.lang { display: flex; gap: 6px; }
+.lang button {
+  background: transparent; color: var(--text-faint); border: 1px solid transparent;
+  padding: 6px 12px; font-size: 12px; font-weight: 600; cursor: pointer; border-radius: 999px;
+  transition: color .4s var(--ease), background-color .4s var(--ease), border-color .4s var(--ease);
+}
+.lang button[aria-pressed="true"] { background: #1b1416; color: var(--text-primary); border-color: var(--line-strong); }
+.lang button:not([aria-pressed="true"]):hover { color: var(--text-primary); }
 
-.marks {
-  padding: 4px 0 32px;
+/* topo estatico: e o padrao, e o que celular e movimento reduzido recebem */
+.hero { position: relative; z-index: 1; }
+.stage { display: none; }
+.hero-static {
+  position: relative; isolation: isolate; overflow: hidden;
+  min-height: 100vh; min-height: 100svh;
+  display: flex; align-items: center;
+  padding: 120px 0 80px; background: var(--canvas);
 }
-.marks-rule {
-  height: 1px; background: var(--line); margin-bottom: 22px;
+.hero-static::after {
+  content: ""; position: absolute; inset: 0; z-index: -2;
+  background: url("assets/hero-wide.jpg") right center / cover no-repeat;
 }
-.marks-label {
-  text-align: center; color: var(--faint);
-  font-size: 11px; letter-spacing: .18em; font-weight: 600;
-  text-transform: uppercase;
-  margin-bottom: 22px;
+.hero-static::before {
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  background:
+    linear-gradient(90deg, rgba(12,9,10,.96) 0%, rgba(12,9,10,.82) 30%, rgba(12,9,10,0) 54%),
+    linear-gradient(180deg, rgba(12,9,10,.55) 0%, rgba(12,9,10,0) 20%, rgba(12,9,10,0) 76%, var(--canvas) 100%);
 }
-.marks-row {
-  display: flex; justify-content: center; align-items: center;
-  gap: clamp(28px, 6vw, 72px); flex-wrap: wrap;
+.hero-static h1 { font-size: clamp(32px, 3.5vw, 58px); margin: 18px 0 16px; max-width: min(27vw, 430px); text-shadow: var(--tshadow); }
+.hero-static h1 .ln { display: block; text-wrap: balance; }
+.hero-static .sub { color: var(--text-secondary); max-width: min(26vw, 400px); margin-bottom: 28px; text-shadow: var(--tshadow); }
+/* play em cima da TV: so aparece para quem esta no topo parado por movimento reduzido */
+.motion-btn {
+  position: absolute; left: 71%; top: 50%; transform: translate(-50%, -50%);
+  display: flex; flex-direction: column; align-items: center; gap: 14px;
+  background: none; border: 0; padding: 12px; cursor: pointer;
+  color: var(--text-primary); font: inherit; font-size: 15px; font-weight: 600;
+  text-shadow: var(--tshadow);
 }
-.marks-row a {
-  display: inline-flex; align-items: center;
-  text-decoration: none; opacity: .92;
-  transition: opacity var(--dur-ui) var(--ease), transform var(--dur-ui) var(--ease);
+.motion-btn .disc {
+  width: 88px; height: 88px; border-radius: 50%; display: grid; place-items: center;
+  background: rgba(12,9,10,.62); box-shadow: inset 0 0 0 2px rgba(255,255,255,.9), 0 12px 40px rgba(8,4,5,.6);
 }
-.marks-row a:hover { opacity: 1; transform: translateY(-1px); }
-.marks-row img { width: auto; display: block; }
-.mark-samsung img { height: 20px; }
-.mark-lg img { height: 34px; }
-.mark-roku img { height: 22px; }
-.mark-android img { height: 20px; }
+.motion-btn:hover .disc { background: var(--accent); }
+.motion-btn[hidden] { display: none; }
+@media (orientation: portrait) and (max-width: 1024px), (orientation: portrait) and (pointer: coarse) {
+  .hero-static { align-items: flex-end; padding: 110px 0 clamp(40px, 7vh, 80px); }
+  html:not(.scrub) .hero-static::after {
+    inset: 0; background: url("assets/hero-static.jpg") center top / 100% auto no-repeat;
+  }
+  .hero-static::before {
+    background: linear-gradient(180deg, rgba(12,9,10,.6) 0, rgba(12,9,10,0) 110px, rgba(12,9,10,0) 74vw, var(--canvas) 100vw);
+  }
+  .hero-static { padding-top: calc(100vw + 8px); min-height: 0; }
+  .hero-static h1 { font-size: clamp(32px, 8.6vw, 60px); max-width: none; }
+  .hero-static .sub { max-width: 36ch; }
+}
+@media (orientation: landscape) and (max-height: 560px) {
+  .hero-static { padding: 84px 0 32px; }
+  .hero-static h1 { font-size: 28px; }
+}
 
-.panel { padding: var(--space-6) 0; }
-.panel h2 {
-  font-size: clamp(26px, 3vw, 40px);
-  letter-spacing: -.02em; line-height: 1.15;
-  max-width: 16ch; margin-bottom: 10px;
+/* topo guiado pela rolagem */
+.scrub .hero { height: 460vh; }
+.scrub .hero-static {
+  position: absolute; width: 1px; height: 1px; min-height: 0; padding: 0;
+  overflow: hidden; clip-path: inset(50%); white-space: nowrap; background: none;
 }
-.panel .sub { color: var(--mute); max-width: 48ch; line-height: 1.6; margin-bottom: var(--space-4); }
+.scrub .hero-static::before, .scrub .hero-static::after { display: none; }
+.scrub .stage {
+  display: block; position: sticky; top: 0; overflow: hidden;
+  height: 100vh; height: 100svh; background: var(--canvas);
+}
+.frame {
+  position: absolute; left: 50%; top: 50%;
+  width: max(100vw, 177.78vh); height: max(100vh, 56.25vw);
+  transform: translate(-50%, -50%);
+}
+.poster, .ending, .frame video { position: absolute; inset: 0; width: 100%; height: 100%; }
+.poster, .ending { background-size: cover; background-position: center; }
+.ending { opacity: var(--end, 0); }
+.frame video { object-fit: cover; opacity: 0; transition: opacity .9s var(--ease); will-change: transform; }
+.stage.video-ready .frame video { opacity: 1; }
+.stage.video-failed .frame video { display: none; }
+.scrim {
+  position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(ellipse 120% 90% at 50% 45%, rgba(8,4,5,0) 35%, rgba(8,4,5,.6) 100%);
+}
 
-.panel .eyebrow { color: var(--brand-hot); margin-bottom: 20px; }
-.panel h2 .accent { color: var(--brand-hot); }
-.panel h2 .line { display: block; }
-.panel h2 { max-width: 22ch; }
-.panel .rule { border-top: 1px solid var(--line); margin-bottom: 4px; }
+.band {
+  position: absolute; inset: 0; display: flex;
+  opacity: 0; visibility: hidden; pointer-events: none;
+  text-shadow: var(--tshadow);
+}
+.band.on { visibility: visible; }
+.band::before {
+  content: ""; position: absolute; inset: -4%; pointer-events: none;
+  opacity: calc(.25 + .75 * var(--k, 1));
+}
+.band .in { position: relative; }
+.band .t { font-weight: 700; letter-spacing: -.035em; line-height: 1.05; }
+.band .w { display: inline-block; white-space: nowrap; }
+.band .c { display: inline-block; }
 
-/* cartoes de dispositivo */
-.device-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: var(--space-3);
+.b1 { align-items: center; }
+.b1::before { background: radial-gradient(ellipse 36% 48% at 16% 50%, rgba(8,4,5,.68) 0%, rgba(8,4,5,.46) 46%, rgba(8,4,5,0) 76%); }
+.b1 .in { margin-left: clamp(20px, 4.5vw, 84px); width: min(25vw, 400px); }
+.b1 .t { font-size: clamp(26px, 3.1vw, 50px); margin-top: 16px; }
+.b1 .w {
+  --kc: clamp(0, (var(--k, 0) - var(--th, 0)) * 2.6, 1);
+  opacity: var(--kc); transform: scale(calc(.84 + .16 * var(--kc))); transform-origin: left center;
 }
-.device-card {
-  display: flex; flex-direction: column;
-  border: 1px solid var(--line); border-radius: var(--radius-lg);
-  background: rgba(255,255,255,.03);
-  padding: var(--space-4) var(--space-3) var(--space-3);
-  transition:
-    border-color var(--dur-ui) var(--ease),
-    background var(--dur-ui) var(--ease),
-    transform var(--dur-ui) var(--ease);
+.chip {
+  display: inline-block; padding: 7px 11px; border-radius: 10px;
+  background: rgba(14,8,9,.55); border: 1px solid rgba(160,110,116,.3);
+  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+  font-family: var(--mono); font-size: 11px; font-weight: 500; letter-spacing: .14em;
+  color: var(--text-secondary); text-shadow: 0 1px 3px rgba(8,4,5,.85);
+  opacity: var(--k, 0);
 }
-.device-card:hover,
-.device-card:focus-within {
-  transform: translateY(-3px);
-  border-color: var(--brand);
-  background: rgba(227,28,58,.08);
-}
-.device-mark {
-  display: flex; align-items: center; justify-content: center;
-  height: 48px; margin-bottom: var(--space-3);
-}
-.device-mark img { width: auto; display: block; }
-.device-card[data-mark="samsung"] .device-mark img { height: 19px; }
-.device-card[data-mark="lg"] .device-mark img { height: 32px; }
-.device-card[data-mark="roku"] .device-mark img { height: 21px; }
-.device-card[data-mark="android"] .device-mark img { height: 19px; }
-.device-card strong { display: block; font-size: 15px; line-height: 1.45; margin-bottom: 6px; }
-.device-card .hint {
-  color: var(--faint); font-size: var(--text-ui); line-height: 1.5;
-  margin-bottom: var(--space-3);
-}
-.device-card .card-rule { margin-top: auto; border-top: 1px solid var(--line); }
-.device-card .card-link {
-  display: inline-flex; align-items: center; gap: 8px; padding-top: 14px;
-  color: var(--ink); font-size: var(--text-ui); font-weight: 600; text-decoration: none;
-  transition: color var(--dur-ui) var(--ease);
-}
-.device-card .card-link svg { flex: none; }
-.device-card:hover .card-link,
-.device-card:focus-within .card-link { color: var(--brand-hot); }
 
-/* passos */
-.steps {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-}
-.steps article { padding: var(--space-4) var(--space-4) var(--space-4) 0; }
-.steps article + article {
-  padding-left: var(--space-4); border-left: 1px solid var(--line);
-}
-.step-top {
-  display: flex; align-items: center; justify-content: space-between;
-  gap: var(--space-2); max-width: 34ch; margin-bottom: 22px;
-}
-.step-num {
-  font-size: 46px; font-weight: 700; line-height: 1; letter-spacing: -.04em;
-  color: rgba(255,255,255,.10);
-  -webkit-text-stroke: 1px rgba(255,255,255,.24);
-}
-.step-ico {
-  display: flex; align-items: center; justify-content: center;
-  width: 44px; height: 44px; flex: none;
-  border: 1px solid rgba(227,28,58,.45); border-radius: var(--radius-md);
-  color: var(--brand-hot);
-}
-.steps strong { display: block; font-size: 18px; margin-bottom: 8px; }
-.steps p { color: var(--mute); font-size: var(--text-ui); line-height: 1.6; max-width: 34ch; }
+.b2 { align-items: flex-end; justify-content: center; text-align: center; padding-bottom: 6.2vh; }
+.b2::before { background: radial-gradient(ellipse 44% 20% at 50% 93%, rgba(8,4,5,.7) 0%, rgba(8,4,5,.46) 46%, rgba(8,4,5,0) 76%); }
+.b2 .t { font-size: clamp(22px, 2.5vw, 42px); white-space: nowrap; }
+.b2 .half { display: inline-block; --kc: clamp(0, var(--k, 0) * 1.5, 1); opacity: var(--kc); }
+.b2 .half.l { transform: translateX(calc((1 - var(--kc)) * 5vw)); }
+.b2 .half.r { transform: translateX(calc((1 - var(--kc)) * -5vw)); }
 
-.free-note {
-  display: flex; align-items: center; gap: 12px;
-  border-top: 1px solid var(--line); padding-top: var(--space-3);
-  color: var(--mute); font-size: var(--text-ui); line-height: 1.5;
+.b3 { align-items: center; justify-content: center; text-align: center; }
+.b3::before { background: radial-gradient(ellipse 86% 84% at 50% 50%, rgba(8,4,5,.5) 0%, rgba(8,4,5,.36) 46%, rgba(8,4,5,0) 76%); }
+.b3 .t { font-size: clamp(52px, 9vw, 150px); letter-spacing: -.05em; line-height: .98; text-shadow: 0 4px 44px rgba(8,4,5,.5); }
+.b3 .c {
+  --kc: clamp(0, (var(--k, 0) - var(--th, 0)) * 2.8, 1);
+  opacity: var(--kc); transform: translateY(calc((1 - var(--kc)) * .42em));
 }
-.free-note svg { flex: none; color: var(--brand-hot); }
+.b3 .sub {
+  --ks: clamp(0, (var(--k, 0) - .52) * 4, 1);
+  opacity: var(--ks); transform: translateY(calc((1 - var(--ks)) * 14px));
+  color: var(--text-primary); font-size: clamp(16px, 1.45vw, 21px); line-height: 1.5;
+  max-width: 34ch; margin: 22px auto 30px;
+}
+.b3 .row {
+  --kb: clamp(0, (var(--k, 0) - .7) * 5, 1);
+  opacity: var(--kb); transform: translateY(calc((1 - var(--kb)) * 14px));
+}
+.b3.on .row { pointer-events: auto; }
 
-.legal-box {
-  margin-top: var(--space-5);
-  background: rgba(227, 28, 58, .08);
-  border: 1px solid rgba(227, 28, 58, .28);
-  border-radius: var(--radius-lg);
-  padding: var(--space-4);
+.cue {
+  position: absolute; left: 50%; bottom: 26px; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+  font-family: var(--mono); font-size: 11px; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--text-secondary); text-shadow: 0 1px 3px rgba(8,4,5,.85);
+  opacity: 1; transition: opacity .6s var(--ease);
 }
-.legal-box p { color: var(--ink); font-size: 14px; line-height: 1.6; max-width: 70ch; }
+.cue.off { opacity: 0; }
+.cue i { position: relative; width: 1px; height: 34px; background: var(--line-strong); overflow: hidden; }
+.cue i::after {
+  content: ""; position: absolute; left: 0; top: 0; width: 1px; height: 12px; background: var(--text-primary);
+}
+.stage.live .cue i::after { animation: cue 2.4s var(--ease-io) -1s infinite; }
+@keyframes cue { from { transform: translateY(-14px); } to { transform: translateY(36px); } }
+.ring {
+  position: absolute; right: 24px; bottom: 24px; width: 30px; height: 30px;
+  color: var(--text-primary); transform: rotate(-90deg);
+  opacity: 1; transition: opacity .6s var(--ease);
+}
+.ring circle { fill: none; stroke-width: 3; }
+.ring .rt { stroke: var(--line); }
+.ring .rp { stroke: currentColor; stroke-linecap: round; stroke-dasharray: 126; stroke-dashoffset: var(--ld, 126); }
+.stage.video-ready .ring { opacity: 0; }
+@media (max-height: 560px) { .cue, .ring { display: none; } }
 
-.foot {
-  border-top: 1px solid var(--line);
-  padding: var(--space-4) 0 var(--space-5);
-  display: flex; justify-content: space-between; gap: var(--space-3); flex-wrap: wrap;
-  color: var(--faint); font-size: 14px;
+/* secoes */
+main { position: relative; z-index: 1; }
+.sec { position: relative; padding: clamp(84px, 11vw, 168px) 0; scroll-margin-top: 72px; }
+.sec h2 { font-size: clamp(30px, 4.2vw, 62px); }
+
+.js .rv .ri {
+  opacity: 0; transform: translateY(22px);
+  transition: opacity .9s var(--ease), transform .9s var(--ease);
+  transition-delay: calc(var(--i, 0) * 90ms);
 }
-.foot a { color: var(--mute); text-decoration: none; }
-.foot a:hover { color: var(--ink); }
-.foot nav { display: flex; gap: var(--space-3); flex-wrap: wrap; }
+.js .rv.in .ri { opacity: 1; transform: none; }
+.js .rv.in.done .ri { transition-delay: 0s; }
+
+/* linha de sinal: desce do topo ate a lista de TVs */
+.signal {
+  position: absolute; top: 0; z-index: 1; pointer-events: none;
+  left: calc((100vw - 1240px) / 2 - 36px);
+  width: 1px; height: var(--sh, 0px); background: var(--line);
+}
+.signal i {
+  position: absolute; inset: 0; transform-origin: top; transform: scaleY(var(--p, 0));
+  background: linear-gradient(180deg, rgba(227,28,58,0), var(--accent) 14%, var(--accent));
+}
+.signal b {
+  position: absolute; left: -4px; bottom: -4px; width: 9px; height: 9px; border-radius: 50%;
+  background: var(--accent); opacity: 0; transform: scale(.4);
+  transition: opacity .5s var(--ease), transform .5s var(--ease);
+}
+.signal.end b { opacity: 1; transform: none; }
+@media (max-width: 1339px) { .signal { display: none; } }
+
+/* faixa das marcas, so com os nomes escritos */
+.strip { position: relative; z-index: 1; border-bottom: 1px solid var(--line); padding: 26px 0; }
+.strip-in { display: flex; align-items: center; justify-content: space-between; gap: 14px 40px; flex-wrap: wrap; }
+.strip ul {
+  display: flex; flex-wrap: wrap; gap: 10px clamp(22px, 5vw, 76px); list-style: none;
+  font-size: clamp(18px, 2vw, 27px); font-weight: 600; letter-spacing: -.02em; color: var(--text-secondary);
+}
+.strip sup { font-size: .42em; font-weight: 500; vertical-align: super; margin-left: 1px; }
+
+/* o que e */
+.what-grid { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: clamp(32px, 6vw, 96px); align-items: end; }
+.what-lead { position: relative; }
+.what-lead::before {
+  content: ""; position: absolute; left: -12%; top: -30%; width: 70%; height: 150%; z-index: -1;
+  background: radial-gradient(ellipse at center, rgba(227,28,58,.2), rgba(227,28,58,0) 68%);
+  opacity: .55;
+}
+.what.live .what-lead::before { animation: breathe 7s ease-in-out -2.1s infinite; }
+@keyframes breathe { 50% { opacity: 1; } }
+.what h2 { max-width: 15ch; margin: 18px 0 22px; }
+.what h2 .dim { display: block; color: var(--text-secondary); }
+.facts { list-style: none; border-top: 1px solid var(--line); }
+.facts li {
+  display: grid; grid-template-columns: 44px 1fr; column-gap: 12px; row-gap: 4px;
+  align-items: baseline; padding: 22px 0; border-bottom: 1px solid var(--line);
+}
+.facts .n { grid-row: 1 / 3; font-family: var(--mono); font-size: 12px; color: var(--text-faint); }
+.facts strong { font-size: 18px; font-weight: 600; }
+.facts .d { grid-column: 2; color: var(--text-secondary); font-size: 15px; line-height: 1.55; max-width: 40ch; }
+
+/* na tela */
+.screen-grid { display: grid; grid-template-columns: minmax(0, 8fr) minmax(0, 4fr); gap: clamp(24px, 4vw, 72px); align-items: center; }
+.shot { position: relative; margin: 0; }
+.shot::before {
+  content: ""; position: absolute; inset: 6% 12% 16% 2%; z-index: -1;
+  background: radial-gradient(ellipse at center, rgba(227,28,58,.42), rgba(227,28,58,0) 70%);
+  filter: blur(36px); opacity: .6;
+}
+.screen.live .shot::before { animation: breathe 8s ease-in-out -3.4s infinite; }
+/* vitrine: a TV tem moldura dupla e troca de tela sozinha */
+.tvset {
+  padding: 10px; border-radius: 26px;
+  background: linear-gradient(180deg, rgba(255,238,240,.1), rgba(255,238,240,.03));
+  box-shadow: inset 0 0 0 1px var(--line), 0 40px 90px rgba(0,0,0,.55);
+}
+.tvset-in {
+  position: relative; aspect-ratio: 2000 / 1119; overflow: hidden; border-radius: 16px;
+  background: #0b0b0d; box-shadow: inset 0 1px 1px rgba(255,255,255,.14);
+}
+.tvset-in img {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+  opacity: 0; transform: scale(1.035);
+  transition: opacity .9s var(--ease), transform 1.4s var(--ease);
+}
+.tvset-in img.on { opacity: 1; transform: none; }
+.tvfoot {
+  width: 26%; height: 10px; margin: 0 auto; border-radius: 0 0 12px 12px;
+  background: linear-gradient(180deg, rgba(255,238,240,.13), rgba(255,238,240,.02));
+}
+.shot-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 26px; }
+.shot-tabs button {
+  position: relative; overflow: hidden; padding: 10px 18px; border-radius: 999px; cursor: pointer;
+  background: transparent; border: 0; box-shadow: inset 0 0 0 1px var(--line-strong);
+  color: var(--text-secondary); font: inherit; font-size: 14px; font-weight: 500;
+  transition: color .4s var(--ease), background-color .4s var(--ease), box-shadow .4s var(--ease);
+}
+.shot-tabs button:hover { color: var(--text-primary); }
+.shot-tabs button[aria-pressed="true"] { color: var(--text-primary); background: rgba(255,238,240,.1); box-shadow: inset 0 0 0 1px transparent; }
+.shot-tabs button i {
+  position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: var(--accent);
+  transform: scaleX(0); transform-origin: left;
+}
+.screen.live .shot-tabs button[aria-pressed="true"] i { animation: tabfill 4.6s linear forwards; }
+@keyframes tabfill { to { transform: scaleX(1); } }
+.shot figcaption { margin-top: 14px; font-family: var(--mono); font-size: 11px; letter-spacing: .06em; color: var(--text-faint); }
+.screen h2 { font-size: clamp(28px, 3.2vw, 46px); max-width: 11ch; margin-bottom: 16px; }
+.calls { list-style: none; margin-top: 30px; }
+.calls li { display: flex; align-items: center; gap: 14px; padding: 12px 0; font-weight: 500; }
+.calls i {
+  width: 44px; height: 2px; flex: none; background: var(--accent);
+  transform: scaleX(0); transform-origin: left;
+  transition: transform 1.1s var(--ease); transition-delay: calc(var(--i, 0) * 90ms + .2s);
+}
+.rv.in .calls i { transform: none; }
+
+/* escolha sua TV: o foco do controle remoto */
+.tv-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 12px 40px; margin-bottom: clamp(28px, 4vw, 56px); }
+.tv-head h2 { font-size: clamp(38px, 6.4vw, 96px); letter-spacing: -.045em; flex-basis: 100%; margin-top: 14px; }
+.tv-head .hint { color: var(--text-faint); font-size: 14px; }
+.tv-grid { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); gap: clamp(20px, 3vw, 48px); align-items: start; }
+.tv-list { position: relative; display: grid; border-top: 1px solid var(--line); }
+.tv-list [role="tab"] {
+  position: relative; z-index: 1;
+  display: grid; grid-template-columns: 1fr auto; column-gap: 20px; row-gap: 2px; align-items: baseline;
+  text-align: left; background: none; border: 0; border-bottom: 1px solid var(--line);
+  color: inherit; font: inherit; padding: 22px 26px; cursor: pointer;
+}
+.tv-list [role="tab"]:focus-visible { outline-offset: -4px; border-radius: 14px; }
+.tv-list .nm {
+  font-size: clamp(26px, 3.2vw, 46px); font-weight: 600; letter-spacing: -.025em; line-height: 1.15;
+  color: var(--text-secondary); transition: color .4s var(--ease);
+}
+.tv-list [aria-selected="true"] .nm { color: var(--text-primary); }
+.nm sup { font-size: .38em; font-weight: 500; letter-spacing: 0; margin-left: 2px; vertical-align: super; }
+.tv-list .ds { grid-column: 1; color: var(--text-faint); font-size: 14px; }
+.tv-list .st {
+  grid-column: 2; grid-row: 1 / 3; align-self: center;
+  font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
+  padding: 6px 10px; border-radius: 6px; border: 1px solid var(--line-strong); color: var(--text-secondary);
+}
+.tv-list .st.is-live { border-color: var(--accent); color: var(--text-primary); }
+.focus {
+  position: absolute; z-index: 0; left: 0; right: 0; top: 0; height: var(--fh, 0px);
+  transform: translate3d(0, var(--fy, 0px), 0); border-radius: 14px;
+  background: rgba(227,28,58,.09); box-shadow: inset 0 0 0 1.5px var(--accent);
+  transition: transform .55s var(--ease); pointer-events: none;
+}
+.focus::after {
+  content: ""; position: absolute; inset: 0; border-radius: inherit;
+  box-shadow: 0 0 44px 2px rgba(227,28,58,.45); opacity: .5;
+}
+.tv.live .focus::after { animation: breathe 4.6s ease-in-out -1.3s infinite; }
+.tv-panel {
+  position: sticky; top: 96px;
+  border: 1px solid var(--line); border-radius: 18px;
+  background: linear-gradient(180deg, rgba(255,238,240,.05), rgba(255,238,240,.015));
+  padding: clamp(24px, 3vw, 40px);
+}
+.tv-panel .pn { font-size: clamp(22px, 2.2vw, 30px); font-weight: 600; letter-spacing: -.02em; }
+.tv-panel .pl { color: var(--text-secondary); margin: 10px 0 20px; max-width: 34ch; }
+.steps3 { list-style: none; counter-reset: s; }
+.steps3 li {
+  counter-increment: s; display: grid; grid-template-columns: 36px 1fr; column-gap: 12px;
+  align-items: baseline; padding: 14px 0; border-top: 1px solid var(--line);
+}
+.steps3 li::before { content: "0" counter(s); font-family: var(--mono); font-size: 12px; color: var(--text-faint); }
+.tv-panel .pi {
+  transition: opacity .5s var(--ease), transform .5s var(--ease);
+  transition-delay: calc(var(--i, 0) * 70ms);
+}
+.tv-panel.out .pi { opacity: 0; transform: translateY(10px); transition: none; }
+
+/* como funciona */
+.how-grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(28px, 6vw, 110px); }
+.how-head { position: sticky; top: 120px; align-self: start; }
+.how h2 { max-width: 9ch; }
+.flow { position: relative; padding-left: 54px; }
+.flow-line { position: absolute; left: 17px; top: 14px; bottom: 14px; width: 2px; background: var(--line); }
+.flow-line i { position: absolute; inset: 0; background: var(--accent); transform-origin: top; transform: scaleY(var(--p, 0)); }
+.flow ol { list-style: none; }
+.flow li { position: relative; padding-bottom: clamp(40px, 6vw, 84px); }
+.flow li:last-child { padding-bottom: 0; }
+.flow .dot {
+  position: absolute; left: -45px; top: 8px; width: 18px; height: 18px; border-radius: 50%;
+  background: var(--canvas); box-shadow: inset 0 0 0 2px var(--line-strong);
+  transition: box-shadow .5s var(--ease), background-color .5s var(--ease);
+}
+.flow li.on .dot { background: var(--accent); box-shadow: inset 0 0 0 2px var(--accent); }
+.flow .top { display: flex; align-items: center; gap: 14px; margin-bottom: 10px; }
+.flow .num { font-family: var(--mono); font-size: 12px; letter-spacing: .14em; color: var(--text-faint); }
+.flow .ico { color: var(--text-secondary); display: flex; }
+.flow h3 { font-size: clamp(22px, 2.3vw, 32px); margin-bottom: 8px; }
+.flow p { color: var(--text-secondary); max-width: 40ch; }
+
+/* duvidas */
+.faq h2 { margin-bottom: clamp(24px, 3vw, 44px); }
+.qa { columns: 2; column-gap: clamp(28px, 5vw, 80px); }
+.qa > div { break-inside: avoid; padding: 22px 0; border-top: 1px solid var(--line); }
+.qa dt { font-weight: 600; font-size: 18px; line-height: 1.35; margin-bottom: 8px; }
+.qa dd { color: var(--text-secondary); max-width: 46ch; }
+.qa a { color: var(--text-primary); text-underline-offset: 3px; }
+
+/* fechamento: o quadro final do video, refeito em CSS */
+.close { overflow: hidden; padding: clamp(110px, 15vw, 230px) 0 clamp(64px, 8vw, 120px); }
+.close-bg {
+  position: absolute; inset: 0; z-index: -1;
+  background: radial-gradient(ellipse 72% 78% at 50% 54%, #b81f36 0%, #86162a 38%, #3a0a14 70%, var(--canvas) 100%);
+}
+.close-bg::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(180deg, var(--canvas) 0%, rgba(12,9,10,0) 26%, rgba(12,9,10,0) 68%, var(--canvas) 100%);
+}
+.dust i {
+  position: absolute; left: var(--x); top: var(--y); width: 3px; height: 3px; border-radius: 50%;
+  background: rgba(255,214,218,.6); opacity: 0;
+}
+.close.live .dust i { animation: dust var(--t, 18s) linear var(--d, -4s) infinite; }
+@keyframes dust {
+  0% { opacity: 0; transform: translate3d(0, 0, 0); }
+  12% { opacity: .7; }
+  88% { opacity: .5; }
+  100% { opacity: 0; transform: translate3d(34px, -150px, 0); }
+}
+.close-line {
+  font-size: clamp(30px, 5vw, 76px); font-weight: 700; letter-spacing: -.035em; line-height: 1.05;
+  max-width: 16ch; margin-bottom: 32px; text-wrap: balance; text-shadow: 0 4px 40px rgba(8,4,5,.5);
+}
+.legal {
+  margin-top: clamp(72px, 10vw, 150px);
+  background: rgba(12,9,10,.58); border: 1px solid var(--line); border-radius: 16px; padding: 24px 28px;
+}
+.legal p { color: var(--text-primary); font-size: 14px; line-height: 1.6; max-width: 80ch; }
+
+.foot { position: relative; z-index: 1; border-top: 1px solid var(--line); padding: 30px 0 56px; color: var(--text-faint); font-size: 14px; }
+.foot-row { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 14px 24px; margin-bottom: 22px; }
+.foot nav { display: flex; gap: 24px; flex-wrap: wrap; }
+.foot a { color: var(--text-secondary); text-decoration: none; transition: color .4s var(--ease); }
+.foot a:hover { color: var(--text-primary); }
+.foot .tm { font-size: 12px; line-height: 1.6; max-width: 96ch; margin-top: 8px; }
+
+body.paused *, body.paused *::before, body.paused *::after { animation-play-state: paused !important; }
 
 @media (max-width: 980px) {
-  .hero { grid-template-columns: 1fr; gap: 28px; padding: 12px 0 8px; }
-  .hero-art picture, .hero-art img { width: 100%; }
-  .device-grid { grid-template-columns: 1fr 1fr; }
+  .what-grid, .screen-grid, .tv-grid, .how-grid { grid-template-columns: minmax(0, 1fr); }
+  .how-head, .tv-panel { position: static; }
+  .screen-copy { order: -1; }
+  .qa { columns: 1; }
 }
-@media (max-width: 860px) {
+@media (max-width: 720px) {
   .wrap { width: calc(100% - 32px); }
-  .nav-links a.hide-sm { display: none; }
-  .nav-split { display: none; }
-  .hero h1 { font-size: 36px; }
-  .steps { grid-template-columns: 1fr; }
-  .steps article { padding-right: 0; border-top: 1px solid var(--line); }
-  .steps article + article { padding-left: 0; border-left: 0; }
-  .brand img { height: 24px; }
-  .marks-row { gap: 22px 32px; }
-  .mark-samsung img { height: 14px; }
-  .mark-lg img { height: 28px; }
-  .mark-roku img { height: 18px; }
-  .mark-android img { height: 14px; }
+  .nav-links a { display: none; }
+  .brand, .brand img { height: 24px; }
+  .tv-list [role="tab"] { padding: 18px 16px; }
+  .tv-list .st { font-size: 10px; padding: 5px 8px; }
 }
-@media (max-width: 520px) {
-  .device-grid { grid-template-columns: 1fr; }
-  .hero-actions { gap: 16px; }
+@media (pointer: coarse) {
+  .btn, .lang button, .foot a { min-height: 44px; display: inline-flex; align-items: center; justify-content: center; }
+  .lang button { min-width: 44px; }
+  .tv-head .hint { display: none; }
 }
-
 @media (prefers-reduced-motion: reduce) {
-  .reveal { opacity: 1; transform: none; animation: none; }
   html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; transition-delay: 0s !important; }
+  .js .rv .ri { opacity: 1; transform: none; }
+  .calls i { transform: none; }
+  .dust i { opacity: .5; }
 }
 </style>
 </head>
 <body>
-  <div class="stage">
-    <div class="stage-bg" aria-hidden="true">
-      <picture>
-        <source srcset="img/hero-bg.webp" type="image/webp">
-        <img src="img/hero-bg.png" alt="" width="1672" height="941">
-      </picture>
+  <a class="skip" href="#main" data-i="skip">Skip to content</a>
+  <div class="ambient" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
+
+  <header class="nav" id="nav">
+    <div class="wrap nav-in">
+      <a class="brand" href="#top" aria-label="LIBEROU TV">
+        <img src="img/logo-nav-sm.png" width="180" height="56" alt="LiberouTV">
+      </a>
+      <nav class="nav-links" aria-label="Main" data-aria="navLabel">
+        <a href="#how" data-i="navHow">How it works</a>
+        <a href="#tv" data-i="navTv">Your TV</a>
+        <a href="#faq" data-i="navFaq">Questions</a>
+        <div class="lang" role="group" aria-label="Language" data-aria="langLabel">
+          <button type="button" id="btnPt" aria-pressed="false" lang="pt-BR">PT</button>
+          <button type="button" id="btnEn" aria-pressed="true" lang="en">EN</button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero" id="top">
+    <div class="stage" id="stage">
+      <div class="frame" aria-hidden="true" inert>
+        <div class="poster" id="poster"></div>
+        <div class="ending" id="ending"></div>
+        <video id="heroVideo" preload="none" muted playsinline aria-hidden="true" tabindex="-1"></video>
+      </div>
+      <div class="scrim" aria-hidden="true"></div>
+
+      <div class="band b1" data-a="0" data-b="0.28">
+        <div class="in" aria-hidden="true">
+          <span class="chip" data-i="chip">A MEDIA PLAYER FOR YOUR TV</span>
+          <p class="t" id="b1t"></p>
+        </div>
+      </div>
+      <div class="band b2" data-a="0.36" data-b="0.62">
+        <div class="in" aria-hidden="true">
+          <p class="t"><span class="half l" id="b2l"></span> <span class="half r" id="b2r"></span></p>
+        </div>
+      </div>
+      <div class="band b3" data-a="0.77" data-b="1" data-ramp="0.05">
+        <div class="in">
+          <p class="t" id="b3t" aria-hidden="true"></p>
+          <p class="sub" aria-hidden="true" data-i="sub">A free player for your TV. You sign in with the details from your provider.</p>
+          <div class="row">
+            <a class="btn" href="#tv" id="heroCta">
+              <span data-i="cta">Pick my TV</span>
+              <span class="btn-ico" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2.5v9m0 0L3.5 8M7 11.5 10.5 8" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="cue" id="cue" aria-hidden="true"><span data-i="cue">Scroll</span><i></i></div>
+      <svg class="ring" id="ring" viewBox="0 0 48 48" aria-hidden="true">
+        <circle class="rt" cx="24" cy="24" r="20"/>
+        <circle class="rp" cx="24" cy="24" r="20"/>
+      </svg>
     </div>
 
-    <header class="nav">
+    <div class="hero-static" id="heroStatic">
       <div class="wrap">
-        <div class="nav-in">
-          <a class="brand" href="index.html" aria-label="LIBEROU TV">
-            <img src="img/logo-nav.png" alt="LiberouTV">
-          </a>
-          <nav class="nav-links">
-            <a class="hide-sm" href="#how" data-i="navHow">How it works</a>
-            <a class="hide-sm" href="#stores" data-i="navDevices">Devices</a>
-            <a href="privacy.html" data-i="navPrivacy" data-en="privacy.html" data-pt="privacidade.html">Privacy</a>
-            <span class="nav-split" aria-hidden="true"></span>
-            <div class="lang" role="group" aria-label="Language">
-              <button type="button" id="btnPt" aria-pressed="false">PT</button>
-              <button type="button" id="btnEn" aria-pressed="true">EN</button>
-            </div>
-          </nav>
-        </div>
+        <p class="kicker" data-i="chip">A MEDIA PLAYER FOR YOUR TV</p>
+        <h1><span class="ln" data-i="b1">What you already subscribe to.</span> <span class="ln" data-i="h1b">On your best screen.</span></h1>
+        <p class="sub" data-i="sub">A free player for your TV. You sign in with the details from your provider.</p>
+        <a class="btn" href="#tv" id="staticCta">
+          <span data-i="cta">Pick my TV</span>
+          <span class="btn-ico" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2.5v9m0 0L3.5 8M7 11.5 10.5 8" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </a>
       </div>
-    </header>
+      <button type="button" class="motion-btn" id="motionBtn" hidden>
+        <span class="disc" aria-hidden="true"><svg width="26" height="30" viewBox="0 0 12 14" fill="#fff"><path d="M1.5 1.6v10.8L11 7 1.5 1.6z"/></svg></span>
+        <span data-i="motionBtn">Play the animated opening</span>
+      </button>
+    </div>
+  </section>
 
-    <section class="wrap hero">
-      <div>
-        <p class="eyebrow reveal" data-i="eyebrow">Your player. Your screens.</p>
-        <h1 class="reveal d1">
-          <span class="line" data-i="h1a">What you already subscribe to.</span>
-          <span class="line accent" data-i="h1b">On your best screen.</span>
-        </h1>
-        <p class="lead reveal d1" data-i="lead">Play your subscription with LiberouTV. Free for Samsung, LG, Roku and Android TV.</p>
-        <div class="hero-actions reveal d2">
-          <a class="btn btn-primary" href="#stores">
-            <span data-i="ctaDownload">Get the app</span>
-            <span class="btn-ico" aria-hidden="true">
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                <path d="M3 11L11 3M11 3H4.5M11 3V9.5" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </span>
-          </a>
-          <a class="btn btn-ghost" href="#how">
-            <span class="play-ring" aria-hidden="true">
-              <svg width="12" height="14" viewBox="0 0 12 14" fill="#fff">
-                <path d="M1 1.6v10.8L11 7 1 1.6z"/>
-              </svg>
-            </span>
-            <span data-i="ctaHow">How it works</span>
-          </a>
-        </div>
-        <p class="caption reveal d2" data-i="caption">Use the login from your service to open the catalog.</p>
-      </div>
-      <div class="hero-art reveal d3">
-        <picture>
-          <source srcset="img/hero-tv.webp" type="image/webp">
-          <img src="img/hero-tv.png" width="1370" height="991" alt="LIBEROU TV on a television and a phone">
-        </picture>
-      </div>
-    </section>
+  <main id="main" tabindex="-1">
+    <span class="signal" id="signal" aria-hidden="true"><i></i><b></b></span>
 
-    <div class="wrap marks">
-      <div class="marks-rule"></div>
-      <p class="marks-label" data-i="available">Available on your favorite screens</p>
-      <div class="marks-row">
-        <a href="#stores" class="mark-samsung">
-          <picture>
-            <source srcset="img/mark-samsung.webp" type="image/webp">
-            <img src="img/mark-samsung.png" width="800" height="133" alt="Samsung">
-          </picture>
-        </a>
-        <a href="#stores" class="mark-lg">
-          <picture>
-            <source srcset="img/mark-lg.webp" type="image/webp">
-            <img src="img/mark-lg.png" width="800" height="362" alt="LG">
-          </picture>
-        </a>
-        <a href="#stores" class="mark-roku">
-          <picture>
-            <source srcset="img/mark-roku.webp" type="image/webp">
-            <img src="img/mark-roku.png" width="800" height="255" alt="Roku">
-          </picture>
-        </a>
-        <a href="#stores" class="mark-android">
-          <picture>
-            <source srcset="img/mark-android.webp" type="image/webp">
-            <img src="img/mark-android.png" width="800" height="133" alt="Android TV">
-          </picture>
-        </a>
+    <div class="strip rv">
+      <div class="wrap strip-in ri">
+        <span class="kicker" data-i="stripLabel">COMING TO</span>
+        <ul><li>Samsung</li><li>LG</li><li>Roku<sup>&reg;</sup></li><li>Android<sup>&trade;</sup></li></ul>
       </div>
     </div>
-  </div>
 
-  <main>
-    <section class="wrap panel" id="stores">
-      <p class="eyebrow" data-i="storesEyebrow">Available on the official stores</p>
-      <h2>
-        <span class="line" data-i="storesTitle">Pick your screen.</span>
-        <span class="line accent" data-i="storesTitle2">Start watching.</span>
-      </h2>
-      <p class="sub" data-i="storesSub">Choose your device and see how to install LiberouTV.</p>
-      <div class="device-grid">
-        <article class="device-card" data-mark="samsung">
-          <div class="device-mark">
-            <picture>
-              <source srcset="img/mark-samsung.webp" type="image/webp">
-              <img src="img/mark-samsung.png" alt="Samsung">
-            </picture>
-          </div>
-          <strong data-i="samTitle"></strong>
-          <p class="hint" data-i="samHint"></p>
-          <div class="card-rule"></div>
-          <a class="card-link" href="#how">
-            <span data-i="howInstall">How to install</span>
-            <svg width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M3 11L11 3M11 3H4.5M11 3V9.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </a>
-        </article>
-        <article class="device-card" data-mark="lg">
-          <div class="device-mark">
-            <picture>
-              <source srcset="img/mark-lg.webp" type="image/webp">
-              <img src="img/mark-lg.png" alt="LG">
-            </picture>
-          </div>
-          <strong data-i="lgTitle"></strong>
-          <p class="hint" data-i="lgHint"></p>
-          <div class="card-rule"></div>
-          <a class="card-link" href="#how">
-            <span data-i="howInstall">How to install</span>
-            <svg width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M3 11L11 3M11 3H4.5M11 3V9.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </a>
-        </article>
-        <article class="device-card" data-mark="roku">
-          <div class="device-mark">
-            <picture>
-              <source srcset="img/mark-roku.webp" type="image/webp">
-              <img src="img/mark-roku.png" alt="Roku">
-            </picture>
-          </div>
-          <strong data-i="rokuTitle"></strong>
-          <p class="hint" data-i="rokuHint"></p>
-          <div class="card-rule"></div>
-          <a class="card-link" href="#how">
-            <span data-i="howInstall">How to install</span>
-            <svg width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M3 11L11 3M11 3H4.5M11 3V9.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </a>
-        </article>
-        <article class="device-card" data-mark="android">
-          <div class="device-mark">
-            <picture>
-              <source srcset="img/mark-android.webp" type="image/webp">
-              <img src="img/mark-android.png" alt="Android TV">
-            </picture>
-          </div>
-          <strong data-i="andTitle"></strong>
-          <p class="hint" data-i="andHint"></p>
-          <div class="card-rule"></div>
-          <a class="card-link" href="#how">
-            <span data-i="howInstall">How to install</span>
-            <svg width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M3 11L11 3M11 3H4.5M11 3V9.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </a>
-        </article>
+    <section class="sec what zone" id="what">
+      <div class="wrap what-grid rv">
+        <div class="what-lead">
+          <p class="kicker ri" data-i="whatKicker">WHAT IT IS</p>
+          <h2 class="ri"><span data-i="whatTitleA">A player.</span> <span class="dim" data-i="whatTitleB">The catalog belongs to your provider.</span></h2>
+          <p class="lede ri" data-i="whatText">LiberouTV plays the service you already subscribe to on your TV. It does not come with channels, movies or series.</p>
+        </div>
+        <ul class="facts">
+          <li class="ri"><span class="n" aria-hidden="true">01</span><strong data-i="f1t">Free</strong><span class="d" data-i="f1b">No purchases inside the app.</span></li>
+          <li class="ri"><span class="n" aria-hidden="true">02</span><strong data-i="f2t">No built-in content</strong><span class="d" data-i="f2b">You sign in with the details your provider gave you.</span></li>
+          <li class="ri"><span class="n" aria-hidden="true">03</span><strong data-i="f3t">Your password stays on the device</strong><span class="d" data-i="f3b">It only goes to your provider's server. Signing out in Profile erases it.</span></li>
+        </ul>
       </div>
     </section>
 
-    <section class="wrap panel" id="how">
-      <h2>
-        <span data-i="howTitle">Ready in</span>
-        <span class="accent" data-i="howTitle2">3 steps.</span>
-      </h2>
-      <p class="sub" data-i="howSub">Install, sign in, watch. Payment stays with your provider, outside this app.</p>
-      <div class="rule"></div>
-      <div class="steps">
-        <article>
-          <div class="step-top">
-            <span class="step-num" aria-hidden="true">01</span>
-            <span class="step-ico" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="4" width="19" height="13" rx="2"/><path d="M8.5 21h7"/><path d="M12 7.5v5m0 0 2-2m-2 2-2-2"/></svg></span>
+    <section class="sec screen zone" id="screen">
+      <div class="wrap screen-grid rv">
+        <figure class="shot ri">
+          <div class="tvset"><div class="tvset-in" id="shots">
+            <img class="on" src="img/tela-inicio.webp" width="1600" height="895" loading="lazy" decoding="async" alt="LIBEROU TV home screen with fictional titles" data-alt="shotAlt1">
+            <img src="img/tela-filmes.webp" width="1600" height="895" loading="lazy" decoding="async" alt="LIBEROU TV movies screen with fictional titles" data-alt="shotAlt2">
+            <img src="img/tela-aovivo.webp" width="1600" height="895" loading="lazy" decoding="async" alt="LIBEROU TV live channels screen with fictional channels" data-alt="shotAlt3">
+          </div></div>
+          <div class="tvfoot" aria-hidden="true"></div>
+          <figcaption data-i="shotCap">Illustrative image. The titles on screen are fictional.</figcaption>
+        </figure>
+        <div class="screen-copy">
+          <h2 class="ri" data-i="screenTitle">Made for the remote.</h2>
+          <p class="lede ri" data-i="screenText">Large menus, a focus you can always see, and everything a few presses away.</p>
+          <div class="shot-tabs ri" id="shotTabs" role="group" aria-label="Screens" data-aria="shotTabsLabel">
+            <button type="button" aria-pressed="true"><span data-i="tabHome">Home</span><i aria-hidden="true"></i></button>
+            <button type="button" aria-pressed="false"><span data-i="tabMovies">Movies</span><i aria-hidden="true"></i></button>
+            <button type="button" aria-pressed="false"><span data-i="tabLive">Live TV</span><i aria-hidden="true"></i></button>
           </div>
-          <strong data-i="s1t"></strong>
-          <p data-i="s1b"></p>
-        </article>
-        <article>
-          <div class="step-top">
-            <span class="step-num" aria-hidden="true">02</span>
-            <span class="step-ico" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8.5" cy="15.5" r="3.5"/><path d="m11 13 8.5-8.5"/><path d="m17 7 2.5 2.5"/><path d="M14.5 9.5 17 12"/></svg></span>
-          </div>
-          <strong data-i="s2t"></strong>
-          <p data-i="s2b"></p>
-        </article>
-        <article>
-          <div class="step-top">
-            <span class="step-num" aria-hidden="true">03</span>
-            <span class="step-ico" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M10 8.5 16 12l-6 3.5v-7Z"/></svg></span>
-          </div>
-          <strong data-i="s3t"></strong>
-          <p data-i="s3b"></p>
-        </article>
-      </div>
-      <p class="free-note">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 8h.01"/></svg>
-        <span data-i="freeNote">The app is free. A subscription is contracted with your provider.</span>
-      </p>
-      <div class="legal-box">
-        <p data-i="legal">LIBEROU TV does not host, bundle or distribute channels, films or series. Illegal streaming services are not supported. Rated 16+.</p>
+          <ul class="calls">
+            <li class="ri"><i aria-hidden="true"></i><span data-i="c1">Live TV, movies and series</span></li>
+            <li class="ri"><i aria-hidden="true"></i><span data-i="c2">Search and favorites</span></li>
+            <li class="ri"><i aria-hidden="true"></i><span data-i="c3">Picks up where you left off</span></li>
+          </ul>
+        </div>
       </div>
     </section>
 
+    <section class="sec tv zone" id="tv">
+      <div class="wrap">
+        <div class="tv-head rv">
+          <p class="kicker ri" data-i="tvKicker">YOUR TV</p>
+          <p class="hint ri" data-i="tvHint">Use your arrow keys, like a remote.</p>
+          <h2 class="ri" data-i="tvTitle">Pick your TV.</h2>
+        </div>
+        <div class="tv-grid rv">
+          <div class="tv-list ri" id="tvList" role="tablist" aria-orientation="vertical" aria-label="Devices" data-aria="tvListLabel">
+            <span class="focus" id="focus" aria-hidden="true"></span>
+            <button type="button" role="tab" id="tab-samsung" data-dev="samsung" aria-controls="tvPanel" aria-selected="true" tabindex="0">
+              <span class="nm">Samsung</span><span class="ds" data-i="samDesc">Smart TVs from 2018 on</span><span class="st" data-i="soon">Coming soon</span>
+            </button>
+            <button type="button" role="tab" id="tab-lg" data-dev="lg" aria-controls="tvPanel" aria-selected="false" tabindex="-1">
+              <span class="nm">LG</span><span class="ds" data-i="lgDesc">Smart TVs with webOS</span><span class="st" data-i="soon">Coming soon</span>
+            </button>
+            <button type="button" role="tab" id="tab-roku" data-dev="roku" aria-controls="tvPanel" aria-selected="false" tabindex="-1">
+              <span class="nm">Roku<sup>&reg;</sup></span><span class="ds" data-i="rokuDesc">Roku players and Roku TVs</span><span class="st" data-i="soon">Coming soon</span>
+            </button>
+            <button type="button" role="tab" id="tab-android" data-dev="android" aria-controls="tvPanel" aria-selected="false" tabindex="-1">
+              <span class="nm">Android<sup>&trade;</sup></span><span class="ds" data-i="andDesc">TVs and TV boxes with Android</span><span class="st" data-i="soon">Coming soon</span>
+            </button>
+          </div>
+          <div class="tv-panel ri" id="tvPanel" role="tabpanel" aria-labelledby="tab-samsung" tabindex="0">
+            <p class="pn pi" id="pnName">Samsung</p>
+            <p class="pl pi" id="pnLead">Not in the store yet. When it arrives, this is the path:</p>
+            <ol class="steps3" id="pnSteps">
+              <li class="pi">Press Home and open Apps.</li>
+              <li class="pi">Search LiberouTV.</li>
+              <li class="pi">Install and open.</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec how" id="how">
+      <div class="wrap how-grid">
+        <div class="how-head rv"><h2 class="ri" data-i="howTitle">Ready in 3 steps.</h2></div>
+        <div class="flow rv" id="flow">
+          <span class="flow-line" aria-hidden="true"><i></i></span>
+          <ol>
+            <li class="ri">
+              <span class="dot" aria-hidden="true"></span>
+              <div class="top">
+                <span class="num" aria-hidden="true">01</span>
+                <span class="ico" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="4" width="19" height="13" rx="2"/><path d="M8.5 21h7"/><path d="M12 7.5v5m0 0 2-2m-2 2-2-2"/></svg></span>
+              </div>
+              <h3 data-i="s1t">Install on your TV</h3>
+              <p data-i="s1b">Search LiberouTV in your TV's app store.</p>
+            </li>
+            <li class="ri">
+              <span class="dot" aria-hidden="true"></span>
+              <div class="top">
+                <span class="num" aria-hidden="true">02</span>
+                <span class="ico" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="8.5" cy="15.5" r="3.5"/><path d="m11 13 8.5-8.5"/><path d="m17 7 2.5 2.5"/><path d="M14.5 9.5 17 12"/></svg></span>
+              </div>
+              <h3 data-i="s2t">Sign in</h3>
+              <p data-i="s2b">Type the details your provider gave you. The subscription is with them, outside the app.</p>
+            </li>
+            <li class="ri">
+              <span class="dot" aria-hidden="true"></span>
+              <div class="top">
+                <span class="num" aria-hidden="true">03</span>
+                <span class="ico" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M10 8.5 16 12l-6 3.5v-7Z"/></svg></span>
+              </div>
+              <h3 data-i="s3t">Watch</h3>
+              <p data-i="s3b">Live TV, movies and series come from the account you already have.</p>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec faq" id="faq">
+      <div class="wrap rv">
+        <h2 class="ri" data-i="faqTitle">Questions</h2>
+        <dl class="qa">
+          <div class="ri"><dt data-i="q1">Does LiberouTV come with channels or movies?</dt><dd data-i="a1">No. It is only the player. What you see on screen comes from the service you subscribe to.</dd></div>
+          <div class="ri"><dt data-i="q2">Do I pay for the app?</dt><dd data-i="a2">No. The app is free and has no purchases inside it. The subscription is contracted with your provider.</dd></div>
+          <div class="ri"><dt data-i="q3">Where do I get my sign-in details?</dt><dd data-i="a3">From your provider, who looks after your subscription.</dd></div>
+          <div class="ri"><dt data-i="q4">Does it work on my TV?</dt><dd data-i="a4">The app is on its way to the Samsung, LG, Roku and Android stores. Find yours in the list above.</dd></div>
+          <div class="ri"><dt data-i="q5">What do you keep about me?</dt><dd><span data-i="a5">The minimum for the app to work.</span> <a href="privacy.html" data-en="privacy.html" data-pt="privacidade.html" data-i="a5link">It is all in the privacy policy.</a></dd></div>
+        </dl>
+      </div>
+    </section>
+
+    <section class="sec close zone" id="close">
+      <div class="close-bg" aria-hidden="true">
+        <div class="dust">
+          <i style="--x:12%;--y:72%;--t:19s;--d:-3s"></i><i style="--x:24%;--y:58%;--t:23s;--d:-11s"></i>
+          <i style="--x:37%;--y:80%;--t:17s;--d:-7s"></i><i style="--x:46%;--y:64%;--t:26s;--d:-15s"></i>
+          <i style="--x:58%;--y:76%;--t:21s;--d:-2s"></i><i style="--x:66%;--y:55%;--t:24s;--d:-18s"></i>
+          <i style="--x:74%;--y:70%;--t:18s;--d:-9s"></i><i style="--x:83%;--y:62%;--t:27s;--d:-13s"></i>
+          <i style="--x:91%;--y:78%;--t:20s;--d:-5s"></i>
+        </div>
+      </div>
+      <div class="wrap rv">
+        <p class="close-line ri" data-i="closeLine">When it reaches your store, just search LiberouTV.</p>
+        <div class="ri">
+          <a class="btn" href="#tv">
+            <span data-i="cta">Pick my TV</span>
+            <span class="btn-ico" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 11.5v-9m0 0L3.5 6M7 2.5 10.5 6" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </a>
+        </div>
+        <div class="legal ri"><p data-i="legal">LIBEROU TV does not host, bundle or distribute channels, films or series. Illegal streaming services are not supported. Rated 16+.</p></div>
+      </div>
+    </section>
   </main>
 
-  <footer class="wrap foot">
-    <p>© 2026 LIBEROU TV</p>
-    <nav>
-      <a href="privacy.html" data-i="navPrivacy" data-en="privacy.html" data-pt="privacidade.html">Privacy</a>
-      <a href="terms.html" data-i="navTerms" data-en="terms.html" data-pt="termos.html">Terms</a>
-      <a href="mailto:liberoutv@pm.me">liberoutv@pm.me</a>
-    </nav>
+  <footer class="foot">
+    <div class="wrap">
+      <div class="foot-row">
+        <p>&copy; 2026 LIBEROU TV</p>
+        <nav aria-label="Legal">
+          <a href="privacy.html" data-i="navPrivacy" data-en="privacy.html" data-pt="privacidade.html">Privacy</a>
+          <a href="terms.html" data-i="navTerms" data-en="terms.html" data-pt="termos.html">Terms</a>
+          <a href="mailto:liberoutv@pm.me">liberoutv@pm.me</a>
+        </nav>
+      </div>
+      <p class="tm" data-i="tm">Samsung is a trademark of Samsung Electronics Co., Ltd. LG and webOS are trademarks of LG Electronics Inc. ROKU is a trademark and/or registered trademark of Roku, Inc. in the United States and other countries. Android is a trademark of Google LLC. LIBEROU TV is an independent app and is not affiliated with, sponsored or endorsed by these companies.</p>
+      <p class="tm" data-i="made">The opening video is a digital creation. The app screen shown is illustrative.</p>
+    </div>
   </footer>
 
 <script>
 var I18N = {
   en: {
+    docTitle: "LIBEROU TV: a media player for your TV",
+    skip: "Skip to content",
+    navLabel: "Main",
+    langLabel: "Language",
     navHow: "How it works",
-    navDevices: "Devices",
+    navTv: "Your TV",
+    navFaq: "Questions",
     navPrivacy: "Privacy",
     navTerms: "Terms",
-    eyebrow: "Your player. Your screens.",
-    h1a: "What you already watch.",
+    chip: "A MEDIA PLAYER FOR YOUR TV",
+    b1: "What you already subscribe to.",
+    b2a: "On your",
+    b2b: "best screen.",
+    b3: "Liberou. It's on.",
     h1b: "On your best screen.",
-    lead: "Play your subscription with LiberouTV. Free for Samsung, LG, Roku and Android TV.",
-    ctaDownload: "Get the app",
-    ctaHow: "How it works",
-    caption: "Use the login from your service to open the catalog.",
-    available: "Available on your favorite screens",
-    storesEyebrow: "Available on the official stores",
-    storesTitle: "Pick your screen.",
-    storesTitle2: "Start watching.",
-    storesSub: "Choose your device and see how to install LiberouTV.",
-    samTitle: "Smart TVs from 2018 on.",
-    samHint: "Search LiberouTV in Apps.",
-    lgTitle: "Smart TVs with webOS.",
-    lgHint: "Search LiberouTV in the LG Content Store.",
-    rokuTitle: "Roku players and Roku TVs.",
-    rokuHint: "Add LiberouTV in the Channel Store.",
-    andTitle: "Android TV and Google TV.",
-    andHint: "Search LiberouTV in the Play Store.",
-    howInstall: "How to install",
-    howTitle: "Ready in",
-    howTitle2: "3 steps.",
-    howSub: "Install, sign in, watch. Payment stays with your provider, outside this app.",
-    s1t: "Install on the TV",
-    s1b: "Open the store on your Samsung, LG, Roku or Android TV and search LiberouTV.",
+    sub: "A free player for your TV. You sign in with the details from your provider.",
+    cta: "Pick my TV",
+    motionBtn: "Play the animated opening",
+    cue: "Scroll",
+    whatKicker: "WHAT IT IS",
+    whatTitleA: "A player.",
+    whatTitleB: "The catalog belongs to your provider.",
+    whatText: "LiberouTV plays the service you already subscribe to on your TV. It does not come with channels, movies or series.",
+    f1t: "Free",
+    f1b: "No purchases inside the app.",
+    f2t: "No built-in content",
+    f2b: "You sign in with the details your provider gave you.",
+    f3t: "Your password stays on the device",
+    f3b: "It only goes to your provider's server. Signing out in Profile erases it.",
+    screenTitle: "Made for the remote.",
+    screenText: "Large menus, a focus you can always see, and everything a few presses away.",
+    c1: "Live TV, movies and series",
+    c2: "Search and favorites",
+    c3: "Picks up where you left off",
+    shotCap: "Illustrative image. The titles on screen are fictional.",
+    shotAlt1: "LIBEROU TV home screen with fictional titles",
+    shotAlt2: "LIBEROU TV movies screen with fictional titles",
+    shotAlt3: "LIBEROU TV live channels screen with fictional channels",
+    shotTabsLabel: "Screens",
+    tabHome: "Home",
+    tabMovies: "Movies",
+    tabLive: "Live TV",
+    stripLabel: "COMING TO",
+    tvKicker: "YOUR TV",
+    tvTitle: "Pick your TV.",
+    tvHint: "Use your arrow keys, like a remote.",
+    tvListLabel: "Devices",
+    samDesc: "Smart TVs from 2018 on",
+    lgDesc: "Smart TVs with webOS",
+    rokuDesc: "Roku players and Roku TVs",
+    andDesc: "TVs and TV boxes with Android",
+    soon: "Coming soon",
+    live: "Available",
+    leadSoon: "Not in the store yet. When it arrives, this is the path:",
+    leadLive: "It is in the store. This is the path:",
+    samsungS1: "Press Home and open Apps.",
+    samsungS2: "Search LiberouTV.",
+    samsungS3: "Install and open.",
+    lgS1: "Press Home and open the LG app store.",
+    lgS2: "Search LiberouTV.",
+    lgS3: "Install and open.",
+    rokuS1: "On the home screen, open the app store.",
+    rokuS2: "Search LiberouTV.",
+    rokuS3: "Add and open.",
+    androidS1: "Open the app store on your TV.",
+    androidS2: "Search LiberouTV.",
+    androidS3: "Install and open.",
+    howTitle: "Ready in 3 steps.",
+    s1t: "Install on your TV",
+    s1b: "Search LiberouTV in your TV's app store.",
     s2t: "Sign in",
-    s2b: "Enter the username and password from your provider. Stored on the device only.",
-    s3t: "Watch that catalog",
-    s3b: "Live, movies and series come from the account you already pay for. Sign out in Profile to erase the login.",
-    freeNote: "The app is free. A subscription is contracted with your provider.",
-    legal: "LIBEROU TV does not host, bundle or distribute channels, films or series. Illegal streaming services are not supported. Rated 16+."
+    s2b: "Type the details your provider gave you. The subscription is with them, outside the app.",
+    s3t: "Watch",
+    s3b: "Live TV, movies and series come from the account you already have.",
+    faqTitle: "Questions",
+    q1: "Does LiberouTV come with channels or movies?",
+    a1: "No. It is only the player. What you see on screen comes from the service you subscribe to.",
+    q2: "Do I pay for the app?",
+    a2: "No. The app is free and has no purchases inside it. The subscription is contracted with your provider.",
+    q3: "Where do I get my sign-in details?",
+    a3: "From your provider, who looks after your subscription.",
+    q4: "Does it work on my TV?",
+    a4: "The app is on its way to the Samsung, LG, Roku and Android stores. Find yours in the list above.",
+    q5: "What do you keep about me?",
+    a5: "The minimum for the app to work.",
+    a5link: "It is all in the privacy policy.",
+    closeLine: "When it reaches your store, just search LiberouTV.",
+    legal: "LIBEROU TV does not host, bundle or distribute channels, films or series. Illegal streaming services are not supported. Rated 16+.",
+    tm: "Samsung is a trademark of Samsung Electronics Co., Ltd. LG and webOS are trademarks of LG Electronics Inc. ROKU is a trademark and/or registered trademark of Roku, Inc. in the United States and other countries. Android is a trademark of Google LLC. LIBEROU TV is an independent app and is not affiliated with, sponsored or endorsed by these companies.",
+    made: "The opening video is a digital creation. The app screen shown is illustrative."
   },
   pt: {
+    docTitle: "LIBEROU TV: o reprodutor para a sua TV",
+    skip: "Pular para o conteúdo",
+    navLabel: "Principal",
+    langLabel: "Idioma",
     navHow: "Como funciona",
-    navDevices: "Dispositivos",
+    navTv: "Sua TV",
+    navFaq: "Dúvidas",
     navPrivacy: "Privacidade",
     navTerms: "Termos",
-    eyebrow: "Seu player. Suas telas.",
-    h1a: "O que você já assina.",
+    chip: "REPRODUTOR PARA A SUA TV",
+    b1: "O que você já assina.",
+    b2a: "Na sua",
+    b2b: "melhor tela.",
+    b3: "Liberou.",
     h1b: "Na sua melhor tela.",
-    lead: "Reproduza sua assinatura com a LiberouTV. Grátis para Samsung, LG, Roku e Android TV.",
-    ctaDownload: "Baixar aplicativo",
-    ctaHow: "Como funciona",
-    caption: "Use o login do seu serviço para acessar o catálogo.",
-    available: "Disponível nas suas telas favoritas",
-    storesEyebrow: "Disponível nas lojas oficiais",
-    storesTitle: "Escolha sua tela.",
-    storesTitle2: "Comece a assistir.",
-    storesSub: "Selecione seu dispositivo e veja como instalar a LiberouTV.",
-    samTitle: "Smart TVs de 2018 em diante.",
-    samHint: "Busque LiberouTV em Apps.",
-    lgTitle: "Smart TVs LG com webOS.",
-    lgHint: "Busque LiberouTV na LG Content Store.",
-    rokuTitle: "Players e TVs Roku.",
-    rokuHint: "Adicione LiberouTV na Channel Store.",
-    andTitle: "Android TV e Google TV.",
-    andHint: "Busque LiberouTV na Play Store.",
-    howInstall: "Como instalar",
-    howTitle: "Pronto em",
-    howTitle2: "3 passos.",
-    howSub: "Instale, entre, assista. O pagamento fica com o seu provedor, fora deste app.",
+    sub: "Reprodutor grátis para a sua TV. Você entra com os dados do seu provedor.",
+    cta: "Escolher minha TV",
+    motionBtn: "Ver a abertura animada",
+    cue: "Role",
+    whatKicker: "O QUE É",
+    whatTitleA: "Um reprodutor.",
+    whatTitleB: "O catálogo é do seu provedor.",
+    whatText: "O LiberouTV toca na TV o serviço que você já assina. Ele não traz canais, filmes nem séries.",
+    f1t: "Grátis",
+    f1b: "Não tem compra dentro do app.",
+    f2t: "Sem conteúdo embutido",
+    f2b: "Você entra com os dados que o seu provedor te passou.",
+    f3t: "Sua senha fica no aparelho",
+    f3b: "Ela vai só para o servidor do seu provedor. Sair da conta no Perfil apaga.",
+    screenTitle: "Feito para o controle remoto.",
+    screenText: "Menus grandes, foco sempre visível e tudo a poucos toques.",
+    c1: "Ao vivo, filmes e séries",
+    c2: "Busca e favoritos",
+    c3: "Continua de onde você parou",
+    shotCap: "Imagem ilustrativa. Os títulos da tela são fictícios.",
+    shotAlt1: "Tela inicial do LIBEROU TV com títulos fictícios",
+    shotAlt2: "Tela de filmes do LIBEROU TV com títulos fictícios",
+    shotAlt3: "Tela de canais ao vivo do LIBEROU TV com canais fictícios",
+    shotTabsLabel: "Telas",
+    tabHome: "Início",
+    tabMovies: "Filmes",
+    tabLive: "Ao vivo",
+    stripLabel: "CHEGANDO A",
+    tvKicker: "SUA TV",
+    tvTitle: "Escolha sua TV.",
+    tvHint: "Use as setas do teclado, como no controle.",
+    tvListLabel: "Aparelhos",
+    samDesc: "Smart TVs de 2018 em diante",
+    lgDesc: "Smart TVs com webOS",
+    rokuDesc: "Players e TVs Roku",
+    andDesc: "TVs e TV boxes com Android",
+    soon: "Em breve",
+    live: "Disponível",
+    leadSoon: "Ainda não está na loja. Quando chegar, o caminho é este:",
+    leadLive: "Já está na loja. O caminho é este:",
+    samsungS1: "Aperte Home e abra Apps.",
+    samsungS2: "Busque LiberouTV.",
+    samsungS3: "Instale e abra.",
+    lgS1: "Aperte Home e abra a loja de apps da LG.",
+    lgS2: "Busque LiberouTV.",
+    lgS3: "Instale e abra.",
+    rokuS1: "Na tela inicial, abra a loja de apps.",
+    rokuS2: "Busque LiberouTV.",
+    rokuS3: "Adicione e abra.",
+    androidS1: "Abra a loja de apps da TV.",
+    androidS2: "Busque LiberouTV.",
+    androidS3: "Instale e abra.",
+    howTitle: "Pronto em 3 passos.",
     s1t: "Instale na TV",
-    s1b: "Abra a loja na Samsung, LG, Roku ou Android TV e busque LiberouTV.",
+    s1b: "Busque LiberouTV na loja de apps da sua TV.",
     s2t: "Entre",
-    s2b: "Informe usuário e senha do seu provedor. Fica só no aparelho.",
-    s3t: "Assista a esse catálogo",
-    s3b: "Ao vivo, filmes e séries vêm da conta que você já paga. Saia da conta no Perfil para apagar o login.",
-    freeNote: "O aplicativo é gratuito. A assinatura é contratada com seu provedor.",
-    legal: "O LIBEROU TV não hospeda, empacota nem distribui canais, filmes ou séries. Não apoiamos serviços ilegais. Classificação 16+."
+    s2b: "Digite os dados que o seu provedor te passou. A assinatura é com ele, fora do app.",
+    s3t: "Assista",
+    s3b: "Ao vivo, filmes e séries vêm da conta que você já tem.",
+    faqTitle: "Dúvidas",
+    q1: "O LiberouTV vem com canais ou filmes?",
+    a1: "Não. Ele é só o reprodutor. O que aparece na tela vem do serviço que você assina.",
+    q2: "Preciso pagar pelo app?",
+    a2: "Não. O app é grátis e não tem compra dentro dele. A assinatura é contratada com o seu provedor.",
+    q3: "Onde consigo os dados para entrar?",
+    a3: "Com o seu provedor, que é quem cuida da sua assinatura.",
+    q4: "Funciona na minha TV?",
+    a4: "O app está chegando às lojas de Samsung, LG, Roku e Android. Veja a sua na lista acima.",
+    q5: "O que vocês guardam sobre mim?",
+    a5: "O mínimo para o app funcionar.",
+    a5link: "Está tudo na política de privacidade.",
+    closeLine: "Quando chegar à sua loja, é só buscar LiberouTV.",
+    legal: "O LIBEROU TV não hospeda, empacota nem distribui canais, filmes ou séries. Não apoiamos serviços ilegais. Classificação 16+.",
+    tm: "Samsung é marca da Samsung Electronics Co., Ltd. LG e webOS são marcas da LG Electronics Inc. ROKU é marca e/ou marca registrada da Roku, Inc. nos Estados Unidos e em outros países. Android é marca da Google LLC. O LIBEROU TV é um app independente, sem vínculo, patrocínio ou endosso dessas empresas.",
+    made: "O vídeo de abertura é uma criação digital. A tela do app mostrada é ilustrativa."
   }
 };
 
-function apply(lang) {
+/* true quando o app estiver publicado na loja daquela marca */
+var STORES = { samsung: false, lg: false, roku: false, android: false };
+
+function $(sel, root) { return (root || document).querySelector(sel); }
+function $$(sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
+function clamp(v, lo, hi) { return Math.min(hi, Math.max(lo, v)); }
+function smoothstep(p, e0, e1) {
+  var t = clamp((p - e0) / (e1 - e0), 0, 1);
+  return t * t * (3 - 2 * t);
+}
+
+var lang = "en";
+function t(key) {
   var pack = I18N[lang] || I18N.en;
+  return pack[key] || I18N.en[key] || "";
+}
+
+/* ---------------------------------------------------------------- idioma */
+function applyLang(next) {
+  lang = I18N[next] ? next : "en";
   document.documentElement.lang = lang === "pt" ? "pt-BR" : "en";
-  document.querySelectorAll("[data-i]").forEach(function (el) {
-    var key = el.getAttribute("data-i");
-    if (pack[key]) el.textContent = pack[key];
+  document.title = t("docTitle");
+  $$("[data-i]").forEach(function (el) {
+    var v = t(el.getAttribute("data-i"));
+    if (v) el.textContent = v;
   });
-  document.querySelectorAll("[data-en][data-pt]").forEach(function (el) {
+  $$("[data-aria]").forEach(function (el) { el.setAttribute("aria-label", t(el.getAttribute("data-aria"))); });
+  $$("[data-alt]").forEach(function (el) { el.setAttribute("alt", t(el.getAttribute("data-alt"))); });
+  $$("[data-en][data-pt]").forEach(function (el) {
     el.setAttribute("href", el.getAttribute(lang === "pt" ? "data-pt" : "data-en"));
   });
-  document.getElementById("btnEn").setAttribute("aria-pressed", lang === "en" ? "true" : "false");
-  document.getElementById("btnPt").setAttribute("aria-pressed", lang === "pt" ? "true" : "false");
-  try { localStorage.setItem("liberou-lang", lang); } catch (e) {}
+  $("#btnEn").setAttribute("aria-pressed", lang === "en" ? "true" : "false");
+  $("#btnPt").setAttribute("aria-pressed", lang === "pt" ? "true" : "false");
+  renderBands();
+  renderStores();
+  renderDevice(currentDev, false);
 }
-document.getElementById("btnEn").addEventListener("click", function () { apply("en"); });
-document.getElementById("btnPt").addEventListener("click", function () { apply("pt"); });
-apply((function () {
-  try { return localStorage.getItem("liberou-lang"); } catch (e) { return null; }
-})() || "en");
+function chooseLang(next) {
+  applyLang(next);
+  try { localStorage.setItem("liberou-lang", next); } catch (e) {}
+}
+
+/* ------------------------------------------------- legendas do topo */
+function rng(seed) {
+  var s = seed >>> 0;
+  return function () { s = (s * 1664525 + 1013904223) >>> 0; return s / 4294967296; };
+}
+function splitWords(el, text, seed, spread) {
+  var rand = rng(seed), words = text.split(" ");
+  el.textContent = "";
+  words.forEach(function (word, i) {
+    var w = document.createElement("span");
+    w.className = "w";
+    w.textContent = word;
+    w.style.setProperty("--th", (i / words.length * spread + rand() * 0.06).toFixed(3));
+    el.appendChild(w);
+    if (i < words.length - 1) el.appendChild(document.createTextNode(" "));
+  });
+}
+function splitChars(el, text, seed, spread) {
+  var rand = rng(seed), words = text.split(" "), total = text.replace(/ /g, "").length, n = 0;
+  el.textContent = "";
+  words.forEach(function (word, i) {
+    var w = document.createElement("span");
+    w.className = "w";
+    word.split("").forEach(function (ch) {
+      var c = document.createElement("span");
+      c.className = "c";
+      c.textContent = ch;
+      c.style.setProperty("--th", (n / total * spread + rand() * 0.04).toFixed(3));
+      w.appendChild(c);
+      n++;
+    });
+    el.appendChild(w);
+    if (i < words.length - 1) el.appendChild(document.createTextNode(" "));
+  });
+}
+function renderBands() {
+  splitWords($("#b1t"), t("b1"), 11, 0.5);
+  $("#b2l").textContent = t("b2a");
+  $("#b2r").textContent = t("b2b");
+  splitChars($("#b3t"), t("b3"), 23, 0.5);
+}
+
+/* ----------------------------------------------- video guiado pela rolagem */
+var VIDEO_URL = "assets/hero-scrub.mp4";
+var VIDEO_BYTES = 6446311;
+var POSTER_URL = "assets/hero-poster.jpg";
+var ENDING_URL = "assets/hero-ending.jpg";
+/* rolagem (0 a 1) para segundo do video: a camera dispara no fim da tomada,
+   entao o mapa segura o comeco, corre entre as legendas, entra na tela e deixa
+   o ultimo segundo (a tela do app escurecendo) para a legenda final */
+var TMAP = [[0, 0], [0.30, 2.60], [0.36, 3.30], [0.62, 4.30], [0.72, 4.94], [0.78, 5.94], [1, 5.94]];
+
+var hero = $("#top"), stage = $("#stage"), video = $("#heroVideo");
+var ring = $("#ring"), cue = $("#cue");
+var bands = $$(".band").map(function (el, i, all) {
+  var a = Number(el.getAttribute("data-a")), b = Number(el.getAttribute("data-b"));
+  return {
+    el: el, a: a, b: b, first: i === 0, last: i === all.length - 1,
+    ramp: Number(el.getAttribute("data-ramp")) || Math.min(0.025, (b - a) * 0.35),
+    op: -1, k: -1, on: false
+  };
+});
+
+var target = 0, shown = 0, rafId = null, lastTick = 0;
+var heroOnScreen = true, scrubOn = false, heroReady = false, videoFailed = false;
+var seekBusy = false, pendingTime = null;
+var loadStart = 0, loadK = 0, cueOff = false, lastEnd = -1;
+
+function timeAt(p) {
+  for (var i = 1; i < TMAP.length; i++) {
+    if (p <= TMAP[i][0]) {
+      var a = TMAP[i - 1], b = TMAP[i];
+      return a[1] + (b[1] - a[1]) * (p - a[0]) / (b[0] - a[0]);
+    }
+  }
+  return TMAP[TMAP.length - 1][1];
+}
+function heroProgress() {
+  var range = hero.offsetHeight - stage.offsetHeight;
+  return range > 0 ? clamp(-hero.getBoundingClientRect().top / range, 0, 1) : 0;
+}
+
+function requestSeek(time) {
+  if (!video.duration) return;
+  if (seekBusy) { pendingTime = time; return; }
+  seekBusy = true;
+  video.currentTime = Math.min(time, video.duration - 0.02);
+}
+video.addEventListener("seeked", function () {
+  seekBusy = false;
+  if (pendingTime !== null) {
+    var time = pendingTime;
+    pendingTime = null;
+    requestSeek(time);
+  }
+});
+video.addEventListener("error", function () {
+  seekBusy = false;
+  pendingTime = null;
+  failVideo();
+});
+
+function updateCaptions(p) {
+  bands.forEach(function (b) {
+    var f = Math.min(0.02, (b.b - b.a) / 3);
+    var op = (b.first ? 1 : smoothstep(p, b.a, b.a + f)) * (b.last ? 1 : 1 - smoothstep(p, b.b - f, b.b));
+    var k = clamp((p - b.a) / b.ramp, 0, 1);
+    if (b.first) k = Math.max(k, loadK);
+    if (Math.abs(op - b.op) > 0.004 || ((op === 0 || op === 1) && op !== b.op)) {
+      b.op = op;
+      b.el.style.opacity = op.toFixed(3);
+      if ((op > 0.001) !== b.on) {
+        b.on = op > 0.001;
+        b.el.classList.toggle("on", b.on);
+      }
+    }
+    if (Math.abs(k - b.k) > 0.008 || ((k === 0 || k === 1) && k !== b.k)) {
+      b.k = k;
+      b.el.style.setProperty("--k", k.toFixed(3));
+    }
+  });
+  if ((p > 0.03) !== cueOff) {
+    cueOff = p > 0.03;
+    cue.classList.toggle("off", cueOff);
+  }
+  if (videoFailed) {
+    /* sem video, o quadro final entra por cima do primeiro e a jornada segue */
+    var end = smoothstep(p, 0.62, 0.78);
+    if (Math.abs(end - lastEnd) > 0.01 || ((end === 0 || end === 1) && end !== lastEnd)) {
+      lastEnd = end;
+      stage.style.setProperty("--end", end.toFixed(2));
+    }
+  }
+}
+
+function tick(now) {
+  var dt = Math.min(100, now - (lastTick || now));
+  lastTick = now;
+  shown += (target - shown) * (1 - Math.pow(1 - 0.16, dt / 16.667));
+  if (loadK < 1) loadK = clamp((now - loadStart - 250) / 1100, 0, 1);
+  if (Math.abs(target - shown) < 0.0005 && loadK >= 1) {
+    shown = target;
+    rafId = null;
+    lastTick = 0;
+  } else {
+    rafId = requestAnimationFrame(tick);
+  }
+  requestSeek(timeAt(shown));
+  updateCaptions(shown);
+}
+function onScroll() {
+  target = heroProgress();
+  if (rafId === null && heroOnScreen) rafId = requestAnimationFrame(tick);
+}
+
+function failVideo() {
+  if (videoFailed) return;
+  videoFailed = true;
+  if (ring.parentNode) ring.parentNode.removeChild(ring);
+  $("#ending").style.backgroundImage = "url('" + ENDING_URL + "')";
+  stage.classList.add("video-failed");
+  updateCaptions(shown);
+}
+function loadHeroBlob() {
+  var ctrl = new AbortController();
+  var watchdog = setTimeout(function () { ctrl.abort(); }, 20000);
+  return fetch(VIDEO_URL, { priority: "low", signal: ctrl.signal }).then(function (res) {
+    if (!res.ok || !res.body) throw new Error("video");
+    var total = Number(res.headers.get("Content-Length")) || VIDEO_BYTES;
+    var reader = res.body.getReader(), chunks = [], got = 0, lastRing = 0;
+    function pump() {
+      return reader.read().then(function (step) {
+        if (step.done) return;
+        clearTimeout(watchdog);
+        watchdog = setTimeout(function () { ctrl.abort(); }, 20000);
+        chunks.push(step.value);
+        got += step.value.length;
+        var frac = Math.min(1, got / total), now = performance.now();
+        if (now - lastRing > 100 || frac === 1) {
+          lastRing = now;
+          ring.style.setProperty("--ld", Math.round(126 * (1 - frac)));
+        }
+        return pump();
+      });
+    }
+    return pump().then(function () {
+      clearTimeout(watchdog);
+      ring.style.setProperty("--ld", 0);
+      video.src = URL.createObjectURL(new Blob(chunks, { type: "video/mp4" }));
+      video.load();
+      video.addEventListener("canplay", function () {
+        requestSeek(timeAt(shown));
+        stage.classList.add("video-ready");
+      }, { once: true });
+    });
+  });
+}
+var blobStarted = false;
+function startBlobFetch() {
+  if (blobStarted) return;
+  blobStarted = true;
+  loadHeroBlob().catch(failVideo);
+}
+/* poster e video so entram por aqui: quem recebe o topo estatico nao baixa nenhum dos dois */
+function initHeroOnce() {
+  if (heroReady) return;
+  heroReady = true;
+  loadStart = performance.now();
+  $("#poster").style.backgroundImage = "url('" + POSTER_URL + "')";
+  var img = new Image();
+  img.onload = startBlobFetch;
+  img.onerror = startBlobFetch;
+  img.src = POSTER_URL;
+  setTimeout(startBlobFetch, 4000);
+}
+
+function enableScrub() {
+  if (scrubOn) return;
+  scrubOn = true;
+  document.documentElement.classList.add("scrub");
+  $("#staticCta").setAttribute("tabindex", "-1");
+  $("#staticCta").setAttribute("aria-hidden", "true");
+  initHeroOnce();
+  window.addEventListener("scroll", onScroll, { passive: true });
+  bands.forEach(function (b) { b.op = -1; b.k = -1; });
+  shown = target = heroProgress();
+  updateCaptions(shown);
+  onScroll();
+}
+function disableScrub() {
+  document.documentElement.classList.remove("scrub");
+  $("#staticCta").removeAttribute("tabindex");
+  $("#staticCta").removeAttribute("aria-hidden");
+  if (!scrubOn) return;
+  scrubOn = false;
+  window.removeEventListener("scroll", onScroll);
+  if (rafId !== null) { cancelAnimationFrame(rafId); rafId = null; }
+  lastTick = 0;
+}
+var GATES = window.LTV_GATES;
+var MQLS = GATES.map(function (q) { return window.matchMedia(q); });
+/* movimento reduzido e o quinto portao. Quem pede a abertura animada pelo botao
+   de play do topo estatico passa por ele neste navegador, e so por ele. */
+var motionOk = window.LTV_MOTION_OK === true;
+function applyHeroMode() {
+  var hits = MQLS.map(function (m) { return m.matches; });
+  var onlyMotion = hits[4] && hits.slice(0, 4).indexOf(true) < 0;
+  if (hits.some(function (hit, i) { return hit && !(motionOk && i === 4); })) disableScrub();
+  else enableScrub();
+  $("#motionBtn").hidden = !(onlyMotion && !motionOk);
+  measure();
+  onPageScroll();
+}
+$("#motionBtn").addEventListener("click", function () {
+  motionOk = true;
+  try { localStorage.setItem("liberou-motion", "1"); } catch (e) {}
+  applyHeroMode();
+});
+
+/* --------------------------------------- linhas que se tracam com a rolagem */
+var main = $("#main"), signal = $("#signal"), flow = $("#flow");
+var flowLine = $(".flow-line i"), flowSteps = $$("#flow li");
+var signalH = 0, pinned = false, pageRaf = null;
+var last = { sig: -1, flow: -1, end: null, steps: [] };
+
+function measure() {
+  var list = $("#tvList");
+  signalH = Math.round(list.getBoundingClientRect().top - main.getBoundingClientRect().top + 40);
+  signal.style.setProperty("--sh", signalH + "px");
+  positionFocus();
+}
+function setLine(key, el, v) {
+  if (Math.abs(v - last[key]) > 0.004 || ((v === 0 || v === 1) && v !== last[key])) {
+    last[key] = v;
+    el.style.setProperty("--p", v.toFixed(3));
+  }
+}
+function pageTick() {
+  pageRaf = null;
+  var vh = window.innerHeight, mainTop = main.getBoundingClientRect().top;
+  if (pinned) return;
+
+  var sig = signalH > 0 ? clamp((vh * 0.62 - mainTop) / signalH, 0, 1) : 0;
+  setLine("sig", signal, sig);
+  if ((sig === 1) !== last.end) { last.end = sig === 1; signal.classList.toggle("end", last.end); }
+
+  var r = flow.getBoundingClientRect();
+  var fp = clamp((vh * 0.7 - r.top - 14) / Math.max(1, r.height - 28), 0, 1);
+  setLine("flow", flowLine, fp);
+  flowSteps.forEach(function (li, i) {
+    var on = fp * (r.height - 28) >= li.offsetTop - 6;
+    if (on !== last.steps[i]) { last.steps[i] = on; li.classList.toggle("on", on); }
+  });
+}
+function onPageScroll() {
+  if (pageRaf === null) pageRaf = requestAnimationFrame(pageTick);
+}
+function pinToFinalStates() {
+  pinned = true;
+  signal.style.setProperty("--p", "1");
+  signal.classList.add("end");
+  flowLine.style.setProperty("--p", "1");
+  flowSteps.forEach(function (li) { li.classList.add("on"); });
+}
+function unpinFinalStates() {
+  pinned = false;
+  last.sig = last.flow = -1;
+  last.end = null;
+  last.steps = [];
+  onPageScroll();
+}
+
+/* -------------------------------- escolha sua TV: navegada como na TV */
+var DEVICES = ["samsung", "lg", "roku", "android"];
+var currentDev = "samsung";
+var tabs = $$("#tvList [role='tab']"), panel = $("#tvPanel"), focusRing = $("#focus");
+
+function renderStores() {
+  tabs.forEach(function (tab) {
+    var st = $(".st", tab), isLive = STORES[tab.getAttribute("data-dev")] === true;
+    st.textContent = t(isLive ? "live" : "soon");
+    st.classList.toggle("is-live", isLive);
+  });
+}
+function positionFocus() {
+  var tab = $("#tab-" + currentDev);
+  focusRing.style.setProperty("--fy", tab.offsetTop + "px");
+  focusRing.style.setProperty("--fh", tab.offsetHeight + "px");
+}
+function renderDevice(dev, animate) {
+  currentDev = dev;
+  tabs.forEach(function (tab) {
+    var sel = tab.getAttribute("data-dev") === dev;
+    tab.setAttribute("aria-selected", sel ? "true" : "false");
+    tab.setAttribute("tabindex", sel ? "0" : "-1");
+  });
+  positionFocus();
+  if (animate) panel.classList.add("out");
+  panel.setAttribute("aria-labelledby", "tab-" + dev);
+  $("#pnName").innerHTML = $("#tab-" + dev + " .nm").innerHTML;
+  $("#pnLead").textContent = t(STORES[dev] === true ? "leadLive" : "leadSoon");
+  $$("#pnSteps li").forEach(function (li, i) { li.textContent = t(dev + "S" + (i + 1)); });
+  if (animate) {
+    void panel.offsetWidth;
+    panel.classList.remove("out");
+  }
+}
+function selectDevice(dev, moveFocus) {
+  if (dev !== currentDev) renderDevice(dev, true);
+  if (moveFocus) $("#tab-" + dev).focus();
+}
+tabs.forEach(function (tab) {
+  var dev = tab.getAttribute("data-dev");
+  tab.addEventListener("click", function () { selectDevice(dev, false); });
+  tab.addEventListener("pointerenter", function (e) {
+    if (e.pointerType === "mouse") selectDevice(dev, false);
+  });
+});
+$("#tvList").addEventListener("keydown", function (e) {
+  var i = DEVICES.indexOf(currentDev), next = -1;
+  if (e.key === "ArrowDown" || e.key === "ArrowRight") next = (i + 1) % DEVICES.length;
+  else if (e.key === "ArrowUp" || e.key === "ArrowLeft") next = (i + DEVICES.length - 1) % DEVICES.length;
+  else if (e.key === "Home") next = 0;
+  else if (e.key === "End") next = DEVICES.length - 1;
+  if (next < 0) return;
+  e.preventDefault();
+  selectDevice(DEVICES[next], true);
+});
+
+/* ------------------------------------------ vitrine: as telas do app */
+var shotImgs = $$("#shots img"), shotBtns = $$("#shotTabs button");
+function selectShot(n) {
+  shotImgs.forEach(function (img, i) { img.classList.toggle("on", i === n); });
+  shotBtns.forEach(function (btn, i) { btn.setAttribute("aria-pressed", i === n ? "true" : "false"); });
+}
+shotBtns.forEach(function (btn, i) {
+  btn.addEventListener("click", function () { selectShot(i); });
+  /* a barrinha que enche e o relogio da troca: sem animacao, nao troca sozinha */
+  $("i", btn).addEventListener("animationend", function () { selectShot((i + 1) % shotBtns.length); });
+});
+
+/* --------------------------------------------- entradas e zonas vivas */
+$$(".rv").forEach(function (group) {
+  $$(".ri", group).forEach(function (el, i) { el.style.setProperty("--i", i); });
+  $$(".pi", group).forEach(function (el, i) { el.style.setProperty("--i", i); });
+});
+if ("IntersectionObserver" in window) {
+  var rvObserver = new IntersectionObserver(function (entries) {
+    entries.forEach(function (en) {
+      if (!en.isIntersecting) return;
+      var group = en.target;
+      rvObserver.unobserve(group);
+      group.classList.add("in");
+      setTimeout(function () { group.classList.add("done"); }, 1800);
+    });
+  }, { threshold: 0.18, rootMargin: "0px 0px -6% 0px" });
+  $$(".rv").forEach(function (group) { rvObserver.observe(group); });
+
+  var liveObserver = new IntersectionObserver(function (entries) {
+    entries.forEach(function (en) { en.target.classList.toggle("live", en.isIntersecting); });
+  });
+  $$(".zone").forEach(function (zone) { liveObserver.observe(zone); });
+  liveObserver.observe(stage);
+
+  new IntersectionObserver(function (entries) {
+    heroOnScreen = entries[0].isIntersecting;
+    if (heroOnScreen && scrubOn) onScroll();
+  }).observe(hero);
+} else {
+  $$(".rv").forEach(function (group) { group.classList.add("in", "done"); });
+}
+
+document.addEventListener("visibilitychange", function () {
+  document.body.classList.toggle("paused", document.hidden);
+});
+
+/* ------------------------------------------------------------- partida */
+$("#btnEn").addEventListener("click", function () { chooseLang("en"); });
+$("#btnPt").addEventListener("click", function () { chooseLang("pt"); });
+applyLang((function () {
+  var saved = null;
+  try { saved = localStorage.getItem("liberou-lang"); } catch (e) {}
+  if (saved) return saved;
+  return /^pt/i.test(navigator.language || "") ? "pt" : "en";
+})());
+
+var motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+function onMotionPref() {
+  if (motionQuery.matches) pinToFinalStates();
+  else unpinFinalStates();
+}
+MQLS.forEach(function (m) { m.addEventListener("change", applyHeroMode); });
+motionQuery.addEventListener("change", onMotionPref);
+window.addEventListener("scroll", onPageScroll, { passive: true });
+window.addEventListener("resize", function () { measure(); onPageScroll(); if (scrubOn) onScroll(); });
+window.addEventListener("load", function () { measure(); onPageScroll(); });
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
+
+applyHeroMode();
+onMotionPref();
 </script>
 </body>
 </html>
