@@ -5,7 +5,7 @@ var I18N = {
     navLabel: "Main",
     langLabel: "Language",
     navHow: "How it works",
-    navTv: "Your TV",
+    navTv: "Devices",
     navFaq: "Questions",
     navPrivacy: "Privacy",
     navTerms: "Terms",
@@ -15,14 +15,14 @@ var I18N = {
     b2b: "best screen.",
     b3: "Liberou. It's on.",
     h1b: "On your best screen.",
-    sub: "A free player for your TV. You sign in with the details from your provider.",
-    cta: "Pick my TV",
+    sub: "A free player for TV, computer and phone. You sign in with the details from your provider.",
+    cta: "Pick my device",
     motionBtn: "Play the animated opening",
     cue: "Scroll",
     whatKicker: "WHAT IT IS",
     whatTitleA: "A player.",
     whatTitleB: "The catalog belongs to your provider.",
-    whatText: "LiberouTV plays the service you already subscribe to on your TV. It does not come with channels, movies or series.",
+    whatText: "LiberouTV plays the service you already subscribe to on your device. It does not come with channels, movies or series.",
     f1t: "Free",
     f1b: "No purchases inside the app.",
     f2t: "No built-in content",
@@ -42,19 +42,27 @@ var I18N = {
     tabHome: "Home",
     tabMovies: "Movies",
     tabLive: "Live TV",
-    stripLabel: "COMING TO",
-    tvKicker: "YOUR TV",
-    tvTitle: "Pick your TV.",
+    stripLabel: "PLATFORMS",
+    tvKicker: "YOUR DEVICE",
+    tvTitle: "Pick your device.",
     tvHint: "Use your arrow keys, like a remote.",
     tvListLabel: "Devices",
     samDesc: "Smart TVs from 2018 on",
     lgDesc: "Smart TVs with webOS",
     rokuDesc: "Roku players and Roku TVs",
-    andDesc: "TVs and TV boxes with Android",
+    andDesc: "Phones, TVs and TV boxes with Android",
+    appletvDesc: "Apple TV HD and Apple TV 4K",
+    windowsDesc: "Windows PCs and laptops",
+    macDesc: "MacBook, iMac and Mac mini",
+    iosDesc: "iPhone and iPad",
     soon: "Coming soon",
     live: "Available",
+    download: "By download",
     leadSoon: "Not in the store yet. When it arrives, this is the path:",
     leadLive: "It is in the store. This is the path:",
+    leadDownload: "Coming soon to the app store. It can already be installed with the Downloader app, using a code that will be on this page soon.",
+    leadSoonDirect: "Not available yet. When it arrives, this is the path:",
+    leadLiveDirect: "Available now. The downloads area of this site opens soon.",
     samsungS1: "Press Home and open Apps.",
     samsungS2: "Search LiberouTV.",
     samsungS3: "Install and open.",
@@ -67,9 +75,24 @@ var I18N = {
     androidS1: "Open the app store on your TV.",
     androidS2: "Search LiberouTV.",
     androidS3: "Install and open.",
+    androidD1: "Install the Downloader app on your TV or TV box.",
+    androidD2: "Type the LiberouTV code and install.",
+    androidD3: "Open the app and sign in with the details from your provider.",
+    appletvS1: "Open the App Store on your Apple TV.",
+    appletvS2: "Search LiberouTV.",
+    appletvS3: "Install and open.",
+    windowsS1: "Download the LiberouTV installer for Windows.",
+    windowsS2: "Open the file and follow the setup.",
+    windowsS3: "Open the app and sign in with the details from your provider.",
+    macS1: "Download LiberouTV for Mac.",
+    macS2: "Drag the app to the Applications folder.",
+    macS3: "Open the app and sign in with the details from your provider.",
+    iosS1: "Open the App Store.",
+    iosS2: "Search LiberouTV.",
+    iosS3: "Tap Get and open.",
     howTitle: "Ready in 3 steps.",
-    s1t: "Install on your TV",
-    s1b: "Search LiberouTV in your TV's app store.",
+    s1t: "Install on your device",
+    s1b: "See the path for yours in the list above.",
     s2t: "Sign in",
     s2b: "Type the details your provider gave you. The subscription is with them, outside the app.",
     s3t: "Watch",
@@ -81,14 +104,14 @@ var I18N = {
     a2: "No. The app is free and has no purchases inside it. The subscription is contracted with your provider.",
     q3: "Where do I get my sign-in details?",
     a3: "From your provider, who looks after your subscription.",
-    q4: "Does it work on my TV?",
-    a4: "The app is on its way to the Samsung, LG, Roku and Android stores. Find yours in the list above.",
+    q4: "Does it work on my device?",
+    a4: "The app is already available for Windows and Mac, and for TVs and TV boxes with Android through the Downloader app. The other platforms in the list above are on the way.",
     q5: "What do you keep about me?",
     a5: "The minimum for the app to work.",
     a5link: "It is all in the privacy policy.",
     closeLine: "When it reaches your store, just search LiberouTV.",
     legal: "LIBEROU TV does not host, bundle or distribute channels, films or series. Illegal streaming services are not supported. Rated 16+.",
-    tm: "Samsung is a trademark of Samsung Electronics Co., Ltd. LG and webOS are trademarks of LG Electronics Inc. ROKU is a trademark and/or registered trademark of Roku, Inc. in the United States and other countries. Android is a trademark of Google LLC. LIBEROU TV is an independent app and is not affiliated with, sponsored or endorsed by these companies.",
+    tm: "Samsung is a trademark of Samsung Electronics Co., Ltd. LG and webOS are trademarks of LG Electronics Inc. ROKU is a trademark and/or registered trademark of Roku, Inc. in the United States and other countries. Android is a trademark of Google LLC. Apple, Mac, iPhone, iPad, Apple TV and App Store are trademarks of Apple Inc., registered in the U.S. and other countries and regions. Windows is a trademark of the Microsoft group of companies. LIBEROU TV is an independent app and is not affiliated with, sponsored or endorsed by these companies.",
     made: "The opening video is a digital creation. The app screen shown is illustrative."
   },
   pt: {
@@ -97,7 +120,7 @@ var I18N = {
     navLabel: "Principal",
     langLabel: "Idioma",
     navHow: "Como funciona",
-    navTv: "Sua TV",
+    navTv: "Aparelhos",
     navFaq: "Dúvidas",
     navPrivacy: "Privacidade",
     navTerms: "Termos",
@@ -107,14 +130,14 @@ var I18N = {
     b2b: "melhor tela.",
     b3: "Liberou.",
     h1b: "Na sua melhor tela.",
-    sub: "Reprodutor grátis para a sua TV. Você entra com os dados do seu provedor.",
-    cta: "Escolher minha TV",
+    sub: "Reprodutor grátis para TV, computador e celular. Você entra com os dados do seu provedor.",
+    cta: "Escolher meu aparelho",
     motionBtn: "Ver a abertura animada",
     cue: "Role",
     whatKicker: "O QUE É",
     whatTitleA: "Um reprodutor.",
     whatTitleB: "O catálogo é do seu provedor.",
-    whatText: "O LiberouTV toca na TV o serviço que você já assina. Ele não traz canais, filmes nem séries.",
+    whatText: "O LiberouTV toca no seu aparelho o serviço que você já assina. Ele não traz canais, filmes nem séries.",
     f1t: "Grátis",
     f1b: "Não tem compra dentro do app.",
     f2t: "Sem conteúdo embutido",
@@ -134,19 +157,27 @@ var I18N = {
     tabHome: "Início",
     tabMovies: "Filmes",
     tabLive: "Ao vivo",
-    stripLabel: "CHEGANDO A",
-    tvKicker: "SUA TV",
-    tvTitle: "Escolha sua TV.",
+    stripLabel: "PLATAFORMAS",
+    tvKicker: "SEU APARELHO",
+    tvTitle: "Escolha seu aparelho.",
     tvHint: "Use as setas do teclado, como no controle.",
     tvListLabel: "Aparelhos",
     samDesc: "Smart TVs de 2018 em diante",
     lgDesc: "Smart TVs com webOS",
     rokuDesc: "Players e TVs Roku",
-    andDesc: "TVs e TV boxes com Android",
+    andDesc: "Celulares, TVs e TV boxes com Android",
+    appletvDesc: "Apple TV HD e Apple TV 4K",
+    windowsDesc: "Computadores e notebooks com Windows",
+    macDesc: "MacBook, iMac e Mac mini",
+    iosDesc: "iPhone e iPad",
     soon: "Em breve",
     live: "Disponível",
+    download: "Por download",
     leadSoon: "Ainda não está na loja. Quando chegar, o caminho é este:",
     leadLive: "Já está na loja. O caminho é este:",
+    leadDownload: "Na loja de apps, em breve. Já dá para instalar pelo app Downloader, com um código que entra nesta página em breve.",
+    leadSoonDirect: "Ainda não está disponível. Quando chegar, o caminho é este:",
+    leadLiveDirect: "Já está disponível. A área de downloads deste site abre em breve.",
     samsungS1: "Aperte Home e abra Apps.",
     samsungS2: "Busque LiberouTV.",
     samsungS3: "Instale e abra.",
@@ -159,9 +190,24 @@ var I18N = {
     androidS1: "Abra a loja de apps da TV.",
     androidS2: "Busque LiberouTV.",
     androidS3: "Instale e abra.",
+    androidD1: "Instale o app Downloader na sua TV ou TV box.",
+    androidD2: "Digite o código do LiberouTV e instale.",
+    androidD3: "Abra o app e entre com os dados do seu provedor.",
+    appletvS1: "Abra a App Store na Apple TV.",
+    appletvS2: "Busque LiberouTV.",
+    appletvS3: "Instale e abra.",
+    windowsS1: "Baixe o instalador do LiberouTV para Windows.",
+    windowsS2: "Abra o arquivo e siga a instalação.",
+    windowsS3: "Abra o app e entre com os dados do seu provedor.",
+    macS1: "Baixe o LiberouTV para Mac.",
+    macS2: "Arraste o app para a pasta Aplicativos.",
+    macS3: "Abra o app e entre com os dados do seu provedor.",
+    iosS1: "Abra a App Store.",
+    iosS2: "Busque LiberouTV.",
+    iosS3: "Toque em Obter e abra.",
     howTitle: "Pronto em 3 passos.",
-    s1t: "Instale na TV",
-    s1b: "Busque LiberouTV na loja de apps da sua TV.",
+    s1t: "Instale no seu aparelho",
+    s1b: "Veja o caminho do seu na lista acima.",
     s2t: "Entre",
     s2b: "Digite os dados que o seu provedor te passou. A assinatura é com ele, fora do app.",
     s3t: "Assista",
@@ -173,20 +219,27 @@ var I18N = {
     a2: "Não. O app é grátis e não tem compra dentro dele. A assinatura é contratada com o seu provedor.",
     q3: "Onde consigo os dados para entrar?",
     a3: "Com o seu provedor, que é quem cuida da sua assinatura.",
-    q4: "Funciona na minha TV?",
-    a4: "O app está chegando às lojas de Samsung, LG, Roku e Android. Veja a sua na lista acima.",
+    q4: "Funciona no meu aparelho?",
+    a4: "O app já está disponível para Windows e Mac, e para TVs e TV boxes com Android pelo app Downloader. As outras plataformas da lista acima estão a caminho.",
     q5: "O que vocês guardam sobre mim?",
     a5: "O mínimo para o app funcionar.",
     a5link: "Está tudo na política de privacidade.",
     closeLine: "Quando chegar à sua loja, é só buscar LiberouTV.",
     legal: "O LIBEROU TV não hospeda, empacota nem distribui canais, filmes ou séries. Não apoiamos serviços ilegais. Classificação 16+.",
-    tm: "Samsung é marca da Samsung Electronics Co., Ltd. LG e webOS são marcas da LG Electronics Inc. ROKU é marca e/ou marca registrada da Roku, Inc. nos Estados Unidos e em outros países. Android é marca da Google LLC. O LIBEROU TV é um app independente, sem vínculo, patrocínio ou endosso dessas empresas.",
+    tm: "Samsung é marca da Samsung Electronics Co., Ltd. LG e webOS são marcas da LG Electronics Inc. ROKU é marca e/ou marca registrada da Roku, Inc. nos Estados Unidos e em outros países. Android é marca da Google LLC. Apple, Mac, iPhone, iPad, Apple TV e App Store são marcas da Apple Inc., registradas nos Estados Unidos e em outros países e regiões. Windows é marca do grupo de empresas Microsoft. O LIBEROU TV é um app independente, sem vínculo, patrocínio ou endosso dessas empresas.",
     made: "O vídeo de abertura é uma criação digital. A tela do app mostrada é ilustrativa."
   }
 };
 
-/* true quando o app estiver publicado na loja daquela marca */
-var STORES = { samsung: false, lg: false, roku: false, android: false };
+/* estado de cada plataforma: "soon" (em breve), "live" (disponivel) ou "download"
+   (a loja ainda nao publicou, mas o app ja sai por fora dela: no Android, pelo
+   app Downloader, com um codigo) */
+var STORES = {
+  samsung: "soon", lg: "soon", roku: "soon", android: "download", appletv: "soon",
+  windows: "live", mac: "live", ios: "soon"
+};
+/* estas duas nao passam por loja: saem por download direto */
+var DIRECT = { windows: true, mac: true };
 
 function $(sel, root) { return (root || document).querySelector(sel); }
 function $$(sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
@@ -539,17 +592,23 @@ function unpinFinalStates() {
   onPageScroll();
 }
 
-/* -------------------------------- escolha sua TV: navegada como na TV */
-var DEVICES = ["samsung", "lg", "roku", "android"];
+/* ---------------------------- escolha seu aparelho: navegado como na TV */
+var DEVICES = ["samsung", "lg", "roku", "android", "appletv", "windows", "mac", "ios"];
 var currentDev = "samsung";
 var tabs = $$("#tvList [role='tab']"), panel = $("#tvPanel"), focusRing = $("#focus");
 
 function renderStores() {
   tabs.forEach(function (tab) {
-    var st = $(".st", tab), isLive = STORES[tab.getAttribute("data-dev")] === true;
-    st.textContent = t(isLive ? "live" : "soon");
-    st.classList.toggle("is-live", isLive);
+    var st = $(".st", tab), state = STORES[tab.getAttribute("data-dev")];
+    st.textContent = t(state);
+    st.classList.toggle("is-live", state !== "soon");
   });
+}
+function leadKey(dev) {
+  var state = STORES[dev];
+  if (state === "download") return "leadDownload";
+  if (DIRECT[dev]) return state === "live" ? "leadLiveDirect" : "leadSoonDirect";
+  return state === "live" ? "leadLive" : "leadSoon";
 }
 function positionFocus() {
   var tab = $("#tab-" + currentDev);
@@ -567,8 +626,10 @@ function renderDevice(dev, animate) {
   if (animate) panel.classList.add("out");
   panel.setAttribute("aria-labelledby", "tab-" + dev);
   $("#pnName").innerHTML = $("#tab-" + dev + " .nm").innerHTML;
-  $("#pnLead").textContent = t(STORES[dev] === true ? "leadLive" : "leadSoon");
-  $$("#pnSteps li").forEach(function (li, i) { li.textContent = t(dev + "S" + (i + 1)); });
+  $("#pnLead").textContent = t(leadKey(dev));
+  /* os passos do download (D) valem enquanto a loja nao publica; depois, os da loja (S) */
+  var path = STORES[dev] === "download" ? "D" : "S";
+  $$("#pnSteps li").forEach(function (li, i) { li.textContent = t(dev + path + (i + 1)); });
   if (animate) {
     void panel.offsetWidth;
     panel.classList.remove("out");

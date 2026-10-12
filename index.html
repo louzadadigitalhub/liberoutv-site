@@ -4,14 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>LIBEROU TV: a media player for your TV</title>
-<meta name="description" content="LIBEROU TV is a free media player for Samsung, LG, Roku and Android devices. It does not include any catalog. You sign in with the details from your provider.">
+<meta name="description" content="LIBEROU TV is a free media player for TVs, computers and phones. It does not include any catalog. You sign in with the details from your provider.">
 <meta name="theme-color" content="#0c090a">
 <link rel="canonical" href="https://app.liberoutv.com/">
 <!-- DEPLOY STEP: og:url e og:image levam o endereco absoluto do site no ar -->
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="LIBEROU TV">
 <meta property="og:title" content="LIBEROU TV: a media player for your TV">
-<meta property="og:description" content="A free media player for Samsung, LG, Roku and Android devices. It does not include any catalog.">
+<meta property="og:description" content="A free media player for TVs, computers and phones. It does not include any catalog.">
 <meta property="og:url" content="https://app.liberoutv.com/">
 <meta property="og:image" content="https://app.liberoutv.com/assets/og.jpg">
 <meta name="twitter:card" content="summary_large_image">
@@ -339,8 +339,8 @@ main { position: relative; z-index: 1; }
 .strip { position: relative; z-index: 1; border-bottom: 1px solid var(--line); padding: 26px 0; }
 .strip-in { display: flex; align-items: center; justify-content: space-between; gap: 14px 40px; flex-wrap: wrap; }
 .strip ul {
-  display: flex; flex-wrap: wrap; gap: 10px clamp(22px, 5vw, 76px); list-style: none;
-  font-size: clamp(18px, 2vw, 27px); font-weight: 600; letter-spacing: -.02em; color: var(--text-secondary);
+  display: flex; flex-wrap: wrap; gap: 8px clamp(16px, 2.6vw, 40px); list-style: none;
+  font-size: clamp(16px, 1.55vw, 22px); font-weight: 600; letter-spacing: -.02em; color: var(--text-secondary);
 }
 .strip sup { font-size: .42em; font-weight: 500; vertical-align: super; margin-left: 1px; }
 
@@ -430,11 +430,11 @@ main { position: relative; z-index: 1; }
   position: relative; z-index: 1;
   display: grid; grid-template-columns: 1fr auto; column-gap: 20px; row-gap: 2px; align-items: baseline;
   text-align: left; background: none; border: 0; border-bottom: 1px solid var(--line);
-  color: inherit; font: inherit; padding: 22px 26px; cursor: pointer;
+  color: inherit; font: inherit; padding: 15px 24px; cursor: pointer;
 }
 .tv-list [role="tab"]:focus-visible { outline-offset: -4px; border-radius: 14px; }
 .tv-list .nm {
-  font-size: clamp(26px, 3.2vw, 46px); font-weight: 600; letter-spacing: -.025em; line-height: 1.15;
+  font-size: clamp(22px, 2.3vw, 34px); font-weight: 600; letter-spacing: -.025em; line-height: 1.15;
   color: var(--text-secondary); transition: color .4s var(--ease);
 }
 .tv-list [aria-selected="true"] .nm { color: var(--text-primary); }
@@ -586,7 +586,7 @@ body.paused *, body.paused *::before, body.paused *::after { animation-play-stat
       </a>
       <nav class="nav-links" aria-label="Main" data-aria="navLabel">
         <a href="#how" data-i="navHow">How it works</a>
-        <a href="#tv" data-i="navTv">Your TV</a>
+        <a href="#tv" data-i="navTv">Devices</a>
         <a href="#faq" data-i="navFaq">Questions</a>
         <div class="lang" role="group" aria-label="Language" data-aria="langLabel">
           <button type="button" id="btnPt" aria-pressed="false" lang="pt-BR">PT</button>
@@ -619,10 +619,10 @@ body.paused *, body.paused *::before, body.paused *::after { animation-play-stat
       <div class="band b3" data-a="0.77" data-b="1" data-ramp="0.05">
         <div class="in">
           <p class="t" id="b3t" aria-hidden="true"></p>
-          <p class="sub" aria-hidden="true" data-i="sub">A free player for your TV. You sign in with the details from your provider.</p>
+          <p class="sub" aria-hidden="true" data-i="sub">A free player for TV, computer and phone. You sign in with the details from your provider.</p>
           <div class="row">
             <a class="btn" href="#tv" id="heroCta">
-              <span data-i="cta">Pick my TV</span>
+              <span data-i="cta">Pick my device</span>
               <span class="btn-ico" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2.5v9m0 0L3.5 8M7 11.5 10.5 8" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
             </a>
           </div>
@@ -640,9 +640,9 @@ body.paused *, body.paused *::before, body.paused *::after { animation-play-stat
       <div class="wrap">
         <p class="kicker" data-i="chip">A MEDIA PLAYER FOR YOUR TV</p>
         <h1><span class="ln" data-i="b1">What you already subscribe to.</span> <span class="ln" data-i="h1b">On your best screen.</span></h1>
-        <p class="sub" data-i="sub">A free player for your TV. You sign in with the details from your provider.</p>
+        <p class="sub" data-i="sub">A free player for TV, computer and phone. You sign in with the details from your provider.</p>
         <a class="btn" href="#tv" id="staticCta">
-          <span data-i="cta">Pick my TV</span>
+          <span data-i="cta">Pick my device</span>
           <span class="btn-ico" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2.5v9m0 0L3.5 8M7 11.5 10.5 8" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
         </a>
       </div>
@@ -658,8 +658,8 @@ body.paused *, body.paused *::before, body.paused *::after { animation-play-stat
 
     <div class="strip rv">
       <div class="wrap strip-in ri">
-        <span class="kicker" data-i="stripLabel">COMING TO</span>
-        <ul><li>Samsung</li><li>LG</li><li>Roku<sup>&reg;</sup></li><li>Android<sup>&trade;</sup></li></ul>
+        <span class="kicker" data-i="stripLabel">PLATFORMS</span>
+        <ul><li>Samsung</li><li>LG</li><li>Roku<sup>&reg;</sup></li><li>Android<sup>&trade;</sup></li><li>Apple TV</li><li>Windows</li><li>Mac</li><li>iPhone</li></ul>
       </div>
     </div>
 
@@ -668,7 +668,7 @@ body.paused *, body.paused *::before, body.paused *::after { animation-play-stat
         <div class="what-lead">
           <p class="kicker ri" data-i="whatKicker">WHAT IT IS</p>
           <h2 class="ri"><span data-i="whatTitleA">A player.</span> <span class="dim" data-i="whatTitleB">The catalog belongs to your provider.</span></h2>
-          <p class="lede ri" data-i="whatText">LiberouTV plays the service you already subscribe to on your TV. It does not come with channels, movies or series.</p>
+          <p class="lede ri" data-i="whatText">LiberouTV plays the service you already subscribe to on your device. It does not come with channels, movies or series.</p>
         </div>
         <ul class="facts">
           <li class="ri"><span class="n" aria-hidden="true">01</span><strong data-i="f1t">Free</strong><span class="d" data-i="f1b">No purchases inside the app.</span></li>
@@ -709,9 +709,9 @@ body.paused *, body.paused *::before, body.paused *::after { animation-play-stat
     <section class="sec tv zone" id="tv">
       <div class="wrap">
         <div class="tv-head rv">
-          <p class="kicker ri" data-i="tvKicker">YOUR TV</p>
+          <p class="kicker ri" data-i="tvKicker">YOUR DEVICE</p>
           <p class="hint ri" data-i="tvHint">Use your arrow keys, like a remote.</p>
-          <h2 class="ri" data-i="tvTitle">Pick your TV.</h2>
+          <h2 class="ri" data-i="tvTitle">Pick your device.</h2>
         </div>
         <div class="tv-grid rv">
           <div class="tv-list ri" id="tvList" role="tablist" aria-orientation="vertical" aria-label="Devices" data-aria="tvListLabel">
@@ -726,7 +726,19 @@ body.paused *, body.paused *::before, body.paused *::after { animation-play-stat
               <span class="nm">Roku<sup>&reg;</sup></span><span class="ds" data-i="rokuDesc">Roku players and Roku TVs</span><span class="st" data-i="soon">Coming soon</span>
             </button>
             <button type="button" role="tab" id="tab-android" data-dev="android" aria-controls="tvPanel" aria-selected="false" tabindex="-1">
-              <span class="nm">Android<sup>&trade;</sup></span><span class="ds" data-i="andDesc">TVs and TV boxes with Android</span><span class="st" data-i="soon">Coming soon</span>
+              <span class="nm">Android<sup>&trade;</sup></span><span class="ds" data-i="andDesc">Phones, TVs and TV boxes with Android</span><span class="st" data-i="soon">Coming soon</span>
+            </button>
+            <button type="button" role="tab" id="tab-appletv" data-dev="appletv" aria-controls="tvPanel" aria-selected="false" tabindex="-1">
+              <span class="nm">Apple TV</span><span class="ds" data-i="appletvDesc">Apple TV HD and Apple TV 4K</span><span class="st" data-i="soon">Coming soon</span>
+            </button>
+            <button type="button" role="tab" id="tab-windows" data-dev="windows" aria-controls="tvPanel" aria-selected="false" tabindex="-1">
+              <span class="nm">Windows</span><span class="ds" data-i="windowsDesc">Windows PCs and laptops</span><span class="st" data-i="soon">Coming soon</span>
+            </button>
+            <button type="button" role="tab" id="tab-mac" data-dev="mac" aria-controls="tvPanel" aria-selected="false" tabindex="-1">
+              <span class="nm">Mac</span><span class="ds" data-i="macDesc">MacBook, iMac and Mac mini</span><span class="st" data-i="soon">Coming soon</span>
+            </button>
+            <button type="button" role="tab" id="tab-ios" data-dev="ios" aria-controls="tvPanel" aria-selected="false" tabindex="-1">
+              <span class="nm">iPhone</span><span class="ds" data-i="iosDesc">iPhone and iPad</span><span class="st" data-i="soon">Coming soon</span>
             </button>
           </div>
           <div class="tv-panel ri" id="tvPanel" role="tabpanel" aria-labelledby="tab-samsung" tabindex="0">
@@ -754,8 +766,8 @@ body.paused *, body.paused *::before, body.paused *::after { animation-play-stat
                 <span class="num" aria-hidden="true">01</span>
                 <span class="ico" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="4" width="19" height="13" rx="2"/><path d="M8.5 21h7"/><path d="M12 7.5v5m0 0 2-2m-2 2-2-2"/></svg></span>
               </div>
-              <h3 data-i="s1t">Install on your TV</h3>
-              <p data-i="s1b">Search LiberouTV in your TV's app store.</p>
+              <h3 data-i="s1t">Install on your device</h3>
+              <p data-i="s1b">See the path for yours in the list above.</p>
             </li>
             <li class="ri">
               <span class="dot" aria-hidden="true"></span>
@@ -787,7 +799,7 @@ body.paused *, body.paused *::before, body.paused *::after { animation-play-stat
           <div class="ri"><dt data-i="q1">Does LiberouTV come with channels or movies?</dt><dd data-i="a1">No. It is only the player. What you see on screen comes from the service you subscribe to.</dd></div>
           <div class="ri"><dt data-i="q2">Do I pay for the app?</dt><dd data-i="a2">No. The app is free and has no purchases inside it. The subscription is contracted with your provider.</dd></div>
           <div class="ri"><dt data-i="q3">Where do I get my sign-in details?</dt><dd data-i="a3">From your provider, who looks after your subscription.</dd></div>
-          <div class="ri"><dt data-i="q4">Does it work on my TV?</dt><dd data-i="a4">The app is on its way to the Samsung, LG, Roku and Android stores. Find yours in the list above.</dd></div>
+          <div class="ri"><dt data-i="q4">Does it work on my device?</dt><dd data-i="a4">The app is already available for Windows and Mac, and for TVs and TV boxes with Android through the Downloader app. The other platforms in the list above are on the way.</dd></div>
           <div class="ri"><dt data-i="q5">What do you keep about me?</dt><dd><span data-i="a5">The minimum for the app to work.</span> <a href="privacy.html" data-en="privacy.html" data-pt="privacidade.html" data-i="a5link">It is all in the privacy policy.</a></dd></div>
         </dl>
       </div>
@@ -807,7 +819,7 @@ body.paused *, body.paused *::before, body.paused *::after { animation-play-stat
         <p class="close-line ri" data-i="closeLine">When it reaches your store, just search LiberouTV.</p>
         <div class="ri">
           <a class="btn" href="#tv">
-            <span data-i="cta">Pick my TV</span>
+            <span data-i="cta">Pick my device</span>
             <span class="btn-ico" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 11.5v-9m0 0L3.5 6M7 2.5 10.5 6" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
           </a>
         </div>
@@ -826,7 +838,7 @@ body.paused *, body.paused *::before, body.paused *::after { animation-play-stat
           <a href="mailto:liberoutv@pm.me">liberoutv@pm.me</a>
         </nav>
       </div>
-      <p class="tm" data-i="tm">Samsung is a trademark of Samsung Electronics Co., Ltd. LG and webOS are trademarks of LG Electronics Inc. ROKU is a trademark and/or registered trademark of Roku, Inc. in the United States and other countries. Android is a trademark of Google LLC. LIBEROU TV is an independent app and is not affiliated with, sponsored or endorsed by these companies.</p>
+      <p class="tm" data-i="tm">Samsung is a trademark of Samsung Electronics Co., Ltd. LG and webOS are trademarks of LG Electronics Inc. ROKU is a trademark and/or registered trademark of Roku, Inc. in the United States and other countries. Android is a trademark of Google LLC. Apple, Mac, iPhone, iPad, Apple TV and App Store are trademarks of Apple Inc., registered in the U.S. and other countries and regions. Windows is a trademark of the Microsoft group of companies. LIBEROU TV is an independent app and is not affiliated with, sponsored or endorsed by these companies.</p>
       <p class="tm" data-i="made">The opening video is a digital creation. The app screen shown is illustrative.</p>
     </div>
   </footer>
