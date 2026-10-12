@@ -109,7 +109,7 @@ main { position: relative; z-index: 1; padding: clamp(120px, 16vw, 190px) 0 clam
 
 /* cartao do Windows: moldura dupla, como a TV da vitrine */
 .card {
-  margin-top: clamp(36px, 5vw, 64px); padding: 10px; border-radius: 28px;
+  margin-top: clamp(36px, 5vw, 64px); padding: 10px; border-radius: 28px; scroll-margin-top: 96px;
   background: linear-gradient(180deg, rgba(255,238,240,.1), rgba(255,238,240,.03));
   box-shadow: inset 0 0 0 1px var(--line), 0 40px 90px rgba(0,0,0,.5);
 }
@@ -238,12 +238,32 @@ main { position: relative; z-index: 1; padding: clamp(120px, 16vw, 190px) 0 clam
         </div>
       </section>
 
-      <section class="rows" aria-label="Other platforms" data-aria="othersLabel">
-        <div class="row ri" id="mac">
-          <span class="nm">Mac</span>
-          <span class="tx" data-i="macNote">For MacBook, iMac and Mac mini. The file will be on this page soon.</span>
-          <span class="chip" data-i="soonHere">Soon here</span>
+      <section class="card ri" id="mac" aria-labelledby="macName">
+        <div class="card-in">
+          <div>
+            <span class="chip on" data-i="available">Available</span>
+            <h2 id="macName">Mac</h2>
+            <p class="ds" data-i="macDesc">Every Mac with macOS 13 or later</p>
+            <p class="meta" id="macMeta"></p>
+            <a class="btn" id="macBtn" href="#mac">
+              <span data-i="macBtn">Download for Mac</span>
+              <span class="btn-ico" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2v7.5m0 0L3.8 6.3M7 9.5l3.2-3.2M2.5 12h9" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            </a>
+            <p class="sha"><span data-i="shaLabel">File check (SHA-256)</span><code id="macSha"></code></p>
+          </div>
+          <div class="how">
+            <h3 data-i="howTitle">How to install</h3>
+            <ol class="steps">
+              <li data-i="m1">Open the file you downloaded and drag LiberouTV to the Applications folder.</li>
+              <li data-i="m2">Open LiberouTV. Your Mac will say it could not verify the app: click OK.</li>
+              <li data-i="m3">Open System Settings, then Privacy &amp; Security, scroll to the end and click Open Anyway. Confirm with your Mac password. Only the first time.</li>
+            </ol>
+            <p class="note" data-i="macWarn">The warning appears because the app is not registered with Apple yet.</p>
+          </div>
         </div>
+      </section>
+
+      <section class="rows" aria-label="Other platforms" data-aria="othersLabel">
         <div class="row ri" id="android">
           <span class="nm">Android<sup>&trade;</sup></span>
           <span class="tx" data-i="andNote">For TVs and TV boxes: installed with the Downloader app, using a code that will be on this page soon. Coming soon to the app store.</span>
@@ -270,7 +290,7 @@ main { position: relative; z-index: 1; padding: clamp(120px, 16vw, 190px) 0 clam
           <a href="mailto:liberoutv@pm.me">liberoutv@pm.me</a>
         </nav>
       </div>
-      <p class="tm" data-i="tm">Samsung is a trademark of Samsung Electronics Co., Ltd. LG and webOS are trademarks of LG Electronics Inc. ROKU is a trademark and/or registered trademark of Roku, Inc. in the United States and other countries. Android is a trademark of Google LLC. Apple, Mac, iPhone, iPad, Apple TV and App Store are trademarks of Apple Inc., registered in the U.S. and other countries and regions. Windows is a trademark of the Microsoft group of companies. LIBEROU TV is an independent app and is not affiliated with, sponsored or endorsed by these companies.</p>
+      <p class="tm" data-i="tm">Samsung is a trademark of Samsung Electronics Co., Ltd. LG and webOS are trademarks of LG Electronics Inc. ROKU is a trademark and/or registered trademark of Roku, Inc. in the United States and other countries. Android is a trademark of Google LLC. Apple, Mac, macOS, iPhone, iPad, Apple TV and App Store are trademarks of Apple Inc., registered in the U.S. and other countries and regions. Windows is a trademark of the Microsoft group of companies. LIBEROU TV is an independent app and is not affiliated with, sponsored or endorsed by these companies.</p>
     </div>
   </footer>
 

@@ -113,7 +113,7 @@ var I18N = {
     a5link: "It is all in the privacy policy.",
     closeLine: "When it reaches your store, just search LiberouTV.",
     legal: "LIBEROU TV does not host, bundle or distribute channels, films or series. Illegal streaming services are not supported. Rated 16+.",
-    tm: "Samsung is a trademark of Samsung Electronics Co., Ltd. LG and webOS are trademarks of LG Electronics Inc. ROKU is a trademark and/or registered trademark of Roku, Inc. in the United States and other countries. Android is a trademark of Google LLC. Apple, Mac, iPhone, iPad, Apple TV and App Store are trademarks of Apple Inc., registered in the U.S. and other countries and regions. Windows is a trademark of the Microsoft group of companies. LIBEROU TV is an independent app and is not affiliated with, sponsored or endorsed by these companies.",
+    tm: "Samsung is a trademark of Samsung Electronics Co., Ltd. LG and webOS are trademarks of LG Electronics Inc. ROKU is a trademark and/or registered trademark of Roku, Inc. in the United States and other countries. Android is a trademark of Google LLC. Apple, Mac, macOS, iPhone, iPad, Apple TV and App Store are trademarks of Apple Inc., registered in the U.S. and other countries and regions. Windows is a trademark of the Microsoft group of companies. LIBEROU TV is an independent app and is not affiliated with, sponsored or endorsed by these companies.",
     made: "The opening video is a digital creation. The app screen shown is illustrative."
   },
   pt: {
@@ -230,7 +230,7 @@ var I18N = {
     a5link: "Está tudo na política de privacidade.",
     closeLine: "Quando chegar à sua loja, é só buscar LiberouTV.",
     legal: "O LIBEROU TV não hospeda, empacota nem distribui canais, filmes ou séries. Não apoiamos serviços ilegais. Classificação 16+.",
-    tm: "Samsung é marca da Samsung Electronics Co., Ltd. LG e webOS são marcas da LG Electronics Inc. ROKU é marca e/ou marca registrada da Roku, Inc. nos Estados Unidos e em outros países. Android é marca da Google LLC. Apple, Mac, iPhone, iPad, Apple TV e App Store são marcas da Apple Inc., registradas nos Estados Unidos e em outros países e regiões. Windows é marca do grupo de empresas Microsoft. O LIBEROU TV é um app independente, sem vínculo, patrocínio ou endosso dessas empresas.",
+    tm: "Samsung é marca da Samsung Electronics Co., Ltd. LG e webOS são marcas da LG Electronics Inc. ROKU é marca e/ou marca registrada da Roku, Inc. nos Estados Unidos e em outros países. Android é marca da Google LLC. Apple, Mac, macOS, iPhone, iPad, Apple TV e App Store são marcas da Apple Inc., registradas nos Estados Unidos e em outros países e regiões. Windows é marca do grupo de empresas Microsoft. O LIBEROU TV é um app independente, sem vínculo, patrocínio ou endosso dessas empresas.",
     made: "O vídeo de abertura é uma criação digital. A tela do app mostrada é ilustrativa."
   }
 };
@@ -245,7 +245,7 @@ var STORES = {
 /* estas duas nao passam por loja: saem por download direto */
 var DIRECT = { windows: true, mac: true };
 /* plataformas que ja tem arquivo na pagina de downloads */
-var LINKS = { windows: "downloads.html#windows" };
+var LINKS = { windows: "downloads.html#windows", mac: "downloads.html#mac" };
 
 function $(sel, root) { return (root || document).querySelector(sel); }
 function $$(sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }

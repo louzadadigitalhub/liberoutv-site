@@ -9,6 +9,12 @@ var FILES = {
     version: "1.0.1",
     size: "108 MB",
     sha256: "e41d1c2ddb80eab2b3cee83de0e16ee2e3156638eb09b923e1a493ad428ef1e6"
+  },
+  mac: {
+    url: "downloads/LiberouTV-1.0.0.dmg",
+    version: "1.0.0",
+    size: "5 MB",
+    sha256: "2735eba7a97354df9ebf773605c57f49d2ea44609514e52cd747bd0ef9013522"
   }
 };
 
@@ -29,7 +35,7 @@ var I18N = {
     soon: "Coming soon",
     soonHere: "Soon here",
     winDesc: "Windows 10 or 11, 64-bit",
-    winMeta: "Version {version} \u00b7 {size}",
+    meta: "Version {version} \u00b7 {size}",
     winBtn: "Download for Windows",
     shaLabel: "File check (SHA-256)",
     howTitle: "How to install",
@@ -37,14 +43,19 @@ var I18N = {
     w2: "If Windows shows a blue warning, click More info and then Run anyway.",
     w3: "The app installs by itself and opens. Sign in with the details from your provider.",
     warn: "The warning appears because the installer does not have a digital signature yet.",
-    macNote: "For MacBook, iMac and Mac mini. The file will be on this page soon.",
+    macDesc: "Every Mac with macOS 13 or later",
+    macBtn: "Download for Mac",
+    m1: "Open the file you downloaded and drag LiberouTV to the Applications folder.",
+    m2: "Open LiberouTV. Your Mac will say it could not verify the app: click OK.",
+    m3: "Open System Settings, then Privacy & Security, scroll to the end and click Open Anyway. Confirm with your Mac password. Only the first time.",
+    macWarn: "The warning appears because the app is not registered with Apple yet.",
     andNote: "For TVs and TV boxes: installed with the Downloader app, using a code that will be on this page soon. Coming soon to the app store.",
     othersName: "App stores",
     othersNote: "Samsung, LG, Roku, Apple TV and iPhone are on the way.",
     othersLink: "See every device.",
     /* estes dois sao iguais aos de assets/site.js */
     legal: "LIBEROU TV does not host, bundle or distribute channels, films or series. Illegal streaming services are not supported. Rated 16+.",
-    tm: "Samsung is a trademark of Samsung Electronics Co., Ltd. LG and webOS are trademarks of LG Electronics Inc. ROKU is a trademark and/or registered trademark of Roku, Inc. in the United States and other countries. Android is a trademark of Google LLC. Apple, Mac, iPhone, iPad, Apple TV and App Store are trademarks of Apple Inc., registered in the U.S. and other countries and regions. Windows is a trademark of the Microsoft group of companies. LIBEROU TV is an independent app and is not affiliated with, sponsored or endorsed by these companies."
+    tm: "Samsung is a trademark of Samsung Electronics Co., Ltd. LG and webOS are trademarks of LG Electronics Inc. ROKU is a trademark and/or registered trademark of Roku, Inc. in the United States and other countries. Android is a trademark of Google LLC. Apple, Mac, macOS, iPhone, iPad, Apple TV and App Store are trademarks of Apple Inc., registered in the U.S. and other countries and regions. Windows is a trademark of the Microsoft group of companies. LIBEROU TV is an independent app and is not affiliated with, sponsored or endorsed by these companies."
   },
   pt: {
     docTitle: "LIBEROU TV: downloads",
@@ -62,7 +73,7 @@ var I18N = {
     soon: "Em breve",
     soonHere: "Em breve aqui",
     winDesc: "Windows 10 ou 11, de 64 bits",
-    winMeta: "Versão {version} \u00b7 {size}",
+    meta: "Versão {version} \u00b7 {size}",
     winBtn: "Baixar para Windows",
     shaLabel: "Conferência do arquivo (SHA-256)",
     howTitle: "Como instalar",
@@ -70,13 +81,18 @@ var I18N = {
     w2: "Se o Windows mostrar um aviso azul, clique em Mais informações e depois em Executar assim mesmo.",
     w3: "O app instala sozinho e abre. Entre com os dados do seu provedor.",
     warn: "O aviso aparece porque o instalador ainda não tem assinatura digital.",
-    macNote: "Para MacBook, iMac e Mac mini. O arquivo entra nesta página em breve.",
+    macDesc: "Todo Mac com macOS 13 ou mais recente",
+    macBtn: "Baixar para Mac",
+    m1: "Abra o arquivo baixado e arraste o LiberouTV para a pasta Aplicativos.",
+    m2: "Abra o LiberouTV. O Mac vai avisar que não pôde verificar o aplicativo: clique em OK.",
+    m3: "Abra Ajustes do Sistema, depois Privacidade e Segurança, role até o fim e clique em Abrir Mesmo Assim. Confirme com a senha do Mac. É só na primeira vez.",
+    macWarn: "O aviso aparece porque o app ainda não tem o registro da Apple.",
     andNote: "Para TVs e TV boxes: instala pelo app Downloader, com um código que entra nesta página em breve. Na loja de apps, em breve.",
     othersName: "Lojas de apps",
     othersNote: "Samsung, LG, Roku, Apple TV e iPhone estão a caminho.",
     othersLink: "Ver todos os aparelhos.",
     legal: "O LIBEROU TV não hospeda, empacota nem distribui canais, filmes ou séries. Não apoiamos serviços ilegais. Classificação 16+.",
-    tm: "Samsung é marca da Samsung Electronics Co., Ltd. LG e webOS são marcas da LG Electronics Inc. ROKU é marca e/ou marca registrada da Roku, Inc. nos Estados Unidos e em outros países. Android é marca da Google LLC. Apple, Mac, iPhone, iPad, Apple TV e App Store são marcas da Apple Inc., registradas nos Estados Unidos e em outros países e regiões. Windows é marca do grupo de empresas Microsoft. O LIBEROU TV é um app independente, sem vínculo, patrocínio ou endosso dessas empresas."
+    tm: "Samsung é marca da Samsung Electronics Co., Ltd. LG e webOS são marcas da LG Electronics Inc. ROKU é marca e/ou marca registrada da Roku, Inc. nos Estados Unidos e em outros países. Android é marca da Google LLC. Apple, Mac, macOS, iPhone, iPad, Apple TV e App Store são marcas da Apple Inc., registradas nos Estados Unidos e em outros países e regiões. Windows é marca do grupo de empresas Microsoft. O LIBEROU TV é um app independente, sem vínculo, patrocínio ou endosso dessas empresas."
   }
 };
 
@@ -103,8 +119,10 @@ function applyLang(next) {
   });
   $("#btnEn").setAttribute("aria-pressed", lang === "en" ? "true" : "false");
   $("#btnPt").setAttribute("aria-pressed", lang === "pt" ? "true" : "false");
-  var win = FILES.windows;
-  $("#winMeta").textContent = t("winMeta").replace("{version}", win.version).replace("{size}", win.size);
+  Object.keys(FILES).forEach(function (key) {
+    var file = FILES[key], id = key === "windows" ? "win" : key;
+    $("#" + id + "Meta").textContent = t("meta").replace("{version}", file.version).replace("{size}", file.size);
+  });
 }
 /* a escolha de idioma e a mesma da pagina principal */
 function chooseLang(next) {
@@ -113,8 +131,11 @@ function chooseLang(next) {
 }
 
 document.documentElement.className += " js";
-$("#winBtn").setAttribute("href", FILES.windows.url);
-$("#winSha").textContent = FILES.windows.sha256;
+Object.keys(FILES).forEach(function (key) {
+  var file = FILES[key], id = key === "windows" ? "win" : key;
+  $("#" + id + "Btn").setAttribute("href", file.url);
+  $("#" + id + "Sha").textContent = file.sha256;
+});
 $("#btnEn").addEventListener("click", function () { chooseLang("en"); });
 $("#btnPt").addEventListener("click", function () { chooseLang("pt"); });
 applyLang((function () {
