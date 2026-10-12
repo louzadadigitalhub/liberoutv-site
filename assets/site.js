@@ -60,9 +60,11 @@ var I18N = {
     download: "By download",
     leadSoon: "Not in the store yet. When it arrives, this is the path:",
     leadLive: "It is in the store. This is the path:",
-    leadDownload: "Coming soon to the app store. It can already be installed with the Downloader app, using a code that will be on this page soon.",
+    leadDownload: "Coming soon to the app store. It can already be installed with the Downloader app, using a code that will be on the downloads page soon.",
     leadSoonDirect: "Not available yet. When it arrives, this is the path:",
-    leadLiveDirect: "Available now. The downloads area of this site opens soon.",
+    leadLiveDirect: "Available now. The file will be on the downloads page soon.",
+    leadLiveLink: "Available now. Get it on the downloads page.",
+    pnLink: "Go to downloads",
     samsungS1: "Press Home and open Apps.",
     samsungS2: "Search LiberouTV.",
     samsungS3: "Install and open.",
@@ -175,9 +177,11 @@ var I18N = {
     download: "Por download",
     leadSoon: "Ainda não está na loja. Quando chegar, o caminho é este:",
     leadLive: "Já está na loja. O caminho é este:",
-    leadDownload: "Na loja de apps, em breve. Já dá para instalar pelo app Downloader, com um código que entra nesta página em breve.",
+    leadDownload: "Na loja de apps, em breve. Já dá para instalar pelo app Downloader, com um código que entra na página de downloads em breve.",
     leadSoonDirect: "Ainda não está disponível. Quando chegar, o caminho é este:",
-    leadLiveDirect: "Já está disponível. A área de downloads deste site abre em breve.",
+    leadLiveDirect: "Já está disponível. O arquivo entra na página de downloads em breve.",
+    leadLiveLink: "Já está disponível. Baixe na página de downloads.",
+    pnLink: "Ir para os downloads",
     samsungS1: "Aperte Home e abra Apps.",
     samsungS2: "Busque LiberouTV.",
     samsungS3: "Instale e abra.",
@@ -240,6 +244,8 @@ var STORES = {
 };
 /* estas duas nao passam por loja: saem por download direto */
 var DIRECT = { windows: true, mac: true };
+/* plataformas que ja tem arquivo na pagina de downloads */
+var LINKS = { windows: "downloads.html#windows" };
 
 function $(sel, root) { return (root || document).querySelector(sel); }
 function $$(sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
@@ -607,6 +613,7 @@ function renderStores() {
 function leadKey(dev) {
   var state = STORES[dev];
   if (state === "download") return "leadDownload";
+  if (DIRECT[dev] && state === "live" && LINKS[dev]) return "leadLiveLink";
   if (DIRECT[dev]) return state === "live" ? "leadLiveDirect" : "leadSoonDirect";
   return state === "live" ? "leadLive" : "leadSoon";
 }
@@ -630,6 +637,9 @@ function renderDevice(dev, animate) {
   /* os passos do download (D) valem enquanto a loja nao publica; depois, os da loja (S) */
   var path = STORES[dev] === "download" ? "D" : "S";
   $$("#pnSteps li").forEach(function (li, i) { li.textContent = t(dev + path + (i + 1)); });
+  var link = $("#pnLink");
+  link.hidden = !LINKS[dev];
+  if (LINKS[dev]) link.setAttribute("href", LINKS[dev]);
   if (animate) {
     void panel.offsetWidth;
     panel.classList.remove("out");

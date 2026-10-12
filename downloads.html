@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LIBEROU TV: downloads</title>
+<meta name="description" content="Download LIBEROU TV, a free media player. It does not include any catalog. You sign in with the details from your provider.">
+<meta name="theme-color" content="#0c090a">
+<link rel="canonical" href="https://app.liberoutv.com/downloads.html">
+<link rel="icon" href="img/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png">
+<link rel="apple-touch-icon" href="img/favicon-180.png">
+<link rel="preload" href="fonts/poppins-700.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/poppins-400.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+@font-face { font-family: Poppins; font-weight: 400; src: url("fonts/poppins-400.woff2") format("woff2"); font-display: swap; }
+@font-face { font-family: Poppins; font-weight: 500; src: url("fonts/poppins-500.woff2") format("woff2"); font-display: swap; }
+@font-face { font-family: Poppins; font-weight: 600; src: url("fonts/poppins-600.woff2") format("woff2"); font-display: swap; }
+@font-face { font-family: Poppins; font-weight: 700; src: url("fonts/poppins-700.woff2") format("woff2"); font-display: swap; }
+@font-face { font-family: "JetBrains Mono"; font-weight: 500; src: url("fonts/jetbrains-mono-500.woff2") format("woff2"); font-display: swap; }
+
+/* mesmas cores, fontes e curvas da pagina principal */
+:root {
+  --canvas: #0c090a;
+  --accent: #e31c3a;
+  --accent-hover: #f0344a;
+  --text-primary: #f5f1f1;
+  --text-secondary: #c6bfc1;
+  --text-faint: #9a9093;
+  --line: rgba(255,238,240,.11);
+  --line-strong: rgba(255,238,240,.4);
+  --ease: cubic-bezier(.32, .72, 0, 1);
+  --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { color-scheme: dark; scrollbar-color: #5a1a22 transparent; }
+html, body { overflow-x: hidden; overflow-x: clip; }
+body {
+  min-height: 100vh; background: var(--canvas); color: var(--text-primary);
+  font-family: Poppins, system-ui, sans-serif; font-size: 17px; line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+::selection { background: var(--accent); color: #fff; }
+:focus-visible { outline: 2px solid var(--accent-hover); outline-offset: 3px; border-radius: 4px; }
+img { max-width: 100%; display: block; }
+a { color: inherit; }
+button { font-family: inherit; }
+h1, h2 { font-weight: 700; letter-spacing: -.03em; line-height: 1.06; text-wrap: balance; }
+.wrap { width: min(1040px, calc(100% - 48px)); margin: 0 auto; }
+.skip {
+  position: fixed; left: 16px; top: 12px; z-index: 30; padding: 10px 16px; border-radius: 10px;
+  background: var(--text-primary); color: var(--canvas); font-weight: 600; text-decoration: none;
+  transform: translateY(-200%); transition: transform .4s var(--ease);
+}
+.skip:focus { transform: none; }
+.kicker {
+  display: inline-block; padding: 6px 12px; border-radius: 999px;
+  background: rgba(255,238,240,.04); box-shadow: inset 0 0 0 1px var(--line);
+  font-family: var(--mono); font-size: 10.5px; font-weight: 500;
+  letter-spacing: .2em; text-transform: uppercase; color: var(--text-secondary);
+}
+
+.ambient { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+.ambient::before {
+  content: ""; position: absolute; left: -30vmax; top: -30vmax; width: 90vmax; height: 90vmax; border-radius: 50%;
+  background: radial-gradient(circle, rgba(227,28,58,.16) 0%, rgba(227,28,58,0) 62%);
+}
+
+.nav { position: fixed; inset: 14px 0 auto 0; z-index: 20; pointer-events: none; }
+.nav-in {
+  pointer-events: auto; width: min(1040px, calc(100% - 28px)); margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding: 9px 10px 9px 20px; border-radius: 999px; background: rgba(18,12,14,.6);
+  box-shadow: inset 0 0 0 1px var(--line), inset 0 1px 0 rgba(255,255,255,.07), 0 18px 50px rgba(0,0,0,.35);
+  -webkit-backdrop-filter: blur(18px) saturate(1.2); backdrop-filter: blur(18px) saturate(1.2);
+}
+.brand { display: flex; align-items: center; height: 30px; }
+.brand img { height: 30px; width: auto; }
+.nav-links { display: flex; align-items: center; gap: 28px; font-size: 15px; font-weight: 500; color: var(--text-secondary); }
+.nav-links a { text-decoration: none; transition: color .4s var(--ease); }
+.nav-links a:hover { color: var(--text-primary); }
+.lang { display: flex; gap: 6px; }
+.lang button {
+  background: transparent; color: var(--text-faint); border: 1px solid transparent;
+  padding: 6px 12px; font-size: 12px; font-weight: 600; cursor: pointer; border-radius: 999px;
+  transition: color .4s var(--ease), background-color .4s var(--ease), border-color .4s var(--ease);
+}
+.lang button[aria-pressed="true"] { background: #1b1416; color: var(--text-primary); border-color: var(--line-strong); }
+.lang button:not([aria-pressed="true"]):hover { color: var(--text-primary); }
+
+main { position: relative; z-index: 1; padding: clamp(120px, 16vw, 190px) 0 clamp(64px, 9vw, 120px); }
+.head h1 { font-size: clamp(40px, 7vw, 92px); letter-spacing: -.045em; margin: 16px 0 18px; }
+.head .lede { color: var(--text-secondary); font-size: clamp(16px, 1.4vw, 19px); max-width: 46ch; }
+
+.btn {
+  display: inline-flex; align-items: center; gap: 12px;
+  padding: 14px 14px 14px 26px; border-radius: 999px;
+  background: var(--accent); color: #fff; font-weight: 600; font-size: 15px; text-decoration: none;
+  transition: transform .4s var(--ease), background-color .4s var(--ease);
+}
+.btn:hover { background: var(--accent-hover); }
+.btn:active { transform: scale(.98); }
+.btn-ico {
+  width: 32px; height: 32px; border-radius: 50%; flex: none;
+  background: rgba(255,255,255,.16); display: grid; place-items: center;
+  transition: transform .4s var(--ease);
+}
+.btn:hover .btn-ico { transform: translateY(2px) scale(1.06); }
+
+/* cartao do Windows: moldura dupla, como a TV da vitrine */
+.card {
+  margin-top: clamp(36px, 5vw, 64px); padding: 10px; border-radius: 28px;
+  background: linear-gradient(180deg, rgba(255,238,240,.1), rgba(255,238,240,.03));
+  box-shadow: inset 0 0 0 1px var(--line), 0 40px 90px rgba(0,0,0,.5);
+}
+.card-in {
+  display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: clamp(24px, 4vw, 56px);
+  padding: clamp(24px, 3.4vw, 44px); border-radius: 18px;
+  background: radial-gradient(ellipse 90% 90% at 10% 0%, rgba(227,28,58,.2), rgba(227,28,58,0) 70%), #130d0f;
+  box-shadow: inset 0 1px 1px rgba(255,255,255,.12);
+}
+.card h2 { font-size: clamp(34px, 4.4vw, 60px); margin: 14px 0 6px; }
+.card .ds { color: var(--text-secondary); }
+.card .meta { font-family: var(--mono); font-size: 12px; letter-spacing: .06em; color: var(--text-faint); margin: 6px 0 26px; }
+.chip {
+  display: inline-block; padding: 6px 10px; border-radius: 6px; border: 1px solid var(--line-strong);
+  font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--text-secondary);
+}
+.chip.on { border-color: var(--accent); color: var(--text-primary); }
+.how h3 { font-size: 13px; font-family: var(--mono); font-weight: 500; letter-spacing: .16em; text-transform: uppercase; color: var(--text-faint); margin-bottom: 6px; }
+.steps { list-style: none; counter-reset: s; }
+.steps li {
+  counter-increment: s; display: grid; grid-template-columns: 36px 1fr; column-gap: 12px;
+  align-items: baseline; padding: 14px 0; border-top: 1px solid var(--line);
+}
+.steps li::before { content: "0" counter(s); font-family: var(--mono); font-size: 12px; color: var(--text-faint); }
+.note { color: var(--text-faint); font-size: 14px; padding-top: 14px; border-top: 1px solid var(--line); }
+.sha { margin-top: 18px; }
+.sha span { display: block; font-size: 12px; color: var(--text-faint); margin-bottom: 4px; }
+.sha code { font-family: var(--mono); font-size: 11.5px; color: var(--text-secondary); overflow-wrap: anywhere; line-height: 1.5; }
+
+/* as outras plataformas: linhas, nao cartoes */
+.rows { margin-top: clamp(40px, 6vw, 80px); border-top: 1px solid var(--line); }
+.row {
+  display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 7fr) auto; gap: 8px clamp(16px, 3vw, 40px);
+  align-items: baseline; padding: 24px 0; border-bottom: 1px solid var(--line);
+}
+.row .nm { font-size: clamp(22px, 2.3vw, 32px); font-weight: 600; letter-spacing: -.025em; }
+.row .nm sup { font-size: .4em; font-weight: 500; vertical-align: super; margin-left: 2px; }
+.row .tx { color: var(--text-secondary); font-size: 15px; max-width: 52ch; }
+.row .tx a { color: var(--text-primary); text-underline-offset: 3px; }
+
+.legal {
+  margin-top: clamp(48px, 7vw, 96px); background: rgba(12,9,10,.58); border: 1px solid var(--line);
+  border-radius: 16px; padding: 24px 28px;
+}
+.legal p { font-size: 14px; max-width: 80ch; }
+.foot { position: relative; z-index: 1; border-top: 1px solid var(--line); padding: 30px 0 56px; color: var(--text-faint); font-size: 14px; }
+.foot-row { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 14px 24px; margin-bottom: 22px; }
+.foot nav { display: flex; gap: 24px; flex-wrap: wrap; }
+.foot a { color: var(--text-secondary); text-decoration: none; transition: color .4s var(--ease); }
+.foot a:hover { color: var(--text-primary); }
+.foot .tm { font-size: 12px; line-height: 1.6; max-width: 96ch; margin-top: 8px; }
+
+.js .ri { opacity: 0; transform: translateY(20px); transition: opacity .9s var(--ease), transform .9s var(--ease); transition-delay: calc(var(--i, 0) * 90ms); }
+.js .in .ri, .js .ri.in { opacity: 1; transform: none; }
+
+@media (max-width: 860px) {
+  .card-in { grid-template-columns: minmax(0, 1fr); }
+  .row { grid-template-columns: minmax(0, 1fr) auto; }
+  .row .tx { grid-column: 1 / -1; grid-row: 2; }
+}
+@media (max-width: 720px) {
+  .wrap { width: calc(100% - 32px); }
+  .nav-links a { display: none; }
+  .brand, .brand img { height: 24px; }
+}
+@media (pointer: coarse) {
+  .btn, .lang button, .foot a { min-height: 44px; display: inline-flex; align-items: center; justify-content: center; }
+  .lang button { min-width: 44px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; transition-delay: 0s !important; }
+  .js .ri { opacity: 1; transform: none; }
+}
+</style>
+</head>
+<body>
+  <a class="skip" href="#main" data-i="skip">Skip to content</a>
+  <div class="ambient" aria-hidden="true"></div>
+
+  <header class="nav">
+    <div class="nav-in">
+      <a class="brand" href="index.html" aria-label="LIBEROU TV">
+        <img src="img/logo-nav-sm.png" width="180" height="56" alt="LiberouTV">
+      </a>
+      <nav class="nav-links" aria-label="Main" data-aria="navLabel">
+        <a href="index.html#tv" data-i="navTv">Devices</a>
+        <a href="index.html#faq" data-i="navFaq">Questions</a>
+        <div class="lang" role="group" aria-label="Language" data-aria="langLabel">
+          <button type="button" id="btnPt" aria-pressed="false" lang="pt-BR">PT</button>
+          <button type="button" id="btnEn" aria-pressed="true" lang="en">EN</button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" tabindex="-1">
+    <div class="wrap">
+      <header class="head">
+        <p class="kicker ri">DOWNLOADS</p>
+        <h1 class="ri" data-i="title">Get LiberouTV.</h1>
+        <p class="lede ri" data-i="lede">The app is free and does not come with any content. You sign in with the details from your provider.</p>
+      </header>
+
+      <section class="card ri" id="windows" aria-labelledby="winName">
+        <div class="card-in">
+          <div>
+            <span class="chip on" data-i="available">Available</span>
+            <h2 id="winName">Windows</h2>
+            <p class="ds" data-i="winDesc">Windows 10 or 11, 64-bit</p>
+            <p class="meta" id="winMeta"></p>
+            <a class="btn" id="winBtn" href="#windows">
+              <span data-i="winBtn">Download for Windows</span>
+              <span class="btn-ico" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2v7.5m0 0L3.8 6.3M7 9.5l3.2-3.2M2.5 12h9" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            </a>
+            <p class="sha"><span data-i="shaLabel">File check (SHA-256)</span><code id="winSha"></code></p>
+          </div>
+          <div class="how">
+            <h3 data-i="howTitle">How to install</h3>
+            <ol class="steps">
+              <li data-i="w1">Open the file you downloaded.</li>
+              <li data-i="w2">If Windows shows a blue warning, click More info and then Run anyway.</li>
+              <li data-i="w3">The app installs by itself and opens. Sign in with the details from your provider.</li>
+            </ol>
+            <p class="note" data-i="warn">The warning appears because the installer does not have a digital signature yet.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="rows" aria-label="Other platforms" data-aria="othersLabel">
+        <div class="row ri" id="mac">
+          <span class="nm">Mac</span>
+          <span class="tx" data-i="macNote">For MacBook, iMac and Mac mini. The file will be on this page soon.</span>
+          <span class="chip" data-i="soonHere">Soon here</span>
+        </div>
+        <div class="row ri" id="android">
+          <span class="nm">Android<sup>&trade;</sup></span>
+          <span class="tx" data-i="andNote">For TVs and TV boxes: installed with the Downloader app, using a code that will be on this page soon. Coming soon to the app store.</span>
+          <span class="chip" data-i="soonHere">Soon here</span>
+        </div>
+        <div class="row ri" id="stores">
+          <span class="nm" data-i="othersName">App stores</span>
+          <span class="tx"><span data-i="othersNote">Samsung, LG, Roku, Apple TV and iPhone are on the way.</span> <a href="index.html#tv" data-i="othersLink">See every device.</a></span>
+          <span class="chip" data-i="soon">Coming soon</span>
+        </div>
+      </section>
+
+      <div class="legal ri"><p data-i="legal">LIBEROU TV does not host, bundle or distribute channels, films or series. Illegal streaming services are not supported. Rated 16+.</p></div>
+    </div>
+  </main>
+
+  <footer class="foot">
+    <div class="wrap">
+      <div class="foot-row">
+        <p>&copy; 2026 LIBEROU TV</p>
+        <nav aria-label="Legal">
+          <a href="privacy.html" data-i="navPrivacy" data-en="privacy.html" data-pt="privacidade.html">Privacy</a>
+          <a href="terms.html" data-i="navTerms" data-en="terms.html" data-pt="termos.html">Terms</a>
+          <a href="mailto:liberoutv@pm.me">liberoutv@pm.me</a>
+        </nav>
+      </div>
+      <p class="tm" data-i="tm">Samsung is a trademark of Samsung Electronics Co., Ltd. LG and webOS are trademarks of LG Electronics Inc. ROKU is a trademark and/or registered trademark of Roku, Inc. in the United States and other countries. Android is a trademark of Google LLC. Apple, Mac, iPhone, iPad, Apple TV and App Store are trademarks of Apple Inc., registered in the U.S. and other countries and regions. Windows is a trademark of the Microsoft group of companies. LIBEROU TV is an independent app and is not affiliated with, sponsored or endorsed by these companies.</p>
+    </div>
+  </footer>
+
+<script src="assets/downloads.js"></script>
+</body>
+</html>
