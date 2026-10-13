@@ -146,7 +146,7 @@ main { position: relative; z-index: 1; padding: clamp(120px, 16vw, 190px) 0 clam
   align-items: baseline; padding: 24px 0; border-bottom: 1px solid var(--line);
 }
 .row .nm { font-size: clamp(22px, 2.3vw, 32px); font-weight: 600; letter-spacing: -.025em; }
-.row .nm sup { font-size: .4em; font-weight: 500; vertical-align: super; margin-left: 2px; }
+.row .nm sup, .card h2 sup { font-size: .4em; font-weight: 500; vertical-align: super; margin-left: 2px; }
 .row .tx { color: var(--text-secondary); font-size: 15px; max-width: 52ch; }
 .row .tx a { color: var(--text-primary); text-underline-offset: 3px; }
 
@@ -263,12 +263,32 @@ main { position: relative; z-index: 1; padding: clamp(120px, 16vw, 190px) 0 clam
         </div>
       </section>
 
-      <section class="rows" aria-label="Other platforms" data-aria="othersLabel">
-        <div class="row ri" id="android">
-          <span class="nm">Android<sup>&trade;</sup></span>
-          <span class="tx" data-i="andNote">For TVs and TV boxes: installed with the Downloader app, using a code that will be on this page soon. Coming soon to the app store.</span>
-          <span class="chip" data-i="soonHere">Soon here</span>
+      <section class="card ri" id="android" aria-labelledby="androidName">
+        <div class="card-in">
+          <div>
+            <span class="chip on" data-i="available">Available</span>
+            <h2 id="androidName">Android<sup>&trade;</sup></h2>
+            <p class="ds" data-i="andDesc">Phones, tablets, Android TV and TV boxes, with Android 5 or later</p>
+            <p class="meta" id="androidMeta"></p>
+            <a class="btn" id="androidBtn" href="#android">
+              <span data-i="andBtn">Download for Android</span>
+              <span class="btn-ico" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2v7.5m0 0L3.8 6.3M7 9.5l3.2-3.2M2.5 12h9" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            </a>
+            <p class="sha"><span data-i="shaLabel">File check (SHA-256)</span><code id="androidSha"></code></p>
+          </div>
+          <div class="how">
+            <h3 data-i="howTitle">How to install</h3>
+            <ol class="steps">
+              <li data-i="and1">On a phone, open the file you downloaded. On a TV or TV box, open the Downloader app, type app.liberoutv.com/downloads and download it there.</li>
+              <li data-i="and2">Android will ask for permission to install apps from this source: allow it and tap Install.</li>
+              <li data-i="and3">Open the app and sign in with the provider code, username and password.</li>
+            </ol>
+            <p class="note" data-i="andWarn">The permission request appears because the app is not in the app store yet.</p>
+          </div>
         </div>
+      </section>
+
+      <section class="rows" aria-label="Other platforms" data-aria="othersLabel">
         <div class="row ri" id="stores">
           <span class="nm" data-i="othersName">App stores</span>
           <span class="tx"><span data-i="othersNote">Samsung, LG, Roku, Apple TV and iPhone are on the way.</span> <a href="index.html#tv" data-i="othersLink">See every device.</a></span>

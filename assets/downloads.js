@@ -2,7 +2,7 @@
    do site nao deixa script embutido no HTML. */
 
 /* O arquivo de cada plataforma. Versao nova: trocar url, version, size e sha256
-   aqui, e a linha do instalador em nginx/default.conf. */
+   aqui. O arquivo em si sobe para o servico "downloads", fora deste repositorio. */
 var FILES = {
   windows: {
     url: "downloads/LiberouTV-Setup-1.0.1.exe",
@@ -15,6 +15,12 @@ var FILES = {
     version: "1.0.0",
     size: "5 MB",
     sha256: "2735eba7a97354df9ebf773605c57f49d2ea44609514e52cd747bd0ef9013522"
+  },
+  android: {
+    url: "downloads/LiberouTV-2.5.0.apk",
+    version: "2.5.0",
+    size: "38 MB",
+    sha256: "2d91c628bb6404394b27d341504fbc147473d8debf3a807ba6221e4234242879"
   }
 };
 
@@ -33,7 +39,6 @@ var I18N = {
     lede: "The app is free and does not come with any content. You sign in with the details from your provider.",
     available: "Available",
     soon: "Coming soon",
-    soonHere: "Soon here",
     winDesc: "Windows 10 or 11, 64-bit",
     meta: "Version {version} \u00b7 {size}",
     winBtn: "Download for Windows",
@@ -49,7 +54,12 @@ var I18N = {
     m2: "Open LiberouTV. Your Mac will say it could not verify the app: click OK.",
     m3: "Open System Settings, then Privacy & Security, scroll to the end and click Open Anyway. Confirm with your Mac password. Only the first time.",
     macWarn: "The warning appears because the app is not registered with Apple yet.",
-    andNote: "For TVs and TV boxes: installed with the Downloader app, using a code that will be on this page soon. Coming soon to the app store.",
+    andDesc: "Phones, tablets, Android TV and TV boxes, with Android 5 or later",
+    andBtn: "Download for Android",
+    and1: "On a phone, open the file you downloaded. On a TV or TV box, open the Downloader app, type app.liberoutv.com/downloads and download it there.",
+    and2: "Android will ask for permission to install apps from this source: allow it and tap Install.",
+    and3: "Open the app and sign in with the provider code, username and password.",
+    andWarn: "The permission request appears because the app is not in the app store yet.",
     othersName: "App stores",
     othersNote: "Samsung, LG, Roku, Apple TV and iPhone are on the way.",
     othersLink: "See every device.",
@@ -71,7 +81,6 @@ var I18N = {
     lede: "O app é grátis e não traz conteúdo. Você entra com os dados do seu provedor.",
     available: "Disponível",
     soon: "Em breve",
-    soonHere: "Em breve aqui",
     winDesc: "Windows 10 ou 11, de 64 bits",
     meta: "Versão {version} \u00b7 {size}",
     winBtn: "Baixar para Windows",
@@ -87,7 +96,12 @@ var I18N = {
     m2: "Abra o LiberouTV. O Mac vai avisar que não pôde verificar o aplicativo: clique em OK.",
     m3: "Abra Ajustes do Sistema, depois Privacidade e Segurança, role até o fim e clique em Abrir Mesmo Assim. Confirme com a senha do Mac. É só na primeira vez.",
     macWarn: "O aviso aparece porque o app ainda não tem o registro da Apple.",
-    andNote: "Para TVs e TV boxes: instala pelo app Downloader, com um código que entra nesta página em breve. Na loja de apps, em breve.",
+    andDesc: "Celular, tablet, Android TV e TV box, com Android 5 ou mais recente",
+    andBtn: "Baixar para Android",
+    and1: "No celular, abra o arquivo baixado. Na TV ou TV box, abra o app Downloader, digite app.liberoutv.com/downloads e baixe por lá.",
+    and2: "O Android vai pedir permissão para instalar apps desta fonte: permita e toque em Instalar.",
+    and3: "Abra o app e entre com o código do provedor, o usuário e a senha.",
+    andWarn: "O pedido de permissão aparece porque o app ainda não está na loja de apps.",
     othersName: "Lojas de apps",
     othersNote: "Samsung, LG, Roku, Apple TV e iPhone estão a caminho.",
     othersLink: "Ver todos os aparelhos.",

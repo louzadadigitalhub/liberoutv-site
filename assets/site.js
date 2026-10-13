@@ -60,7 +60,7 @@ var I18N = {
     download: "By download",
     leadSoon: "Not in the store yet. When it arrives, this is the path:",
     leadLive: "It is in the store. This is the path:",
-    leadDownload: "Coming soon to the app store. It can already be installed with the Downloader app, using a code that will be on the downloads page soon.",
+    leadDownload: "Coming soon to the app store. It can already be installed: get the file on the downloads page. On a TV, use the Downloader app.",
     leadSoonDirect: "Not available yet. When it arrives, this is the path:",
     leadLiveDirect: "Available now. The file will be on the downloads page soon.",
     leadLiveLink: "Available now. Get it on the downloads page.",
@@ -77,8 +77,8 @@ var I18N = {
     androidS1: "Open the app store on your TV.",
     androidS2: "Search LiberouTV.",
     androidS3: "Install and open.",
-    androidD1: "Install the Downloader app on your TV or TV box.",
-    androidD2: "Type the LiberouTV code and install.",
+    androidD1: "Open the downloads page on the device. On a TV or TV box, do it with the Downloader app.",
+    androidD2: "Download LiberouTV and install it.",
     androidD3: "Open the app and sign in with the details from your provider.",
     appletvS1: "Open the App Store on your Apple TV.",
     appletvS2: "Search LiberouTV.",
@@ -107,7 +107,7 @@ var I18N = {
     q3: "Where do I get my sign-in details?",
     a3: "From your provider, who looks after your subscription.",
     q4: "Does it work on my device?",
-    a4: "The app is already available for Windows and Mac, and for TVs and TV boxes with Android through the Downloader app. The other platforms in the list above are on the way.",
+    a4: "The app is already available for Windows, Mac and Android, on the downloads page. The other platforms in the list above are on the way.",
     q5: "What do you keep about me?",
     a5: "The minimum for the app to work.",
     a5link: "It is all in the privacy policy.",
@@ -177,7 +177,7 @@ var I18N = {
     download: "Por download",
     leadSoon: "Ainda não está na loja. Quando chegar, o caminho é este:",
     leadLive: "Já está na loja. O caminho é este:",
-    leadDownload: "Na loja de apps, em breve. Já dá para instalar pelo app Downloader, com um código que entra na página de downloads em breve.",
+    leadDownload: "Na loja de apps, em breve. Já dá para instalar: baixe o arquivo na página de downloads. Na TV, use o app Downloader.",
     leadSoonDirect: "Ainda não está disponível. Quando chegar, o caminho é este:",
     leadLiveDirect: "Já está disponível. O arquivo entra na página de downloads em breve.",
     leadLiveLink: "Já está disponível. Baixe na página de downloads.",
@@ -194,8 +194,8 @@ var I18N = {
     androidS1: "Abra a loja de apps da TV.",
     androidS2: "Busque LiberouTV.",
     androidS3: "Instale e abra.",
-    androidD1: "Instale o app Downloader na sua TV ou TV box.",
-    androidD2: "Digite o código do LiberouTV e instale.",
+    androidD1: "Abra a página de downloads no aparelho. Na TV ou TV box, pelo app Downloader.",
+    androidD2: "Baixe o LiberouTV e instale.",
     androidD3: "Abra o app e entre com os dados do seu provedor.",
     appletvS1: "Abra a App Store na Apple TV.",
     appletvS2: "Busque LiberouTV.",
@@ -224,7 +224,7 @@ var I18N = {
     q3: "Onde consigo os dados para entrar?",
     a3: "Com o seu provedor, que é quem cuida da sua assinatura.",
     q4: "Funciona no meu aparelho?",
-    a4: "O app já está disponível para Windows e Mac, e para TVs e TV boxes com Android pelo app Downloader. As outras plataformas da lista acima estão a caminho.",
+    a4: "O app já está disponível para Windows, Mac e Android, na página de downloads. As outras plataformas da lista acima estão a caminho.",
     q5: "O que vocês guardam sobre mim?",
     a5: "O mínimo para o app funcionar.",
     a5link: "Está tudo na política de privacidade.",
@@ -237,7 +237,7 @@ var I18N = {
 
 /* estado de cada plataforma: "soon" (em breve), "live" (disponivel) ou "download"
    (a loja ainda nao publicou, mas o app ja sai por fora dela: no Android, pelo
-   app Downloader, com um codigo) */
+   arquivo da pagina de downloads) */
 var STORES = {
   samsung: "soon", lg: "soon", roku: "soon", android: "download", appletv: "soon",
   windows: "live", mac: "live", ios: "soon"
@@ -245,7 +245,7 @@ var STORES = {
 /* estas duas nao passam por loja: saem por download direto */
 var DIRECT = { windows: true, mac: true };
 /* plataformas que ja tem arquivo na pagina de downloads */
-var LINKS = { windows: "downloads.html#windows", mac: "downloads.html#mac" };
+var LINKS = { windows: "downloads.html#windows", mac: "downloads.html#mac", android: "downloads.html#android" };
 
 function $(sel, root) { return (root || document).querySelector(sel); }
 function $$(sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
