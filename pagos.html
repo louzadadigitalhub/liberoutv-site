@@ -46,6 +46,17 @@ h1 { font-size:26px; letter-spacing:-.02em; margin-top:18px; }
 .dica { margin-top:12px; color:var(--faint); font-size:13px; line-height:1.4; }
 .telasx { margin-top:6px; color:var(--text2); font-size:13.5px; font-weight:600; }
 .alerta { margin-top:4px; color:#fbbf24; font-size:13px; font-weight:600; }
+.pagador { margin-top:4px; color:var(--text2); font-size:13.5px; }
+.pagador b { color:var(--text); }
+.busca { display:flex; gap:8px; margin-top:12px; }
+.busca input { flex:1; min-width:0; border:0; border-radius:12px; padding:12px 14px; font:500 15px Poppins,sans-serif; color:var(--text); background:var(--card); box-shadow:inset 0 0 0 1.5px var(--line); }
+.busca input:focus { outline:none; box-shadow:inset 0 0 0 2px var(--accent); }
+.busca button { flex:none; border:0; border-radius:12px; padding:0 14px; font:600 14px Poppins,sans-serif; color:#fff; background:var(--accent); cursor:pointer; }
+.abas.apagada { opacity:.4; }
+.resPainel { margin-top:18px; display:grid; gap:10px; }
+.tituloPainel { display:flex; justify-content:space-between; align-items:center; font-weight:700; font-size:16px; }
+.fechar { border:0; background:none; color:var(--faint); font-size:18px; cursor:pointer; padding:4px 8px; }
+.item.conta { box-shadow:inset 0 0 0 1px rgba(59,130,246,.35); }
 [hidden] { display:none !important; }
 .sair { border:0; background:none; color:var(--faint); font:600 13px Poppins,sans-serif; cursor:pointer; padding:6px 0 6px 10px; }
 .entrar { margin-top:12vh; }
@@ -83,7 +94,12 @@ h1 { font-size:26px; letter-spacing:-.02em; margin-top:18px; }
     <button data-f="enviados">Enviados</button>
     <button data-f="pendentes">Não pagaram ainda</button>
   </div>
+  <div class="busca">
+    <input id="busca" type="search" placeholder="🔎 Nome, telefone, código ou usuário" aria-label="Buscar" autocomplete="off">
+    <button id="buscarPainel" hidden>No painel</button>
+  </div>
   <p class="dica">Mande o acesso sempre pelo botão 💬 do cliente: ele abre a conversa com o número que pagou. Não responda a quem só mandou o código de outra conversa.</p>
+  <div class="resPainel" id="resPainel" hidden></div>
   <div class="lista" id="lista"><p class="vazio">carregando…</p></div>
   </section>
 </main>
