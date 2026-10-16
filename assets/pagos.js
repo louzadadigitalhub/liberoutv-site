@@ -66,7 +66,7 @@
           <span class="cod">${esc(x.codigo)}</span></div>
         <div class="acoes"><a href="https://wa.me/${esc(x.telefone)}?text=${encodeURIComponent(msg)}" target="_blank" rel="noopener">💬 WhatsApp</a>
           ${x.status === 'pago' ? `<button data-marcar class="${x.atendido ? 'feito' : ''}">${x.atendido ? '✓ Enviado' : 'Marcar como enviado'}</button>` : ''}
-          ${!x.nome && x.pagador_nome ? `<button data-procurar="${esc(curto(x.pagador_nome))}">🔎 Procurar no painel</button>` : ''}</div>
+          ${!x.nome && x.pagador_nome ? `<button data-procurar="${esc(x.pagador_nome)}">🔎 Procurar no painel</button>` : ''}</div>
       </div>`;
     }).join('') : `<p class="vazio">${q ? 'Ninguém na lista com isso. Tente procurar no painel.' : filtro === 'enviar' ? 'Ninguém esperando. 🎉' : 'Nada por aqui.'}</p>`;
   };
