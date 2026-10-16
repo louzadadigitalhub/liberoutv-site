@@ -1,6 +1,7 @@
-// Página /pagar: taxa de R$ 7 do novo acesso. O cliente informa o WhatsApp, paga o PIX gerado no Asaas e, confirmado o
-// pagamento (webhook), avisa no WhatsApp com o código. Guarda o pagamento no aparelho para retomar quando a pessoa volta do
-// app do banco. Fala só com a função "migracao" do Supabase da Liberou TV.
+// Página /pagar: taxa de R$ 7 do novo acesso. O cliente informa o WhatsApp, paga no PIX (QR do Asaas) ou no cartão (link
+// de pagamento do Asaas) e, confirmado o pagamento (webhook), avisa no WhatsApp com o código. O login novo é mandado à mão
+// pelo dono (entrega automática ficou de fora para ninguém gerar vários acessos). Guarda o pagamento no aparelho para
+// retomar quando a pessoa volta do app do banco. Fala só com a função "migracao" do Supabase da Liberou TV.
 (() => {
   const API = 'https://dlijnfrsynqjsulenigp.supabase.co/functions/v1/migracao';
   const ZAP = '5551933006768'; // WhatsApp da Liberou TV
@@ -30,11 +31,11 @@
 
   $('#continuar').addEventListener('click', async () => {
     const b = $('#continuar');
-    b.disabled = true; b.textContent = 'Gerando o PIX…';
+    b.disabled = true; b.textContent = 'Preparando o pagamento…';
     try {
       const r = await fetch(`${API}?acao=criar`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ telefone: fone() }) });
       const d = await r.json();
-      if (!r.ok) throw new Error(d.erro || 'Não consegui gerar o PIX.');
+      if (!r.ok) throw new Error(d.erro || 'Não consegui preparar o pagamento.');
       pagamento = { id: d.id, codigo: d.codigo, telefone: fone() };
       if (d.status === 'pago') return mostrarPago(); // número que já pagou: o servidor não devolve o código
       localStorage.setItem(GUARDA, JSON.stringify(pagamento));
