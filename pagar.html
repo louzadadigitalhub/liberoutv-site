@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>LIBEROU TV: novo acesso</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0c090a">
+<link rel="icon" href="img/favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="img/favicon-180.png">
+<link rel="preload" href="fonts/poppins-700.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+@font-face { font-family: Poppins; font-weight: 400; src: url("fonts/poppins-400.woff2") format("woff2"); font-display: swap; }
+@font-face { font-family: Poppins; font-weight: 500; src: url("fonts/poppins-500.woff2") format("woff2"); font-display: swap; }
+@font-face { font-family: Poppins; font-weight: 600; src: url("fonts/poppins-600.woff2") format("woff2"); font-display: swap; }
+@font-face { font-family: Poppins; font-weight: 700; src: url("fonts/poppins-700.woff2") format("woff2"); font-display: swap; }
+@font-face { font-family: "JetBrains Mono"; font-weight: 500; src: url("fonts/jetbrains-mono-500.woff2") format("woff2"); font-display: swap; }
+/* mesmas cores e fontes do site */
+:root { --canvas:#0c090a; --card:#151012; --accent:#e31c3a; --accent-hover:#f0344a; --ok:#22c55e; --text:#f5f1f1; --text2:#c6bfc1; --faint:#9a9093; --line:rgba(255,238,240,.11); --mono:"JetBrains Mono",ui-monospace,Menlo,monospace; }
+* { box-sizing:border-box; margin:0; padding:0; }
+html { color-scheme:dark; -webkit-text-size-adjust:100%; }
+body { min-height:100svh; background:var(--canvas); color:var(--text); font-family:Poppins,system-ui,sans-serif; font-size:17px; line-height:1.5; -webkit-font-smoothing:antialiased;
+  background-image:radial-gradient(700px 420px at 90% -10%,rgba(227,28,58,.28),transparent 70%),radial-gradient(600px 400px at -10% 110%,rgba(134,22,42,.25),transparent 70%); background-attachment:fixed; }
+.app { width:min(460px,100%); margin:0 auto; min-height:100svh; display:flex; flex-direction:column; padding:max(20px,env(safe-area-inset-top)) 20px max(24px,env(safe-area-inset-bottom)); }
+.topo { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.topo img { width:150px; height:auto; }
+.passos { display:flex; gap:6px; }
+.passos i { width:26px; height:5px; border-radius:9px; background:rgba(255,238,240,.14); transition:background .3s; }
+.passos i.on { background:var(--accent); }
+.tela { display:none; flex:1; flex-direction:column; padding-top:36px; animation:entra .35s cubic-bezier(.32,.72,0,1); }
+.tela.on { display:flex; }
+@keyframes entra { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:none; } }
+.kicker { align-self:flex-start; padding:6px 12px; border-radius:999px; box-shadow:inset 0 0 0 1px var(--line); font-family:var(--mono); font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:var(--text2); }
+h1 { font-size:34px; line-height:1.08; letter-spacing:-.03em; font-weight:700; margin-top:16px; text-wrap:balance; }
+h1 em { font-style:normal; color:var(--accent-hover); }
+p.sub { color:var(--text2); margin-top:12px; font-size:16.5px; }
+.preco { margin-top:24px; display:flex; align-items:baseline; gap:8px; }
+.preco b { font-size:48px; font-weight:700; letter-spacing:-.03em; }
+.preco span { color:var(--faint); font-size:15px; }
+.lista { margin-top:18px; display:grid; gap:10px; }
+.lista div { display:flex; gap:12px; align-items:flex-start; color:var(--text2); font-size:15.5px; }
+.lista div::before { content:"✓"; flex:none; width:22px; height:22px; border-radius:50%; background:rgba(34,197,94,.16); color:#4ade80; display:grid; place-items:center; font-size:13px; font-weight:700; margin-top:1px; }
+.fim { margin-top:auto; padding-top:24px; }
+.btn { width:100%; border:0; border-radius:16px; padding:18px 20px; font-size:18px; font-weight:700; color:#fff; background:var(--accent); cursor:pointer; display:flex; align-items:center; justify-content:center; gap:10px; text-decoration:none; transition:background .2s, transform .1s; -webkit-tap-highlight-color:transparent; }
+.btn:active { transform:scale(.985); }
+.btn:hover { background:var(--accent-hover); }
+.btn[disabled] { opacity:.45; cursor:not-allowed; }
+.btn.verde { background:#16a34a; } .btn.verde:hover { background:#15803d; }
+.btn.claro { background:transparent; box-shadow:inset 0 0 0 1.5px var(--line); color:var(--text); font-weight:600; font-size:16px; padding:15px; }
+.campo { margin-top:26px; display:flex; gap:10px; }
+select, input { font-family:inherit; font-size:20px; color:var(--text); background:var(--card); border:1.5px solid var(--line); border-radius:14px; padding:16px 14px; outline:none; }
+select { flex:none; width:118px; appearance:none; text-align:center; }
+input { flex:1; min-width:0; letter-spacing:.02em; }
+select:focus, input:focus { border-color:var(--accent); }
+.dica { margin-top:10px; color:var(--faint); font-size:14px; }
+.erro { margin-top:12px; color:#fca5a5; font-size:15px; min-height:22px; }
+.cartao { margin-top:22px; background:var(--card); border-radius:22px; box-shadow:inset 0 0 0 1px var(--line); padding:20px; }
+.copia { width:100%; margin-top:6px; font-family:var(--mono); font-size:12.5px; color:var(--text2); background:#0f0b0c; border-radius:12px; padding:12px; word-break:break-all; max-height:76px; overflow:hidden; }
+.qr { display:none; margin:16px auto 4px; width:220px; height:220px; border-radius:14px; background:#fff; padding:10px; }
+.qr.on { display:block; }
+.como { margin-top:16px; display:grid; gap:8px; color:var(--text2); font-size:15px; counter-reset:n; }
+.como div { display:flex; gap:10px; } .como div::before { counter-increment:n; content:counter(n); flex:none; width:22px; height:22px; border-radius:50%; background:rgba(227,28,58,.18); color:var(--accent-hover); display:grid; place-items:center; font-size:12.5px; font-weight:700; }
+.espera { margin-top:16px; display:flex; align-items:center; gap:10px; color:var(--text2); font-size:15px; }
+.espera i { width:10px; height:10px; border-radius:50%; background:#f59e0b; animation:pulsa 1.2s infinite; }
+@keyframes pulsa { 50% { opacity:.25; } }
+.link { background:none; border:0; color:var(--text2); text-decoration:underline; font-size:15px; margin-top:12px; cursor:pointer; font-family:inherit; }
+.ok { margin:8px auto 0; width:92px; height:92px; border-radius:50%; background:rgba(34,197,94,.14); display:grid; place-items:center; font-size:46px; animation:pop .5s cubic-bezier(.32,1.6,.5,1); }
+@keyframes pop { from { transform:scale(.4); opacity:0; } }
+.codigo { margin-top:18px; text-align:center; }
+.codigo small { display:block; color:var(--faint); font-size:13px; letter-spacing:.12em; text-transform:uppercase; }
+.codigo b { display:inline-block; margin-top:6px; font-family:var(--mono); font-size:26px; letter-spacing:.06em; padding:8px 16px; border-radius:12px; background:var(--card); box-shadow:inset 0 0 0 1px var(--line); }
+.centro { text-align:center; }
+.rodape { margin-top:18px; text-align:center; color:var(--faint); font-size:12.5px; }
+.formas { margin-top:22px; display:grid; grid-template-columns:1fr 1fr; gap:6px; padding:5px; border-radius:16px; background:var(--card); box-shadow:inset 0 0 0 1px var(--line); }
+.formas button { border:0; border-radius:12px; padding:13px 8px; font:700 16px Poppins,sans-serif; color:var(--text2); background:transparent; cursor:pointer; }
+.formas button.on { background:var(--accent); color:#fff; }
+.formas + .cartao { margin-top:12px; }
+.cartao[hidden] { display:none; }
+.bandeiras { margin-top:12px; color:var(--faint); font-size:14px; text-align:center; }
+#erroCartao:empty { display:none; }
+.toast { position:fixed; left:50%; bottom:28px; transform:translate(-50%,40px); opacity:0; background:#f5f1f1; color:#0c090a; font-weight:600; padding:12px 18px; border-radius:12px; transition:all .3s; pointer-events:none; font-size:15px; }
+.toast.on { opacity:1; transform:translate(-50%,0); }
+</style>
+</head>
+<body>
+<main class="app">
+  <div class="topo">
+    <img src="img/logo-nav-sm.png" alt="LIBEROU TV" width="150" height="47">
+    <div class="passos" aria-hidden="true"><i data-p="0"></i><i data-p="1"></i><i data-p="2"></i></div>
+  </div>
+
+  <!-- 0: começo -->
+  <section class="tela on" data-tela="inicio">
+    <span class="kicker">Novo servidor</span>
+    <h1>Seu acesso novo <em>em 1 minuto</em></h1>
+    <p class="sub">Trocamos de servidor para o sinal ficar mais estável. Para liberar o seu acesso no servidor novo, é uma taxa única no PIX.</p>
+    <div class="preco"><b>R$ 7</b><span>uma vez só</span></div>
+    <div class="lista">
+      <div>Pague pelo PIX, direto do seu celular</div>
+      <div>A confirmação chega na hora</div>
+      <div>Você recebe o login novo pelo WhatsApp</div>
+    </div>
+    <div class="fim"><button class="btn" data-ir="fone">Começar</button></div>
+  </section>
+
+  <!-- 1: telefone -->
+  <section class="tela" data-tela="fone">
+    <span class="kicker">Passo 1 de 3</span>
+    <h1>Qual é o seu <em>WhatsApp</em>?</h1>
+    <p class="sub">O mesmo número que você usa para falar com a Liberou TV.</p>
+    <div class="campo">
+      <select id="ddi" aria-label="País">
+        <option value="55">🇧🇷 +55</option>
+        <option value="1">🇺🇸 +1</option>
+        <option value="1">🇨🇦 +1</option>
+        <option value="61">🇦🇺 +61</option>
+        <option value="64">🇳🇿 +64</option>
+        <option value="597">🇸🇷 +597</option>
+        <option value="594">🇬🇫 +594</option>
+        <option value="81">🇯🇵 +81</option>
+        <option value="351">🇵🇹 +351</option>
+        <option value="54">🇦🇷 +54</option>
+        <option value="44">🇬🇧 +44</option>
+        <option value="34">🇪🇸 +34</option>
+        <option value="">🌍 outro</option>
+      </select>
+      <input id="numero" type="tel" inputmode="tel" autocomplete="tel-national" placeholder="DDD + número" aria-label="Número do WhatsApp">
+    </div>
+    <p class="dica" id="dica">Ex.: 11 98765-4321</p>
+    <p class="erro" id="erroFone" role="alert"></p>
+    <div class="fim"><button class="btn" id="continuar" disabled>Continuar</button></div>
+  </section>
+
+  <!-- 2: pagamento -->
+  <section class="tela" data-tela="pagar">
+    <span class="kicker">Passo 2 de 3</span>
+    <h1 id="ola">Pague <em>R$ 7</em></h1>
+    <div class="formas" role="tablist" aria-label="Forma de pagamento">
+      <button class="on" data-forma="pix" role="tab">⚡ PIX</button>
+      <button data-forma="cartao" role="tab">💳 Cartão</button>
+    </div>
+    <div class="cartao" id="formaPix">
+      <button class="btn" id="copiar">📋 Copiar código PIX</button>
+      <div class="copia" id="copiaTexto" aria-label="Código PIX copia e cola"></div>
+      <div class="como">
+        <div><span>Toque em <b>Copiar código PIX</b></span></div>
+        <div><span>Abra o app do seu banco → <b>PIX</b> → <b>Copia e cola</b></span></div>
+        <div><span>Cole, confira <b>R$ 7,00</b> e pague</span></div>
+      </div>
+      <img class="qr" id="qr" alt="QR Code do PIX">
+      <div class="centro"><button class="link" id="verQr">Vai pagar com outro celular? Mostrar QR Code</button></div>
+    </div>
+    <div class="cartao" id="formaCartao" hidden>
+      <p class="sub" style="margin-top:0">Você vai para a <b>página segura do Asaas</b> para digitar o cartão. Depois de pagar, volte para esta página.</p>
+      <div class="fim" style="padding-top:18px"><button class="btn" id="pagarCartao">💳 Pagar R$ 7 no cartão</button></div>
+      <p class="bandeiras">Crédito · pagamento à vista</p>
+      <p class="erro" id="erroCartao" role="alert"></p>
+    </div>
+    <div class="espera" aria-live="polite"><i></i><span id="esperaTxt">Aguardando o pagamento…</span></div>
+    <div class="fim"><button class="btn claro" id="jaPaguei">Já paguei</button></div>
+  </section>
+
+  <!-- 3: pago -->
+  <section class="tela" data-tela="pago">
+    <span class="kicker">Passo 3 de 3</span>
+    <div class="ok" aria-hidden="true">✅</div>
+    <h1 class="centro">Pagamento <em>confirmado!</em></h1>
+    <p class="sub centro">Agora é só avisar a gente no WhatsApp. Vamos te mandar o login e a senha novos por lá.</p>
+    <div class="codigo"><small>seu código</small><b id="codigo">LBTV-·····</b></div>
+    <div class="fim">
+      <a class="btn verde" id="zap" href="#" target="_blank" rel="noopener">💬 Avisar no WhatsApp</a>
+      <p class="rodape">Guarde o código. Ele mostra que o seu pagamento foi confirmado.</p>
+    </div>
+  </section>
+</main>
+<div class="toast" id="toast" role="status"></div>
+<script src="assets/pagar.js"></script>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>LIBEROU TV: pagos</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<meta name="theme-color" content="#0c090a">
+<link rel="icon" href="img/favicon.ico" sizes="any">
+<style>
+@font-face { font-family: Poppins; font-weight: 400; src: url("fonts/poppins-400.woff2") format("woff2"); font-display: swap; }
+@font-face { font-family: Poppins; font-weight: 600; src: url("fonts/poppins-600.woff2") format("woff2"); font-display: swap; }
+@font-face { font-family: Poppins; font-weight: 700; src: url("fonts/poppins-700.woff2") format("woff2"); font-display: swap; }
+@font-face { font-family: "JetBrains Mono"; font-weight: 500; src: url("fonts/jetbrains-mono-500.woff2") format("woff2"); font-display: swap; }
+:root { --canvas:#0c090a; --card:#151012; --accent:#e31c3a; --ok:#22c55e; --text:#f5f1f1; --text2:#c6bfc1; --faint:#9a9093; --line:rgba(255,238,240,.11); --mono:"JetBrains Mono",ui-monospace,Menlo,monospace; }
+* { box-sizing:border-box; margin:0; padding:0; }
+html { color-scheme:dark; }
+body { background:var(--canvas); color:var(--text); font-family:Poppins,system-ui,sans-serif; font-size:16px; line-height:1.45; -webkit-font-smoothing:antialiased; }
+.app { width:min(720px,100%); margin:0 auto; padding:max(18px,env(safe-area-inset-top)) 16px 40px; }
+.topo { display:flex; align-items:center; justify-content:space-between; gap:10px; }
+.topo img { width:130px; }
+.topo small { color:var(--faint); font-size:12.5px; }
+h1 { font-size:26px; letter-spacing:-.02em; margin-top:18px; }
+.nums { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:14px; }
+.nums div { background:var(--card); border-radius:16px; padding:12px; box-shadow:inset 0 0 0 1px var(--line); }
+.nums b { display:block; font-size:24px; } .nums span { color:var(--faint); font-size:12.5px; }
+.abas { display:flex; gap:8px; margin-top:16px; overflow-x:auto; }
+.abas button { flex:none; border:0; border-radius:999px; padding:9px 14px; font:600 14px Poppins,sans-serif; color:var(--text2); background:var(--card); box-shadow:inset 0 0 0 1px var(--line); cursor:pointer; }
+.abas button.on { background:var(--accent); color:#fff; box-shadow:none; }
+.lista { display:grid; gap:10px; margin-top:14px; }
+.item { background:var(--card); border-radius:18px; padding:14px; box-shadow:inset 0 0 0 1px var(--line); }
+.item.feito { opacity:.55; }
+.linha { display:flex; justify-content:space-between; gap:10px; align-items:flex-start; }
+.nome { font-weight:700; font-size:17px; }
+.meta { color:var(--text2); font-size:14px; margin-top:2px; }
+.cod { font-family:var(--mono); font-size:13px; padding:4px 8px; border-radius:8px; background:#0f0b0c; color:var(--text2); white-space:nowrap; }
+.selo { display:inline-block; margin-top:6px; font-size:12px; font-weight:700; padding:3px 9px; border-radius:999px; }
+.selo.pago { background:rgba(34,197,94,.16); color:#4ade80; } .selo.pendente { background:rgba(245,158,11,.16); color:#fbbf24; }
+.acoes { display:flex; gap:8px; margin-top:12px; flex-wrap:wrap; }
+.acoes a, .acoes button { flex:1; min-width:120px; text-align:center; text-decoration:none; border:0; border-radius:12px; padding:11px; font:600 14.5px Poppins,sans-serif; cursor:pointer; color:#fff; background:#16a34a; }
+.acoes button { background:transparent; color:var(--text); box-shadow:inset 0 0 0 1.5px var(--line); }
+.acoes button.feito { background:rgba(34,197,94,.16); color:#4ade80; box-shadow:none; }
+.vazio, .aviso { color:var(--faint); text-align:center; padding:30px 10px; }
+.aviso { color:#fca5a5; }
+</style>
+</head>
+<body>
+<main class="app">
+  <div class="topo"><img src="img/logo-nav-sm.png" alt="LIBEROU TV" width="130" height="40"><small id="quando"></small></div>
+  <h1>Taxa do novo acesso</h1>
+  <div class="nums">
+    <div><b id="nPara">–</b><span>pagos para enviar</span></div>
+    <div><b id="nPagos">–</b><span>pagos no total</span></div>
+    <div><b id="nValor">–</b><span>recebido</span></div>
+  </div>
+  <div class="abas" role="tablist">
+    <button data-f="enviar" class="on">Para enviar</button>
+    <button data-f="enviados">Enviados</button>
+    <button data-f="pendentes">Não pagaram ainda</button>
+  </div>
+  <div class="lista" id="lista"><p class="vazio">carregando…</p></div>
+</main>
+<script src="assets/pagos.js"></script>
+</body>
+</html>
