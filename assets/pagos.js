@@ -1,9 +1,13 @@
 // Página /pagos (só do dono): quem pagou a taxa do novo acesso. A chave vem depois do # no link (/pagos#k=...), então não
-// passa pelo servidor do site. Botão de WhatsApp para chamar o cliente e "marcar como enviado" depois de mandar o login novo.
+// passa pelo servidor do site; na primeira abertura fica guardada no aparelho e sai da barra de endereço. Vai para a função
+// no cabeçalho x-chave (fora da URL, que aparece nos logs). Botão de WhatsApp para chamar o cliente e "marcar como enviado".
 (() => {
   const API = 'https://dlijnfrsynqjsulenigp.supabase.co/functions/v1/migracao';
   const $ = (s) => document.querySelector(s);
-  const chave = new URLSearchParams(location.hash.slice(1)).get('k') || '';
+  const GUARDA = 'lbtv-chave-pagos';
+  const daUrl = new URLSearchParams(location.hash.slice(1)).get('k');
+  if (daUrl) { try { localStorage.setItem(GUARDA, daUrl); } catch { /* sem localStorage */ } history.replaceState(null, '', location.pathname); }
+  const chave = daUrl || (() => { try { return localStorage.getItem(GUARDA) || ''; } catch { return ''; } })();
   let dados = [], filtro = 'enviar';
 
   const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
@@ -32,8 +36,8 @@
   const carregar = async () => {
     if (!chave) { $('#lista').innerHTML = '<p class="aviso">Abra pelo link com a chave (…/pagos#k=…).</p>'; return; }
     try {
-      const r = await fetch(`${API}?acao=pagos&k=${encodeURIComponent(chave)}`, { cache: 'no-store' });
-      if (r.status === 401) { $('#lista').innerHTML = '<p class="aviso">Chave inválida.</p>'; return; }
+      const r = await fetch(`${API}?acao=pagos`, { cache: 'no-store', headers: { 'x-chave': chave } });
+      if (r.status === 401) { try { localStorage.removeItem(GUARDA); } catch { /* */ } $('#lista').innerHTML = '<p class="aviso">Chave inválida.</p>'; return; }
       dados = await r.json();
       $('#quando').textContent = 'atualizado ' + new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
       desenhar();
@@ -47,7 +51,7 @@
     const b = e.target.closest('[data-marcar]'); if (!b) return;
     const item = b.closest('[data-id]'); const x = dados.find((d) => d.id === item.dataset.id); if (!x) return;
     b.disabled = true;
-    const r = await fetch(`${API}?acao=atendido&k=${encodeURIComponent(chave)}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: x.id, atendido: !x.atendido }) });
+    const r = await fetch(`${API}?acao=atendido`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'x-chave': chave }, body: JSON.stringify({ id: x.id, atendido: !x.atendido }) });
     if (r.ok) { x.atendido = !x.atendido; desenhar(); } else b.disabled = false;
   });
   carregar();

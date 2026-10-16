@@ -6,7 +6,7 @@
   const ZAP = '5551933006768'; // WhatsApp da Liberou TV
   const GUARDA = 'lbtv-pagamento';
   const $ = (s) => document.querySelector(s);
-  let pagamento = null; // { id, codigo, nome, telefone }
+  let pagamento = null; // { id, codigo, telefone }
   let timer = null;
 
   const toast = (txt) => { const t = $('#toast'); t.textContent = txt; t.classList.add('on'); clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove('on'), 2200); };
@@ -35,9 +35,9 @@
       const r = await fetch(`${API}?acao=criar`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ telefone: fone() }) });
       const d = await r.json();
       if (!r.ok) throw new Error(d.erro || 'Não consegui gerar o PIX.');
-      pagamento = { id: d.id, codigo: d.codigo, nome: d.nome || '', telefone: fone() };
+      pagamento = { id: d.id, codigo: d.codigo, telefone: fone() };
+      if (d.status === 'pago') return mostrarPago(); // número que já pagou: o servidor não devolve o código
       localStorage.setItem(GUARDA, JSON.stringify(pagamento));
-      if (d.status === 'pago') return mostrarPago();
       mostrarPix(d);
     } catch (e) {
       $('#erroFone').textContent = e.message || 'Algo deu errado. Tente de novo.';
@@ -46,7 +46,6 @@
 
   // ---- passo 2: PIX ----
   const mostrarPix = (d) => {
-    $('#ola').innerHTML = d.nome ? `Olá, ${d.nome.replace(/[<>&]/g, '')}! Pague <em>R$ 7</em>` : 'Pague <em>R$ 7</em>';
     $('#copiaTexto').textContent = d.copiaECola || '';
     if (d.qr) $('#qr').src = `data:image/png;base64,${d.qr}`;
     ir('pagar');
@@ -98,8 +97,8 @@
   // ---- passo 3: pago ----
   const mostrarPago = () => {
     clearInterval(timer);
-    $('#codigo').textContent = pagamento.codigo;
-    const msg = `Olá! Paguei a taxa do novo acesso da Liberou TV ✅\nCódigo: ${pagamento.codigo}\nMeu WhatsApp: +${pagamento.telefone}`;
+    $('#codigo').textContent = pagamento.codigo || 'já registrado';
+    const msg = `Olá! Paguei a taxa do novo acesso da Liberou TV ✅\n${pagamento.codigo ? `Código: ${pagamento.codigo}\n` : ''}Meu WhatsApp: +${pagamento.telefone}`;
     $('#zap').href = `https://wa.me/${ZAP}?text=${encodeURIComponent(msg)}`;
     ir('pago');
   };
@@ -115,7 +114,7 @@
           // busca de novo o QR (a função devolve o mesmo enquanto estiver válido)
           const r = await fetch(`${API}?acao=criar`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ telefone: salvo.telefone }) });
           const x = await r.json();
-          if (r.ok && x.status === 'pago') { pagamento = { ...salvo, codigo: x.codigo }; return mostrarPago(); }
+          if (r.ok && x.status === 'pago') return mostrarPago();
           if (r.ok) { pagamento = { ...salvo, id: x.id, codigo: x.codigo }; localStorage.setItem(GUARDA, JSON.stringify(pagamento)); mostrarPix(x); }
         }
       }).catch(() => {});
