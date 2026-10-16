@@ -1,14 +1,29 @@
-// Página /pagos (só do dono): quem pagou a taxa do novo acesso. A chave vem depois do # no link (/pagos#k=...), então não
-// passa pelo servidor do site; na primeira abertura fica guardada no aparelho e sai da barra de endereço. Vai para a função
-// no cabeçalho x-chave (fora da URL, que aparece nos logs). Botão de WhatsApp para chamar o cliente e "marcar como enviado".
+// Página /pagos (só do dono): quem pagou a taxa do novo acesso. Abre com senha: ela vai para a função "migracao", que
+// confere com o hash guardado lá e devolve uma sessão de 30 dias. Aqui só fica a sessão (no aparelho), nunca senha nem
+// chave. Botão de WhatsApp para chamar o cliente e "marcar como enviado" depois de mandar o login novo.
 (() => {
   const API = 'https://dlijnfrsynqjsulenigp.supabase.co/functions/v1/migracao';
+  const GUARDA = 'lbtv-sessao-pagos';
   const $ = (s) => document.querySelector(s);
-  const GUARDA = 'lbtv-chave-pagos';
-  const daUrl = new URLSearchParams(location.hash.slice(1)).get('k');
-  if (daUrl) { try { localStorage.setItem(GUARDA, daUrl); } catch { /* sem localStorage */ } history.replaceState(null, '', location.pathname); }
-  const chave = daUrl || (() => { try { return localStorage.getItem(GUARDA) || ''; } catch { return ''; } })();
   let dados = [], filtro = 'enviar';
+
+  // restos do acesso antigo por link (#k=...): some da barra e do aparelho
+  try { localStorage.removeItem('lbtv-chave-pagos'); } catch { /* sem localStorage */ }
+  if (location.hash) history.replaceState(null, '', location.pathname);
+
+  let sessao = (() => { try { return localStorage.getItem(GUARDA) || ''; } catch { return ''; } })();
+  const valida = () => Number(sessao.split('.')[0]) > Date.now();
+  const mostrar = (dentro) => {
+    $('#entrar').hidden = dentro; $('#painel').hidden = !dentro; $('#sair').hidden = !dentro;
+    if (!dentro) { $('#quando').textContent = ''; setTimeout(() => $('#senha').focus(), 100); }
+  };
+  const sair = (aviso = '') => {
+    sessao = ''; dados = [];
+    try { localStorage.removeItem(GUARDA); } catch { /* */ }
+    $('#lista').innerHTML = '';
+    $('#erroEntrar').textContent = aviso;
+    mostrar(false);
+  };
 
   const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
   const quando = (iso) => (iso ? new Date(iso).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }) : '');
@@ -34,15 +49,35 @@
   };
 
   const carregar = async () => {
-    if (!chave) { $('#lista').innerHTML = '<p class="aviso">Abra pelo link com a chave (…/pagos#k=…).</p>'; return; }
+    if (!valida()) return sair(sessao ? 'A sessão venceu. Digite a senha de novo.' : '');
     try {
-      const r = await fetch(`${API}?acao=pagos`, { cache: 'no-store', headers: { 'x-chave': chave } });
-      if (r.status === 401) { try { localStorage.removeItem(GUARDA); } catch { /* */ } $('#lista').innerHTML = '<p class="aviso">Chave inválida.</p>'; return; }
+      const r = await fetch(`${API}?acao=pagos`, { cache: 'no-store', headers: { 'x-sessao': sessao } });
+      if (r.status === 401) return sair('A sessão não vale mais. Digite a senha de novo.');
       dados = await r.json();
       $('#quando').textContent = 'atualizado ' + new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
       desenhar();
     } catch { $('#quando').textContent = 'sem conexão, tentando de novo…'; }
   };
+
+  $('#formEntrar').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const b = $('#btnEntrar');
+    b.disabled = true; b.textContent = 'Conferindo…'; $('#erroEntrar').textContent = '';
+    try {
+      const r = await fetch(`${API}?acao=entrar`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ senha: $('#senha').value }) });
+      const d = await r.json().catch(() => ({}));
+      if (!r.ok || !d.sessao) throw new Error(d.erro || 'Não consegui entrar. Tente de novo.');
+      sessao = d.sessao;
+      try { localStorage.setItem(GUARDA, sessao); } catch { /* sem localStorage: vale só enquanto a página estiver aberta */ }
+      $('#senha').value = '';
+      mostrar(true);
+      carregar();
+    } catch (err) {
+      $('#erroEntrar').textContent = err.message || 'Não consegui entrar.';
+      $('#senha').select();
+    } finally { b.disabled = false; b.textContent = 'Entrar'; }
+  });
+  $('#sair').addEventListener('click', () => sair());
 
   document.querySelectorAll('.abas button').forEach((b) => b.addEventListener('click', () => {
     filtro = b.dataset.f; document.querySelectorAll('.abas button').forEach((x) => x.classList.toggle('on', x === b)); desenhar();
@@ -51,9 +86,11 @@
     const b = e.target.closest('[data-marcar]'); if (!b) return;
     const item = b.closest('[data-id]'); const x = dados.find((d) => d.id === item.dataset.id); if (!x) return;
     b.disabled = true;
-    const r = await fetch(`${API}?acao=atendido`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'x-chave': chave }, body: JSON.stringify({ id: x.id, atendido: !x.atendido }) });
+    const r = await fetch(`${API}?acao=atendido`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'x-sessao': sessao }, body: JSON.stringify({ id: x.id, atendido: !x.atendido }) });
+    if (r.status === 401) return sair('A sessão não vale mais. Digite a senha de novo.');
     if (r.ok) { x.atendido = !x.atendido; desenhar(); } else b.disabled = false;
   });
-  carregar();
-  setInterval(() => { if (!document.hidden) carregar(); }, 20000);
+
+  if (valida()) { mostrar(true); carregar(); } else sair();
+  setInterval(() => { if (!document.hidden && valida()) carregar(); }, 20000);
 })();

@@ -44,11 +44,32 @@ h1 { font-size:26px; letter-spacing:-.02em; margin-top:18px; }
 .vazio, .aviso { color:var(--faint); text-align:center; padding:30px 10px; }
 .aviso { color:#fca5a5; }
 .dica { margin-top:12px; color:var(--faint); font-size:13px; line-height:1.4; }
+[hidden] { display:none !important; }
+.sair { border:0; background:none; color:var(--faint); font:600 13px Poppins,sans-serif; cursor:pointer; padding:6px 0 6px 10px; }
+.entrar { margin-top:12vh; }
+.entrar p { color:var(--text2); margin-top:6px; }
+.entrar form { display:grid; gap:10px; margin-top:20px; }
+.entrar input { width:100%; border:0; border-radius:14px; padding:16px; font:600 22px var(--mono); letter-spacing:.2em; text-align:center; color:var(--text); background:var(--card); box-shadow:inset 0 0 0 1.5px var(--line); }
+.entrar input:focus { outline:none; box-shadow:inset 0 0 0 2px var(--accent); }
+.entrar button { border:0; border-radius:14px; padding:15px; font:700 17px Poppins,sans-serif; color:#fff; background:var(--accent); cursor:pointer; }
+.entrar button:disabled { opacity:.6; }
+.entrar .aviso { padding:14px 0 0; }
 </style>
 </head>
 <body>
 <main class="app">
-  <div class="topo"><img src="img/logo-nav-sm.png" alt="LIBEROU TV" width="130" height="40"><small id="quando"></small></div>
+  <div class="topo"><img src="img/logo-nav-sm.png" alt="LIBEROU TV" width="130" height="40"><span><small id="quando"></small><button class="sair" id="sair" hidden>Sair</button></span></div>
+  <!-- a senha é conferida no servidor (só o hash dela fica lá); aqui nunca fica senha nem chave -->
+  <section class="entrar" id="entrar" hidden>
+    <h1>Lista de pagos</h1>
+    <p>Digite a senha para ver quem pagou.</p>
+    <form id="formEntrar">
+      <input id="senha" type="password" inputmode="numeric" autocomplete="current-password" maxlength="100" placeholder="Senha" aria-label="Senha" required>
+      <button type="submit" id="btnEntrar">Entrar</button>
+    </form>
+    <p class="aviso" id="erroEntrar" role="alert"></p>
+  </section>
+  <section id="painel" hidden>
   <h1>Taxa do novo acesso</h1>
   <div class="nums">
     <div><b id="nPara">–</b><span>pagos para enviar</span></div>
@@ -62,6 +83,7 @@ h1 { font-size:26px; letter-spacing:-.02em; margin-top:18px; }
   </div>
   <p class="dica">Mande o acesso sempre pelo botão 💬 do cliente: ele abre a conversa com o número que pagou. Não responda a quem só mandou o código de outra conversa.</p>
   <div class="lista" id="lista"><p class="vazio">carregando…</p></div>
+  </section>
 </main>
 <script src="assets/pagos.js"></script>
 </body>
