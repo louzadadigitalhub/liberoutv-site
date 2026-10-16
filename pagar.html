@@ -78,6 +78,14 @@ select:focus, input:focus { border-color:var(--accent); }
 .cartao[hidden] { display:none; }
 .bandeiras { margin-top:12px; color:var(--faint); font-size:14px; text-align:center; }
 #erroCartao:empty { display:none; }
+.rotulo { margin-top:28px; font-weight:600; font-size:17px; }
+.telas { margin-top:12px; display:flex; align-items:center; gap:12px; }
+.telas button { width:52px; height:52px; flex:none; border:0; border-radius:14px; background:var(--card); box-shadow:inset 0 0 0 1.5px var(--line); color:var(--text); font:600 26px Poppins,sans-serif; cursor:pointer; -webkit-tap-highlight-color:transparent; }
+.telas button:disabled { opacity:.35; cursor:not-allowed; }
+.telas output { min-width:40px; text-align:center; font-size:30px; font-weight:700; }
+.telas .total { margin-left:auto; color:var(--text2); font-size:15px; text-align:right; line-height:1.2; }
+.telas .total b { display:block; color:var(--text); font-size:24px; }
+.sub .link { margin:0; font-size:inherit; }
 .toast { position:fixed; left:50%; bottom:28px; transform:translate(-50%,40px); opacity:0; background:#f5f1f1; color:#0c090a; font-weight:600; padding:12px 18px; border-radius:12px; transition:all .3s; pointer-events:none; font-size:15px; }
 .toast.on { opacity:1; transform:translate(-50%,0); }
 </style>
@@ -93,8 +101,8 @@ select:focus, input:focus { border-color:var(--accent); }
   <section class="tela on" data-tela="inicio">
     <span class="kicker">Novo servidor</span>
     <h1>Libere o seu <em>acesso novo</em></h1>
-    <p class="sub">Trocamos de servidor para o sinal ficar mais estável. Para liberar o seu acesso no servidor novo, é uma taxa única, no PIX ou no cartão.</p>
-    <div class="preco"><b>R$ 7</b><span>uma vez só</span></div>
+    <p class="sub">Trocamos de servidor para o sinal ficar mais estável. Para liberar o seu acesso no servidor novo, é uma taxa única de R$ 7 por tela, no PIX ou no cartão.</p>
+    <div class="preco"><b>R$ 7</b><span>por tela, uma vez só</span></div>
     <div class="lista">
       <div>Pague no PIX ou no cartão, pelo celular</div>
       <div>O pagamento é confirmado na hora</div>
@@ -127,6 +135,14 @@ select:focus, input:focus { border-color:var(--accent); }
       <input id="numero" type="tel" inputmode="tel" autocomplete="tel-national" placeholder="DDD + número" aria-label="Número do WhatsApp">
     </div>
     <p class="dica" id="dica">Ex.: 11 98765-4321</p>
+    <p class="rotulo">Quantas telas você tem?</p>
+    <p class="dica">Telas são os aparelhos que assistem ao mesmo tempo. R$ 7 cada.</p>
+    <div class="telas">
+      <button type="button" id="menos" aria-label="Uma tela a menos" disabled>−</button>
+      <output id="nTelas" aria-live="polite">1</output>
+      <button type="button" id="mais" aria-label="Uma tela a mais">+</button>
+      <span class="total">total<b id="total">R$ 7</b></span>
+    </div>
     <p class="erro" id="erroFone" role="alert"></p>
     <div class="fim"><button class="btn" id="continuar" disabled>Continuar</button></div>
   </section>
@@ -135,6 +151,7 @@ select:focus, input:focus { border-color:var(--accent); }
   <section class="tela" data-tela="pagar">
     <span class="kicker">Passo 2 de 3</span>
     <h1 id="ola">Pague <em>R$ 7</em></h1>
+    <p class="sub"><span id="resumoTelas">1 tela</span> · <button class="link" data-ir="fone">trocar</button></p>
     <div class="formas" role="tablist" aria-label="Forma de pagamento">
       <button class="on" data-forma="pix" role="tab">⚡ PIX</button>
       <button data-forma="cartao" role="tab">💳 Cartão</button>
@@ -145,7 +162,7 @@ select:focus, input:focus { border-color:var(--accent); }
       <div class="como">
         <div><span>Toque em <b>Copiar código PIX</b></span></div>
         <div><span>Abra o app do seu banco → <b>PIX</b> → <b>Copia e cola</b></span></div>
-        <div><span>Cole, confira <b>R$ 7,00</b> e pague</span></div>
+        <div><span>Cole, confira <b id="valorPix">R$ 7,00</b> e pague</span></div>
       </div>
       <img class="qr" id="qr" alt="QR Code do PIX">
       <div class="centro"><button class="link" id="verQr">Vai pagar com outro celular? Mostrar QR Code</button></div>

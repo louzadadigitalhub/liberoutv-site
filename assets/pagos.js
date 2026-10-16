@@ -28,19 +28,22 @@
   const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
   const quando = (iso) => (iso ? new Date(iso).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }) : '');
   const fone = (d) => `+${d}`;
+  const telasTxt = (n) => `${Number(n) || 1} tela${Number(n) > 1 ? 's' : ''}`;
 
   const desenhar = () => {
     const pagos = dados.filter((x) => x.status === 'pago');
     $('#nPara').textContent = pagos.filter((x) => !x.atendido).length;
     $('#nPagos').textContent = pagos.length;
-    $('#nValor').textContent = 'R$ ' + pagos.reduce((s, x) => s + Number(x.valor || 0), 0).toLocaleString('pt-BR');
-    const lista = filtro === 'enviar' ? pagos.filter((x) => !x.atendido) : filtro === 'enviados' ? pagos.filter((x) => x.atendido) : dados.filter((x) => x.status !== 'pago');
+    $('#nValor').textContent = 'R$ ' + pagos.reduce((s, x) => s + Number(x.valor_pago ?? x.valor ?? 0), 0).toLocaleString('pt-BR');
+    const lista = filtro === 'enviar' ? pagos.filter((x) => !x.atendido) : filtro === 'enviados' ? pagos.filter((x) => x.atendido) : dados.filter((x) => x.status === 'pendente');
     $('#lista').innerHTML = lista.length ? lista.map((x) => {
       const msg = x.nome ? `Olá, ${x.nome.split(' ')[0]}! Recebemos o seu pagamento (código ${x.codigo}). Seguem os seus dados novos:` : `Olá! Recebemos o seu pagamento (código ${x.codigo}). Seguem os seus dados novos:`;
       return `<div class="item ${x.atendido ? 'feito' : ''}" data-id="${esc(x.id)}">
         <div class="linha"><div><div class="nome">${esc(x.nome || 'Sem cadastro no painel')}</div>
           <div class="meta">${esc(fone(x.telefone))}${x.usuario_cinerk ? ' · ' + esc(x.usuario_cinerk) : ''}</div>
-          <span class="selo ${x.status === 'pago' ? 'pago' : 'pendente'}">${x.status === 'pago' ? 'Pago' + (x.metodo ? ' no ' + esc(x.metodo) : '') + ' ' + esc(quando(x.pago_em)) : 'Começou ' + esc(quando(x.criado_em))}</span></div>
+          <span class="selo ${x.status === 'pago' ? 'pago' : 'pendente'}">${x.status === 'pago' ? 'Pago' + (x.metodo ? ' no ' + esc(x.metodo) : '') + ' ' + esc(quando(x.pago_em)) : 'Começou ' + esc(quando(x.criado_em))}</span>
+          <div class="telasx">${esc(telasTxt(x.telas))} · R$ ${esc(Number(x.valor_pago ?? x.valor ?? 0).toLocaleString('pt-BR'))}</div>
+          ${x.telas_painel && x.telas_painel !== x.telas ? `<div class="alerta">⚠️ No painel ${x.telas_painel > (x.telas || 1) ? 'tem' : 'só tem'} ${esc(telasTxt(x.telas_painel))}</div>` : ''}</div>
           <span class="cod">${esc(x.codigo)}</span></div>
         <div class="acoes"><a href="https://wa.me/${esc(x.telefone)}?text=${encodeURIComponent(msg)}" target="_blank" rel="noopener">💬 WhatsApp</a>
           ${x.status === 'pago' ? `<button data-marcar class="${x.atendido ? 'feito' : ''}">${x.atendido ? '✓ Enviado' : 'Marcar como enviado'}</button>` : ''}</div>

@@ -1,4 +1,4 @@
-// Página /pagar: taxa de R$ 7 do novo acesso. O cliente informa o WhatsApp, paga no PIX (QR do Asaas) ou no cartão (link
+// Página /pagar: taxa de R$ 7 por tela do novo acesso. O cliente informa o WhatsApp e quantas telas tem, paga no PIX (QR do Asaas) ou no cartão (link
 // de pagamento do Asaas) e, confirmado o pagamento (webhook), avisa no WhatsApp com o código. O login novo é mandado à mão
 // pelo dono (entrega automática ficou de fora para ninguém gerar vários acessos). Guarda o pagamento no aparelho para
 // retomar quando a pessoa volta do app do banco. Fala só com a função "migracao" do Supabase da Liberou TV.
@@ -7,8 +7,11 @@
   const ZAP = '5551933006768'; // WhatsApp da Liberou TV
   const GUARDA = 'lbtv-pagamento';
   const $ = (s) => document.querySelector(s);
-  let pagamento = null; // { id, codigo, telefone }
+  const POR_TELA = 7, MAX_TELAS = 10;
+  let pagamento = null; // { id, codigo, telefone, ddi, numero, telas, valor }
   let timer = null;
+  let telas = 1;
+  const plural = (n) => `${n} tela${n > 1 ? 's' : ''}`;
 
   const toast = (txt) => { const t = $('#toast'); t.textContent = txt; t.classList.add('on'); clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove('on'), 2200); };
   const passo = { inicio: -1, fone: 0, pagar: 1, pago: 2 };
@@ -28,15 +31,23 @@
   $('#ddi').addEventListener('change', () => { $('#dica').textContent = DICAS[$('#ddi').value] ?? 'DDD + número'; atualizar(); });
   $('#numero').addEventListener('input', atualizar);
   $('#numero').addEventListener('keydown', (e) => { if (e.key === 'Enter' && valido()) $('#continuar').click(); });
+  const mostrarTelas = () => {
+    $('#nTelas').textContent = telas;
+    $('#total').textContent = `R$ ${POR_TELA * telas}`;
+    $('#menos').disabled = telas <= 1;
+    $('#mais').disabled = telas >= MAX_TELAS;
+  };
+  $('#menos').addEventListener('click', () => { telas = Math.max(1, telas - 1); mostrarTelas(); });
+  $('#mais').addEventListener('click', () => { telas = Math.min(MAX_TELAS, telas + 1); mostrarTelas(); });
 
   $('#continuar').addEventListener('click', async () => {
     const b = $('#continuar');
     b.disabled = true; b.textContent = 'Preparando o pagamento…';
     try {
-      const r = await fetch(`${API}?acao=criar`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ telefone: fone() }) });
+      const r = await fetch(`${API}?acao=criar`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ telefone: fone(), telas }) });
       const d = await r.json();
       if (!r.ok) throw new Error(d.erro || 'Não consegui preparar o pagamento.');
-      pagamento = { id: d.id, codigo: d.codigo, telefone: fone() };
+      pagamento = { id: d.id, codigo: d.codigo, telefone: fone(), ddi: $('#ddi').value, numero: $('#numero').value, telas: d.telas, valor: d.valor }; // número que já pagou: sem telas/valor (vêm do servidor)
       if (d.status === 'pago') return mostrarPago(); // número que já pagou: o servidor não devolve o código
       localStorage.setItem(GUARDA, JSON.stringify(pagamento));
       mostrarPix(d);
@@ -45,8 +56,14 @@
     } finally { b.textContent = 'Continuar'; b.disabled = !valido(); }
   });
 
-  // ---- passo 2: PIX ----
+  // ---- passo 2: PIX ou cartão ----
   const mostrarPix = (d) => {
+    const valor = Number(d.valor) || POR_TELA * (pagamento?.telas || 1);
+    $('#ola').innerHTML = `Pague <em>R$ ${valor}</em>`;
+    $('#resumoTelas').textContent = plural(Number(d.telas) || pagamento?.telas || 1);
+    $('#valorPix').textContent = `R$ ${valor.toFixed(2).replace('.', ',')}`;
+    $('#pagarCartao').textContent = `💳 Pagar R$ ${valor} no cartão`;
+    $('#copiar').textContent = '📋 Copiar código PIX';
     $('#copiaTexto').textContent = d.copiaECola || '';
     if (d.qr) $('#qr').src = `data:image/png;base64,${d.qr}`;
     ir('pagar');
@@ -78,7 +95,7 @@
       location.href = d.url; // página segura do Asaas; ao voltar, a página retoma e confere o pagamento
     } catch (e) {
       $('#erroCartao').textContent = e.message || 'Algo deu errado. Tente de novo ou pague no PIX.';
-      b.disabled = false; b.textContent = '💳 Pagar R$ 7 no cartão';
+      b.disabled = false; b.textContent = `💳 Pagar R$ ${pagamento?.valor || POR_TELA} no cartão`;
     }
   });
 
@@ -99,7 +116,7 @@
   const mostrarPago = () => {
     clearInterval(timer);
     $('#codigo').textContent = pagamento.codigo || 'já registrado';
-    const msg = `Olá! Paguei a taxa do novo acesso da Liberou TV ✅\n${pagamento.codigo ? `Código: ${pagamento.codigo}\n` : ''}Meu WhatsApp: +${pagamento.telefone}`;
+    const msg = `Olá! Paguei a taxa do novo acesso da Liberou TV${pagamento.telas ? ` (${plural(pagamento.telas)})` : ''} ✅\n${pagamento.codigo ? `Código: ${pagamento.codigo}\n` : ''}Meu WhatsApp: +${pagamento.telefone}`;
     $('#zap').href = `https://wa.me/${ZAP}?text=${encodeURIComponent(msg)}`;
     ir('pago');
   };
@@ -109,14 +126,17 @@
     const salvo = JSON.parse(localStorage.getItem(GUARDA) || 'null');
     if (salvo?.id) {
       pagamento = salvo;
+      // deixa o passo 1 preenchido, para o "trocar" as telas não pedir o número de novo
+      if (salvo.ddi !== undefined) { $('#ddi').value = salvo.ddi; $('#numero').value = salvo.numero || ''; atualizar(); }
+      telas = Number(salvo.telas) || 1; mostrarTelas();
       fetch(`${API}?acao=status&id=${encodeURIComponent(salvo.id)}`, { cache: 'no-store' }).then((r) => r.json()).then(async (d) => {
         if (d.status === 'pago') return mostrarPago();
         if (d.status === 'pendente') {
           // busca de novo o QR (a função devolve o mesmo enquanto estiver válido)
-          const r = await fetch(`${API}?acao=criar`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ telefone: salvo.telefone }) });
+          const r = await fetch(`${API}?acao=criar`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ telefone: salvo.telefone, telas: Number(salvo.telas) || 1 }) });
           const x = await r.json();
           if (r.ok && x.status === 'pago') return mostrarPago();
-          if (r.ok) { pagamento = { ...salvo, id: x.id, codigo: x.codigo }; localStorage.setItem(GUARDA, JSON.stringify(pagamento)); mostrarPix(x); }
+          if (r.ok) { pagamento = { ...salvo, id: x.id, codigo: x.codigo, valor: x.valor || salvo.valor }; localStorage.setItem(GUARDA, JSON.stringify(pagamento)); mostrarPix(x); }
         }
       }).catch(() => {});
     }
