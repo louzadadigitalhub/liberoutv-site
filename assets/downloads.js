@@ -17,10 +17,10 @@ var FILES = {
     sha256: "2735eba7a97354df9ebf773605c57f49d2ea44609514e52cd747bd0ef9013522"
   },
   android: {
-    url: "downloads/LiberouTV-2.5.5.apk",
-    version: "2.5.5",
+    url: "downloads/LiberouTV-2.5.6.apk",
+    version: "2.5.6",
     size: "38 MB",
-    sha256: "bd4f234c48068a071cfd403bfd32bcd6cfe7718e4e59157bcbbb8aa7ce6bfd48"
+    sha256: "341265285c0871de9a3eb2b067fabf10894ef27c5dc9b1901df9299590a11b02"
   }
 };
 
