@@ -1,10 +1,10 @@
 // Página /pagar: taxa de R$ 7 por tela do novo acesso. O cliente informa o WhatsApp e quantas telas tem, paga no PIX (QR do Asaas) ou no cartão (link
 // de pagamento do Asaas) e, confirmado o pagamento (webhook), avisa no WhatsApp com o código. O login novo é mandado à mão
 // pelo dono (entrega automática ficou de fora para ninguém gerar vários acessos). Guarda o pagamento no aparelho para
-// retomar quando a pessoa volta do app do banco. Fala só com a função "migracao" do Supabase da Liberou TV.
+// retomar quando a pessoa volta do app do banco. Fala só com a função "migracao" do Supabase do Liberou Player.
 (() => {
   const API = 'https://dlijnfrsynqjsulenigp.supabase.co/functions/v1/migracao';
-  const ZAP = '5551933006768'; // WhatsApp da Liberou TV
+  const ZAP = '5551933006768'; // WhatsApp do Liberou Player
   const GUARDA = 'lbtv-pagamento';
   const $ = (s) => document.querySelector(s);
   const POR_TELA = 7, MAX_TELAS = 10;
@@ -116,7 +116,7 @@
   const mostrarPago = () => {
     clearInterval(timer);
     $('#codigo').textContent = pagamento.codigo || 'já registrado';
-    const msg = `Olá! Paguei a taxa do novo acesso da Liberou TV${pagamento.telas ? ` (${plural(pagamento.telas)})` : ''} ✅\n${pagamento.codigo ? `Código: ${pagamento.codigo}\n` : ''}Meu WhatsApp: +${pagamento.telefone}`;
+    const msg = `Olá! Paguei a taxa do novo acesso do Liberou Player${pagamento.telas ? ` (${plural(pagamento.telas)})` : ''} ✅\n${pagamento.codigo ? `Código: ${pagamento.codigo}\n` : ''}Meu WhatsApp: +${pagamento.telefone}`;
     $('#zap').href = `https://wa.me/${ZAP}?text=${encodeURIComponent(msg)}`;
     ir('pago');
   };

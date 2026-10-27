@@ -17,16 +17,16 @@ var FILES = {
     sha256: "2735eba7a97354df9ebf773605c57f49d2ea44609514e52cd747bd0ef9013522"
   },
   android: {
-    url: "downloads/LiberouTV-2.5.7.apk",
-    version: "2.5.7",
+    url: "downloads/LiberouPlayer-2.5.8.apk",
+    version: "2.5.8",
     size: "38 MB",
-    sha256: "18a94403656ea392d09d52b16845b2958e1489a4f530d203e6b7bf34bbff27af"
+    sha256: "92639d394f57d75cd5c19a7ffffcbc63a6ebf30b2415f3622fac5c133f041030"
   }
 };
 
 var I18N = {
   en: {
-    docTitle: "LIBEROU TV: downloads",
+    docTitle: "LIBEROU PLAYER: downloads",
     skip: "Skip to content",
     navLabel: "Main",
     langLabel: "Language",
@@ -35,7 +35,7 @@ var I18N = {
     navFaq: "Questions",
     navPrivacy: "Privacy",
     navTerms: "Terms",
-    title: "Get LiberouTV.",
+    title: "Get Liberou Player.",
     lede: "The app is free and does not come with any content. You sign in with the details from your provider.",
     available: "Available",
     soon: "Coming soon",
@@ -50,13 +50,13 @@ var I18N = {
     warn: "The warning appears because the installer does not have a digital signature yet.",
     macDesc: "Every Mac with macOS 13 or later",
     macBtn: "Download for Mac",
-    m1: "Open the file you downloaded and drag LiberouTV to the Applications folder.",
-    m2: "Open LiberouTV. Your Mac will say it could not verify the app: click OK.",
+    m1: "Open the file you downloaded and drag Liberou Player to the Applications folder.",
+    m2: "Open Liberou Player. Your Mac will say it could not verify the app: click OK.",
     m3: "Open System Settings, then Privacy & Security, scroll to the end and click Open Anyway. Confirm with your Mac password. Only the first time.",
     macWarn: "The warning appears because the app is not registered with Apple yet.",
     andDesc: "Phones, tablets, Android TV and TV boxes, with Android 5 or later",
     andBtn: "Download for Android",
-    and1: "On a phone, open the file you downloaded. On a TV or TV box, open the Downloader app, type app.liberoutv.com/downloads and download it there.",
+    and1: "On a phone, open the file you downloaded. On a TV or TV box, open the Downloader app, type liberouplayer.com/downloads and download it there.",
     and2: "Android will ask for permission to install apps from this source: allow it and tap Install.",
     and3: "Open the app and sign in with the provider code, username and password.",
     andWarn: "The permission request appears because the app is not in the app store yet.",
@@ -64,11 +64,11 @@ var I18N = {
     othersNote: "Samsung, LG, Roku, Apple TV and iPhone are on the way.",
     othersLink: "See every device.",
     /* estes dois sao iguais aos de assets/site.js */
-    legal: "LIBEROU TV does not host, bundle or distribute channels, films or series. Illegal streaming services are not supported. Rated 16+.",
-    tm: "Samsung is a trademark of Samsung Electronics Co., Ltd. LG and webOS are trademarks of LG Electronics Inc. ROKU is a trademark and/or registered trademark of Roku, Inc. in the United States and other countries. Android is a trademark of Google LLC. Apple, Mac, macOS, iPhone, iPad, Apple TV and App Store are trademarks of Apple Inc., registered in the U.S. and other countries and regions. Windows is a trademark of the Microsoft group of companies. LIBEROU TV is an independent app and is not affiliated with, sponsored or endorsed by these companies."
+    legal: "LIBEROU PLAYER does not host, bundle or distribute channels, films or series. Illegal streaming services are not supported. Rated 16+.",
+    tm: "Samsung is a trademark of Samsung Electronics Co., Ltd. LG and webOS are trademarks of LG Electronics Inc. ROKU is a trademark and/or registered trademark of Roku, Inc. in the United States and other countries. Android is a trademark of Google LLC. Apple, Mac, macOS, iPhone, iPad, Apple TV and App Store are trademarks of Apple Inc., registered in the U.S. and other countries and regions. Windows is a trademark of the Microsoft group of companies. LIBEROU PLAYER is an independent app and is not affiliated with, sponsored or endorsed by these companies."
   },
   pt: {
-    docTitle: "LIBEROU TV: downloads",
+    docTitle: "LIBEROU PLAYER: downloads",
     skip: "Pular para o conteúdo",
     navLabel: "Principal",
     langLabel: "Idioma",
@@ -77,7 +77,7 @@ var I18N = {
     navFaq: "Dúvidas",
     navPrivacy: "Privacidade",
     navTerms: "Termos",
-    title: "Baixe o LiberouTV.",
+    title: "Baixe o Liberou Player.",
     lede: "O app é grátis e não traz conteúdo. Você entra com os dados do seu provedor.",
     available: "Disponível",
     soon: "Em breve",
@@ -92,21 +92,21 @@ var I18N = {
     warn: "O aviso aparece porque o instalador ainda não tem assinatura digital.",
     macDesc: "Todo Mac com macOS 13 ou mais recente",
     macBtn: "Baixar para Mac",
-    m1: "Abra o arquivo baixado e arraste o LiberouTV para a pasta Aplicativos.",
-    m2: "Abra o LiberouTV. O Mac vai avisar que não pôde verificar o aplicativo: clique em OK.",
+    m1: "Abra o arquivo baixado e arraste o Liberou Player para a pasta Aplicativos.",
+    m2: "Abra o Liberou Player. O Mac vai avisar que não pôde verificar o aplicativo: clique em OK.",
     m3: "Abra Ajustes do Sistema, depois Privacidade e Segurança, role até o fim e clique em Abrir Mesmo Assim. Confirme com a senha do Mac. É só na primeira vez.",
     macWarn: "O aviso aparece porque o app ainda não tem o registro da Apple.",
     andDesc: "Celular, tablet, Android TV e TV box, com Android 5 ou mais recente",
     andBtn: "Baixar para Android",
-    and1: "No celular, abra o arquivo baixado. Na TV ou TV box, abra o app Downloader, digite app.liberoutv.com/downloads e baixe por lá.",
+    and1: "No celular, abra o arquivo baixado. Na TV ou TV box, abra o app Downloader, digite liberouplayer.com/downloads e baixe por lá.",
     and2: "O Android vai pedir permissão para instalar apps desta fonte: permita e toque em Instalar.",
     and3: "Abra o app e entre com o código do provedor, o usuário e a senha.",
     andWarn: "O pedido de permissão aparece porque o app ainda não está na loja de apps.",
     othersName: "Lojas de apps",
     othersNote: "Samsung, LG, Roku, Apple TV e iPhone estão a caminho.",
     othersLink: "Ver todos os aparelhos.",
-    legal: "O LIBEROU TV não hospeda, empacota nem distribui canais, filmes ou séries. Não apoiamos serviços ilegais. Classificação 16+.",
-    tm: "Samsung é marca da Samsung Electronics Co., Ltd. LG e webOS são marcas da LG Electronics Inc. ROKU é marca e/ou marca registrada da Roku, Inc. nos Estados Unidos e em outros países. Android é marca da Google LLC. Apple, Mac, macOS, iPhone, iPad, Apple TV e App Store são marcas da Apple Inc., registradas nos Estados Unidos e em outros países e regiões. Windows é marca do grupo de empresas Microsoft. O LIBEROU TV é um app independente, sem vínculo, patrocínio ou endosso dessas empresas."
+    legal: "O LIBEROU PLAYER não hospeda, empacota nem distribui canais, filmes ou séries. Não apoiamos serviços ilegais. Classificação 16+.",
+    tm: "Samsung é marca da Samsung Electronics Co., Ltd. LG e webOS são marcas da LG Electronics Inc. ROKU é marca e/ou marca registrada da Roku, Inc. nos Estados Unidos e em outros países. Android é marca da Google LLC. Apple, Mac, macOS, iPhone, iPad, Apple TV e App Store são marcas da Apple Inc., registradas nos Estados Unidos e em outros países e regiões. Windows é marca do grupo de empresas Microsoft. O LIBEROU PLAYER é um app independente, sem vínculo, patrocínio ou endosso dessas empresas."
   }
 };
 
