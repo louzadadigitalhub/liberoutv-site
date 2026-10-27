@@ -5,10 +5,10 @@
    aqui. O arquivo em si sobe para o servico "downloads", fora deste repositorio. */
 var FILES = {
   windows: {
-    url: "downloads/LiberouTV-Setup-1.0.1.exe",
-    version: "1.0.1",
+    url: "downloads/LiberouPlayer-Setup-1.0.2.exe",
+    version: "1.0.2",
     size: "108 MB",
-    sha256: "e41d1c2ddb80eab2b3cee83de0e16ee2e3156638eb09b923e1a493ad428ef1e6"
+    sha256: "3cd453ceb395721b7ae88509e1f0588468ceff3815e14270a4a2322caf26262d"
   },
   mac: {
     url: "downloads/LiberouTV-1.0.0.dmg",

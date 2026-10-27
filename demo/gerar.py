@@ -5,7 +5,7 @@ Os vídeos não ficam aqui: /live/, /movie/ e /series/ redirecionam para as font
 oficiais (nginx/demo-midia.conf, gerado junto).
 
 Serve à revisão das lojas (Apple, Google, Samsung, LG, Roku): o revisor entra com
-o código do painel que aponta para https://app.liberoutv.com e com a conta de
+o código do painel que aponta para https://liberouplayer.com e com a conta de
 revisão abaixo, e só encontra conteúdo de licença livre:
 
 - filmes e curtas abertos da Blender Foundation (Creative Commons, com o crédito
@@ -18,7 +18,7 @@ import json
 import os
 
 AQUI = os.path.dirname(os.path.abspath(__file__))
-SITE = "https://app.liberoutv.com"
+SITE = "https://liberouplayer.com"
 USUARIO, SENHA = "revisao", "liberou2026"
 
 ARCHIVE = "https://archive.org/download"
@@ -95,7 +95,7 @@ def main():
         "user_info": {"auth": 1, "status": "Active", "username": USUARIO, "exp_date": "1924988400",
                       "is_trial": "0", "active_cons": "0", "max_connections": "2",
                       "allowed_output_formats": ["m3u8", "ts"]},
-        "server_info": {"url": "app.liberoutv.com", "port": "443", "https_port": "443",
+        "server_info": {"url": "liberouplayer.com", "port": "443", "https_port": "443",
                         "server_protocol": "https", "timezone": "America/Sao_Paulo"},
     })
     grava("negado", {"user_info": {"auth": 0}})
