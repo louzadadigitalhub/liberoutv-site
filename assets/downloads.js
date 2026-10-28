@@ -17,10 +17,10 @@ var FILES = {
     sha256: "cdc0e80534a1e3a69ab67dc7cbcfcfb5c8391851782934745c6d99d49e2902ce"
   },
   android: {
-    url: "downloads/LiberouPlayer-2.6.0.apk",
-    version: "2.6.0",
+    url: "downloads/LiberouPlayer-2.6.1.apk",
+    version: "2.6.1",
     size: "38 MB",
-    sha256: "b231afefe8105e0ac9642e47bfe3a3cedb51e64f6fe9ffbd5ad87a85815e1bc5"
+    sha256: "7482deade533a6bc95fa84888a4353a5987eb193260bbdc12af96502bf4837c8"
   }
 };
 
