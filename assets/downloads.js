@@ -11,10 +11,10 @@ var FILES = {
     sha256: "3cd453ceb395721b7ae88509e1f0588468ceff3815e14270a4a2322caf26262d"
   },
   mac: {
-    url: "downloads/LiberouTV-1.0.0.dmg",
-    version: "1.0.0",
-    size: "5 MB",
-    sha256: "2735eba7a97354df9ebf773605c57f49d2ea44609514e52cd747bd0ef9013522"
+    url: "downloads/LiberouPlayer-1.0.1.dmg",
+    version: "1.0.1",
+    size: "41 MB",
+    sha256: "cdc0e80534a1e3a69ab67dc7cbcfcfb5c8391851782934745c6d99d49e2902ce"
   },
   android: {
     url: "downloads/LiberouPlayer-2.6.0.apk",
@@ -51,9 +51,9 @@ var I18N = {
     macDesc: "Every Mac with macOS 13 or later",
     macBtn: "Download for Mac",
     m1: "Open the file you downloaded and drag Liberou Player to the Applications folder.",
-    m2: "Open Liberou Player. Your Mac will say it could not verify the app: click OK.",
-    m3: "Open System Settings, then Privacy & Security, scroll to the end and click Open Anyway. Confirm with your Mac password. Only the first time.",
-    macWarn: "The warning appears because the app is not registered with Apple yet.",
+    m2: "Open Liberou Player. The first time, your Mac asks if you want to open an app downloaded from the internet: click Open.",
+    m3: "Sign in with your provider code, your username and your password.",
+    macWarn: "The app is signed and notarized by Apple. If you had the older LiberouTV app, you can move it to the Trash.",
     andDesc: "Phones, tablets, Android TV and TV boxes, with Android 5 or later",
     andBtn: "Download for Android",
     and1: "On a phone, open the file you downloaded. On a TV or TV box, open the Downloader app, type liberouplayer.com/downloads and download it there.",
@@ -93,9 +93,9 @@ var I18N = {
     macDesc: "Todo Mac com macOS 13 ou mais recente",
     macBtn: "Baixar para Mac",
     m1: "Abra o arquivo baixado e arraste o Liberou Player para a pasta Aplicativos.",
-    m2: "Abra o Liberou Player. O Mac vai avisar que não pôde verificar o aplicativo: clique em OK.",
-    m3: "Abra Ajustes do Sistema, depois Privacidade e Segurança, role até o fim e clique em Abrir Mesmo Assim. Confirme com a senha do Mac. É só na primeira vez.",
-    macWarn: "O aviso aparece porque o app ainda não tem o registro da Apple.",
+    m2: "Abra o Liberou Player. Na primeira vez, o Mac pergunta se você quer abrir um app baixado da internet: clique em Abrir.",
+    m3: "Entre com o código do seu provedor, o seu usuário e a sua senha.",
+    macWarn: "O app é assinado e conferido pela Apple. Se você tinha o app antigo, LiberouTV, pode jogá-lo no Lixo.",
     andDesc: "Celular, tablet, Android TV e TV box, com Android 5 ou mais recente",
     andBtn: "Baixar para Android",
     and1: "No celular, abra o arquivo baixado. Na TV ou TV box, abra o app Downloader, digite liberouplayer.com/downloads e baixe por lá.",
