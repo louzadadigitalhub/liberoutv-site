@@ -5,7 +5,7 @@ COPY nginx/default.conf /etc/nginx/conf.d/default.conf
 COPY nginx/seguranca.conf /etc/nginx/seguranca.conf
 COPY nginx/demo-midia.conf /etc/nginx/demo-midia.conf
 RUN rm -f /usr/share/nginx/html/*
-COPY index.html downloads.html pagar.html pagos.html privacidade.html privacy.html termos.html terms.html /usr/share/nginx/html/
+COPY index.html downloads.html privacidade.html privacy.html termos.html terms.html /usr/share/nginx/html/
 COPY assets/ /usr/share/nginx/html/assets/
 COPY fonts/ /usr/share/nginx/html/fonts/
 COPY img/ /usr/share/nginx/html/img/
