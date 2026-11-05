@@ -10,7 +10,8 @@ revisão abaixo, e só encontra conteúdo de licença livre:
 
 - filmes e curtas abertos da Blender Foundation (Creative Commons, com o crédito
   na sinopse de cada um), hospedados no Internet Archive e no servidor da Blender;
-- os vídeos de teste da Apple e da Mux, feitos para testar reprodutores.
+- os vídeos de teste da Apple, da Mux e da Unified Streaming, feitos para testar
+  reprodutores.
 
 Rodar de novo depois de mudar a lista:  python3 demo/gerar.py
 """
@@ -25,13 +26,18 @@ ARCHIVE = "https://archive.org/download"
 
 # ------------------------------------------------------------------ canais
 # (id, nome, categoria, endereço HLS)
+# Todos tocam numa Samsung de 2019 (Tizen 5.0), conferido no Remote Test Lab em
+# 04/11/2026. Ficaram de fora o exemplo fMP4 4K da Apple e o Tears of Steel da Mux
+# (CMAF com legenda TTML): a TV de 2019 responde PLAYER_ERROR_NOT_SUPPORTED_FILE.
+# O nome nao leva marca de terceiro: o revisor de cada loja ve so "Teste de Imagem".
 CANAIS = [
-    (101, "Apple Teste de Imagem HD", "1",
+    (101, "Teste de Imagem HD", "1",
      "https://devstreaming-cdn.apple.com/videos/streaming/examples/img_bipbop_adv_example_ts/master.m3u8"),
-    (102, "Apple Teste de Imagem 4K", "1",
-     "https://devstreaming-cdn.apple.com/videos/streaming/examples/img_bipbop_adv_example_fmp4/master.m3u8"),
+    (102, "Teste de Imagem 16:9", "1",
+     "https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8"),
     (201, "Cinema Aberto: Big Buck Bunny", "2", "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"),
-    (202, "Cinema Aberto: Tears of Steel", "2", "https://test-streams.mux.dev/tos_ismc/main.m3u8"),
+    (202, "Cinema Aberto: Tears of Steel", "2",
+     "https://demo.unified-streaming.com/k8s/features/stable/video/tears-of-steel/tears-of-steel.ism/.m3u8"),
 ]
 CATEGORIAS_CANAIS = [("1", "TESTE DE IMAGEM"), ("2", "CINEMA ABERTO 24H")]
 
