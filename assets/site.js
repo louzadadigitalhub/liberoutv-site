@@ -65,6 +65,7 @@ var I18N = {
     leadLiveDirect: "Available now. The file will be on the downloads page soon.",
     leadLiveLink: "Available now. Get it on the downloads page.",
     pnLink: "Go to downloads",
+    pnStore: "View on the App Store",
     samsungS1: "Press Home and open Apps.",
     samsungS2: "Search Liberou Player.",
     samsungS3: "Install and open.",
@@ -107,7 +108,7 @@ var I18N = {
     q3: "Where do I get my sign-in details?",
     a3: "From your provider, who looks after your subscription.",
     q4: "Does it work on my device?",
-    a4: "The app is already available for Windows, Mac and Android, on the downloads page. The other platforms in the list above are on the way.",
+    a4: "The app is already available for Windows, Mac and Android, on the downloads page, and for Apple TV, on the App Store. The other platforms in the list above are on the way.",
     q5: "What do you keep about me?",
     a5: "The minimum for the app to work.",
     a5link: "It is all in the privacy policy.",
@@ -182,6 +183,7 @@ var I18N = {
     leadLiveDirect: "Já está disponível. O arquivo entra na página de downloads em breve.",
     leadLiveLink: "Já está disponível. Baixe na página de downloads.",
     pnLink: "Ir para os downloads",
+    pnStore: "Ver na App Store",
     samsungS1: "Aperte Home e abra Apps.",
     samsungS2: "Busque Liberou Player.",
     samsungS3: "Instale e abra.",
@@ -224,7 +226,7 @@ var I18N = {
     q3: "Onde consigo os dados para entrar?",
     a3: "Com o seu provedor, que é quem cuida da sua assinatura.",
     q4: "Funciona no meu aparelho?",
-    a4: "O app já está disponível para Windows, Mac e Android, na página de downloads. As outras plataformas da lista acima estão a caminho.",
+    a4: "O app já está disponível para Windows, Mac e Android, na página de downloads, e para Apple TV, na App Store. As outras plataformas da lista acima estão a caminho.",
     q5: "O que vocês guardam sobre mim?",
     a5: "O mínimo para o app funcionar.",
     a5link: "Está tudo na política de privacidade.",
@@ -239,13 +241,15 @@ var I18N = {
    (a loja ainda nao publicou, mas o app ja sai por fora dela: no Android, pelo
    arquivo da pagina de downloads) */
 var STORES = {
-  samsung: "soon", lg: "soon", roku: "soon", android: "download", appletv: "soon",
+  samsung: "soon", lg: "soon", roku: "soon", android: "download", appletv: "live",
   windows: "live", mac: "live", ios: "soon"
 };
 /* estas duas nao passam por loja: saem por download direto */
 var DIRECT = { windows: true, mac: true };
 /* plataformas que ja tem arquivo na pagina de downloads */
 var LINKS = { windows: "downloads.html#windows", mac: "downloads.html#mac", android: "downloads.html#android" };
+/* plataformas que ja estao na loja: o botao do painel abre a pagina do app nela */
+var STORE_LINKS = { appletv: "https://apps.apple.com/br/app/liberou-player/id6827555446" };
 
 function $(sel, root) { return (root || document).querySelector(sel); }
 function $$(sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
@@ -637,9 +641,14 @@ function renderDevice(dev, animate) {
   /* os passos do download (D) valem enquanto a loja nao publica; depois, os da loja (S) */
   var path = STORES[dev] === "download" ? "D" : "S";
   $$("#pnSteps li").forEach(function (li, i) { li.textContent = t(dev + path + (i + 1)); });
-  var link = $("#pnLink");
-  link.hidden = !LINKS[dev];
-  if (LINKS[dev]) link.setAttribute("href", LINKS[dev]);
+  var link = $("#pnLink"), store = !LINKS[dev] && STORE_LINKS[dev], href = LINKS[dev] || store;
+  link.hidden = !href;
+  if (href) {
+    link.setAttribute("href", href);
+    $("[data-i]", link).textContent = t(store ? "pnStore" : "pnLink");
+    if (store) { link.setAttribute("target", "_blank"); link.setAttribute("rel", "noopener"); }
+    else { link.removeAttribute("target"); link.removeAttribute("rel"); }
+  }
   if (animate) {
     void panel.offsetWidth;
     panel.classList.remove("out");
