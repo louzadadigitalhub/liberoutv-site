@@ -302,7 +302,9 @@ var I18N = {
 var STORES = { samsung: "soon", lg: "soon", roku: "soon", android: "download", appletv: "live", windows: "live", mac: "live", ios: "live" };
 var DIRECT = { windows: true, mac: true };
 var LINKS = { windows: "downloads.html#windows", mac: "downloads.html#mac", android: "downloads.html#android" };
-var STORE_LINKS = { appletv: "https://apps.apple.com/br/app/liberou-player/id6827555446", ios: "https://apps.apple.com/br/app/liberou-player/id6827555446" };
+/* link da App Store pelo idioma da pagina: Brasil em portugues, EUA em ingles */
+var STORE_URL = { pt: "https://apps.apple.com/br/app/liberou-player/id6827555446", en: "https://apps.apple.com/us/app/liberou-player/id6827555446" };
+var STORE_LINKS = { appletv: true, ios: true };
 var DEVICES = ["samsung", "lg", "roku", "android", "appletv", "windows", "mac", "ios"];
 
 function $(s, r) { return (r || document).querySelector(s); }
@@ -363,7 +365,7 @@ function renderDevice(dev, animate) {
   $("#pnLead").textContent = t(leadKey(dev));
   var path = STORES[dev] === "download" ? "D" : "S";
   $$("#pnSteps li").forEach(function (li, i) { li.textContent = t(dev + path + (i + 1)); });
-  var link = $("#pnLink"), store = !LINKS[dev] && STORE_LINKS[dev], href = LINKS[dev] || store;
+  var link = $("#pnLink"), store = !LINKS[dev] && STORE_LINKS[dev] && (STORE_URL[lang] || STORE_URL.en), href = LINKS[dev] || store;
   link.hidden = !href;
   if (href) {
     link.setAttribute("href", href);
