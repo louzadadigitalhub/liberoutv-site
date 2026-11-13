@@ -6,6 +6,7 @@ var I18N = {
     docTitle: "LIBEROU PLAYER: partners",
     navDownloads: "Downloads",
     navPartners: "Partners",
+    navLogin: "Sign in",
     kicker: "PARTNERS",
     title: "Take Liberou Player to your customers.",
     lede: "The app is free for viewers. Resellers pay a license per active customer and follow everything in their own panel.",
@@ -67,12 +68,14 @@ var I18N = {
     navFaq: "Questions",
     navPrivacy: "Privacy",
     navTerms: "Terms",
+    footPartners: "For providers and resellers",
     tm: "Samsung is a trademark of Samsung Electronics Co., Ltd. LG and webOS are trademarks of LG Electronics Inc. ROKU is a trademark and/or registered trademark of Roku, Inc. in the United States and other countries. Android is a trademark of Google LLC. Apple, Mac, macOS, iPhone, iPad, Apple TV and App Store are trademarks of Apple Inc., registered in the U.S. and other countries and regions. Windows is a trademark of the Microsoft group of companies. LIBEROU PLAYER is an independent app and is not affiliated with, sponsored or endorsed by these companies.",
   },
   pt: {
     docTitle: "LIBEROU PLAYER: parceiros",
     navDownloads: "Downloads",
     navPartners: "Parceiros",
+    navLogin: "Entrar",
     kicker: "PARCEIROS",
     title: "Leve o Liberou Player para os seus clientes.",
     lede: "O app é grátis para quem assiste. Quem revende paga a licença de uso por cliente ativo e acompanha tudo num painel próprio.",
@@ -134,6 +137,7 @@ var I18N = {
     navFaq: "Dúvidas",
     navPrivacy: "Privacidade",
     navTerms: "Termos",
+    footPartners: "Para provedores e revendas",
     tm: "Samsung é marca da Samsung Electronics Co., Ltd. LG e webOS são marcas da LG Electronics Inc. ROKU é marca e/ou marca registrada da Roku, Inc. nos Estados Unidos e em outros países. Android é marca da Google LLC. Apple, Mac, macOS, iPhone, iPad, Apple TV e App Store são marcas da Apple Inc., registradas nos Estados Unidos e em outros países e regiões. Windows é marca do grupo de empresas Microsoft. O LIBEROU PLAYER é um app independente, sem vínculo, patrocínio ou endosso dessas empresas.",
   }
 };
