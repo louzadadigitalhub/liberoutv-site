@@ -45,7 +45,7 @@ var I18N = {
     q3: "Where do I get my sign-in details?",
     a3: "From your provider, who looks after your subscription.",
     q4: "Does it work on my device?",
-    a4: "The app is already available for Windows, Mac and Android, on the downloads page, and for iPhone, iPad and Apple TV, on the App Store. The other platforms in the list above are on the way.",
+    a4: "The app is already available for Windows and Android, on the downloads page, and for iPhone, iPad, Mac and Apple TV, on the App Store. The other platforms in the list above are on the way.",
     q5: "What do you keep about me?",
     a5: "The minimum for the app to work.",
     a5link: "It is all in the privacy policy.",
@@ -78,9 +78,9 @@ var I18N = {
     windowsS1: "Download the Liberou Player installer for Windows.",
     windowsS2: "Open the file and follow the setup.",
     windowsS3: "Open the app and sign in with the details from your provider.",
-    macS1: "Download Liberou Player for Mac.",
-    macS2: "Drag the app to the Applications folder.",
-    macS3: "Open the app and sign in with the details from your provider.",
+    macS1: "Open the App Store on your Mac.",
+    macS2: "Search Liberou Player.",
+    macS3: "Click Get and open.",
     iosS1: "Open the App Store.",
     iosS2: "Search Liberou Player.",
     iosS3: "Tap Get and open.",
@@ -99,7 +99,7 @@ var I18N = {
     lede: "Free for TV, phone and computer. Sign in with the details from your provider and watch what you already subscribe to.",
     cta: "Pick my device",
     cta2: "How it works",
-    avail: "App Store for iPhone, iPad and Apple TV · Download for Windows, Mac and Android",
+    avail: "App Store for iPhone, iPad, Mac and Apple TV · Download for Windows and Android",
     shotCap: "Illustrative image. The titles on screen are fictional.",
     platLabel: "Platforms",
     legA: "Available",
@@ -141,7 +141,7 @@ var I18N = {
     faqLabel: "Questions",
     faqTitle: "Good to know.",
     ctaTitle: "Start watching.",
-    ctaText: "On the App Store for iPhone, iPad and Apple TV. On the downloads page for Android, Windows and Mac.",
+    ctaText: "On the App Store for iPhone, iPad, Mac and Apple TV. On the downloads page for Android and Windows.",
     ctaStore: "Get it on the App Store",
     ctaDl: "Go to downloads",
     footPartners: "For providers and resellers",
@@ -193,7 +193,7 @@ var I18N = {
     q3: "Onde consigo os dados para entrar?",
     a3: "Com o seu provedor, que é quem cuida da sua assinatura.",
     q4: "Funciona no meu aparelho?",
-    a4: "O app já está disponível para Windows, Mac e Android, na página de downloads, e para iPhone, iPad e Apple TV, na App Store. As outras plataformas da lista acima estão a caminho.",
+    a4: "O app já está disponível para Windows e Android, na página de downloads, e para iPhone, iPad, Mac e Apple TV, na App Store. As outras plataformas da lista acima estão a caminho.",
     q5: "O que vocês guardam sobre mim?",
     a5: "O mínimo para o app funcionar.",
     a5link: "Está tudo na política de privacidade.",
@@ -226,9 +226,9 @@ var I18N = {
     windowsS1: "Baixe o instalador do Liberou Player para Windows.",
     windowsS2: "Abra o arquivo e siga a instalação.",
     windowsS3: "Abra o app e entre com os dados do seu provedor.",
-    macS1: "Baixe o Liberou Player para Mac.",
-    macS2: "Arraste o app para a pasta Aplicativos.",
-    macS3: "Abra o app e entre com os dados do seu provedor.",
+    macS1: "Abra a App Store no Mac.",
+    macS2: "Busque Liberou Player.",
+    macS3: "Clique em Obter e abra.",
     iosS1: "Abra a App Store.",
     iosS2: "Busque Liberou Player.",
     iosS3: "Toque em Obter e abra.",
@@ -247,7 +247,7 @@ var I18N = {
     lede: "Grátis para TV, celular e computador. Entre com os dados do seu provedor e assista ao que você já assina.",
     cta: "Escolher meu aparelho",
     cta2: "Como funciona",
-    avail: "App Store para iPhone, iPad e Apple TV · Download para Windows, Mac e Android",
+    avail: "App Store para iPhone, iPad, Mac e Apple TV · Download para Windows e Android",
     shotCap: "Imagem ilustrativa. Os títulos da tela são fictícios.",
     platLabel: "Plataformas",
     legA: "Disponível",
@@ -289,7 +289,7 @@ var I18N = {
     faqLabel: "Dúvidas",
     faqTitle: "Bom saber.",
     ctaTitle: "Comece a assistir.",
-    ctaText: "Na App Store para iPhone, iPad e Apple TV. Na página de downloads para Android, Windows e Mac.",
+    ctaText: "Na App Store para iPhone, iPad, Mac e Apple TV. Na página de downloads para Android e Windows.",
     ctaStore: "Baixar na App Store",
     ctaDl: "Ir para os downloads",
     footPartners: "Para provedores e revendas",
@@ -300,11 +300,11 @@ var I18N = {
 
 /* estado de cada plataforma: "soon" (em breve), "live" (disponivel) ou "download" (fora da loja, pelo arquivo) */
 var STORES = { samsung: "soon", lg: "soon", roku: "soon", android: "download", appletv: "live", windows: "live", mac: "live", ios: "live" };
-var DIRECT = { windows: true, mac: true };
-var LINKS = { windows: "downloads.html#windows", mac: "downloads.html#mac", android: "downloads.html#android" };
+var DIRECT = { windows: true };
+var LINKS = { windows: "downloads.html#windows", android: "downloads.html#android" };
 /* link da App Store pelo idioma da pagina: Brasil em portugues, EUA em ingles */
 var STORE_URL = { pt: "https://apps.apple.com/br/app/liberou-player/id6827555446", en: "https://apps.apple.com/us/app/liberou-player/id6827555446" };
-var STORE_LINKS = { appletv: true, ios: true };
+var STORE_LINKS = { appletv: true, ios: true, mac: true };
 var DEVICES = ["samsung", "lg", "roku", "android", "appletv", "windows", "mac", "ios"];
 
 function $(s, r) { return (r || document).querySelector(s); }
