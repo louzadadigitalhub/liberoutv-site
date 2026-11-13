@@ -108,7 +108,7 @@ var I18N = {
     q3: "Where do I get my sign-in details?",
     a3: "From your provider, who looks after your subscription.",
     q4: "Does it work on my device?",
-    a4: "The app is already available for Windows, Mac and Android, on the downloads page, and for Apple TV, on the App Store. The other platforms in the list above are on the way.",
+    a4: "The app is already available for Windows, Mac and Android, on the downloads page, and for iPhone, iPad and Apple TV, on the App Store. The other platforms in the list above are on the way.",
     q5: "What do you keep about me?",
     a5: "The minimum for the app to work.",
     a5link: "It is all in the privacy policy.",
@@ -226,7 +226,7 @@ var I18N = {
     q3: "Onde consigo os dados para entrar?",
     a3: "Com o seu provedor, que é quem cuida da sua assinatura.",
     q4: "Funciona no meu aparelho?",
-    a4: "O app já está disponível para Windows, Mac e Android, na página de downloads, e para Apple TV, na App Store. As outras plataformas da lista acima estão a caminho.",
+    a4: "O app já está disponível para Windows, Mac e Android, na página de downloads, e para iPhone, iPad e Apple TV, na App Store. As outras plataformas da lista acima estão a caminho.",
     q5: "O que vocês guardam sobre mim?",
     a5: "O mínimo para o app funcionar.",
     a5link: "Está tudo na política de privacidade.",
@@ -242,14 +242,14 @@ var I18N = {
    arquivo da pagina de downloads) */
 var STORES = {
   samsung: "soon", lg: "soon", roku: "soon", android: "download", appletv: "live",
-  windows: "live", mac: "live", ios: "soon"
+  windows: "live", mac: "live", ios: "live"
 };
 /* estas duas nao passam por loja: saem por download direto */
 var DIRECT = { windows: true, mac: true };
 /* plataformas que ja tem arquivo na pagina de downloads */
 var LINKS = { windows: "downloads.html#windows", mac: "downloads.html#mac", android: "downloads.html#android" };
 /* plataformas que ja estao na loja: o botao do painel abre a pagina do app nela */
-var STORE_LINKS = { appletv: "https://apps.apple.com/br/app/liberou-player/id6827555446" };
+var STORE_LINKS = { appletv: "https://apps.apple.com/br/app/liberou-player/id6827555446", ios: "https://apps.apple.com/br/app/liberou-player/id6827555446" };
 
 function $(sel, root) { return (root || document).querySelector(sel); }
 function $$(sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
