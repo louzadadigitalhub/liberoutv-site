@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LIBEROU PLAYER: playlist</title>
+<meta name="description" content="Manage the playlists of your LIBEROU PLAYER activation: sign in with your code and password and choose the server your TV opens.">
+<meta name="theme-color" content="#0c090a">
+<link rel="canonical" href="https://liberouplayer.com/playlist.html">
+<link rel="icon" href="img/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png">
+<link rel="apple-touch-icon" href="img/favicon-180.png">
+<link rel="preload" href="fonts/geist-600.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/geist-400.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+@font-face { font-family: Geist; font-weight: 400; src: url("fonts/geist-400.woff2") format("woff2"); font-display: swap; }
+@font-face { font-family: Geist; font-weight: 500; src: url("fonts/geist-500.woff2") format("woff2"); font-display: swap; }
+@font-face { font-family: Geist; font-weight: 600; src: url("fonts/geist-600.woff2") format("woff2"); font-display: swap; }
+@font-face { font-family: Geist; font-weight: 700; src: url("fonts/geist-700.woff2") format("woff2"); font-display: swap; }
+@font-face { font-family: "JetBrains Mono"; font-weight: 500; src: url("fonts/jetbrains-mono-500.woff2") format("woff2"); font-display: swap; }
+
+/* mesmas cores, fontes e curvas da pagina principal */
+:root {
+  --canvas: #0c090a;
+  --accent: #e31c3a;
+  --accent-hover: #f0344a;
+  --text-primary: #f5f1f1;
+  --text-secondary: #c6bfc1;
+  --text-faint: #9a9093;
+  --line: rgba(255,238,240,.11);
+  --line-strong: rgba(255,238,240,.4);
+  --ease: cubic-bezier(.32, .72, 0, 1);
+  --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { color-scheme: dark; scrollbar-color: #5a1a22 transparent; }
+html, body { overflow-x: hidden; overflow-x: clip; }
+body {
+  min-height: 100vh; background: var(--canvas); color: var(--text-primary);
+  font-family: Geist, system-ui, -apple-system, sans-serif; font-size: 17px; line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+::selection { background: var(--accent); color: #fff; }
+:focus-visible { outline: 2px solid var(--accent-hover); outline-offset: 3px; border-radius: 4px; }
+img { max-width: 100%; display: block; }
+a { color: inherit; }
+button { font-family: inherit; }
+h1, h2 { font-weight: 600; letter-spacing: -.045em; line-height: 1.03; text-wrap: balance; }
+.wrap { width: min(1040px, calc(100% - 48px)); margin: 0 auto; }
+.skip {
+  position: fixed; left: 16px; top: 12px; z-index: 30; padding: 10px 16px; border-radius: 10px;
+  background: var(--text-primary); color: var(--canvas); font-weight: 600; text-decoration: none;
+  transform: translateY(-200%); transition: transform .4s var(--ease);
+}
+.skip:focus { transform: none; }
+.kicker {
+  display: inline-block; padding: 6px 12px; border-radius: 999px;
+  background: rgba(255,238,240,.04); box-shadow: inset 0 0 0 1px var(--line);
+  font-family: var(--mono); font-size: 10.5px; font-weight: 500;
+  letter-spacing: .2em; text-transform: uppercase; color: var(--text-secondary);
+}
+
+.ambient { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+.ambient::before {
+  content: ""; position: absolute; left: -30vmax; top: -30vmax; width: 90vmax; height: 90vmax; border-radius: 50%;
+  background: radial-gradient(circle, rgba(227,28,58,.16) 0%, rgba(227,28,58,0) 62%);
+}
+
+.nav { position: fixed; inset: 14px 0 auto 0; z-index: 20; pointer-events: none; }
+.nav-in {
+  pointer-events: auto; width: min(1040px, calc(100% - 28px)); margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding: 9px 10px 9px 20px; border-radius: 999px; background: rgba(18,12,14,.6);
+  box-shadow: inset 0 0 0 1px var(--line), inset 0 1px 0 rgba(255,255,255,.07), 0 18px 50px rgba(0,0,0,.35);
+  -webkit-backdrop-filter: blur(18px) saturate(1.2); backdrop-filter: blur(18px) saturate(1.2);
+}
+.brand { display: flex; align-items: center; height: 30px; }
+.brand img { height: 30px; width: auto; }
+.nav-links { display: flex; align-items: center; gap: 28px; font-size: 15px; font-weight: 500; color: var(--text-secondary); }
+.nav-links a { text-decoration: none; transition: color .4s var(--ease); }
+.nav-links a:hover { color: var(--text-primary); }
+.lang { display: flex; gap: 6px; }
+.lang button {
+  background: transparent; color: var(--text-faint); border: 1px solid transparent;
+  padding: 6px 12px; font-size: 12px; font-weight: 600; cursor: pointer; border-radius: 999px;
+  transition: color .4s var(--ease), background-color .4s var(--ease), border-color .4s var(--ease);
+}
+.lang button[aria-pressed="true"] { background: #1b1416; color: var(--text-primary); border-color: var(--line-strong); }
+.lang button:not([aria-pressed="true"]):hover { color: var(--text-primary); }
+
+main { position: relative; z-index: 1; padding: clamp(120px, 16vw, 190px) 0 clamp(64px, 9vw, 120px); }
+.head h1 { font-size: clamp(40px, 7vw, 92px); letter-spacing: -.045em; margin: 16px 0 18px; }
+.head .lede { color: var(--text-secondary); font-size: clamp(16px, 1.4vw, 19px); max-width: 46ch; }
+
+.btn {
+  display: inline-flex; align-items: center; gap: 12px;
+  padding: 14px 14px 14px 26px; border-radius: 999px;
+  background: var(--accent); color: #fff; font-weight: 600; font-size: 15px; text-decoration: none;
+  transition: transform .4s var(--ease), background-color .4s var(--ease);
+}
+.btn:hover { background: var(--accent-hover); }
+.btn:active { transform: scale(.98); }
+.btn-ico {
+  width: 32px; height: 32px; border-radius: 50%; flex: none;
+  background: rgba(255,255,255,.16); display: grid; place-items: center;
+  transition: transform .4s var(--ease);
+}
+.btn:hover .btn-ico { transform: translateY(2px) scale(1.06); }
+
+
+/* aba Playlist: entrar com o codigo e a senha da ativacao e cuidar das listas */
+.panel { margin-top: clamp(32px, 4vw, 52px); padding: 10px; border-radius: 28px;
+  background: linear-gradient(180deg, rgba(255,238,240,.1), rgba(255,238,240,.03));
+  box-shadow: inset 0 0 0 1px var(--line), 0 40px 90px rgba(0,0,0,.5); }
+.panel-in { padding: clamp(22px, 3vw, 40px); border-radius: 18px;
+  background: radial-gradient(ellipse 90% 90% at 10% 0%, rgba(227,28,58,.16), rgba(227,28,58,0) 70%), #130d0f;
+  box-shadow: inset 0 1px 1px rgba(255,255,255,.12); }
+.panel h2 { font-size: clamp(26px, 3vw, 38px); margin-bottom: 8px; }
+.panel .sub { color: var(--text-secondary); font-size: 15px; max-width: 60ch; }
+.fields { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin: 22px 0 6px; }
+label { display: block; font-size: 13px; font-family: var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--text-faint); margin-bottom: 8px; }
+input { width: 100%; padding: 15px 18px; border-radius: 14px; border: 1px solid var(--line-strong); background: rgba(0,0,0,.35);
+  color: var(--text-primary); font: inherit; font-size: 17px; transition: border-color .3s var(--ease); }
+input:focus { outline: none; border-color: var(--accent); }
+input.code { font-family: var(--mono); letter-spacing: .14em; text-transform: uppercase; }
+.actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; align-items: center; }
+button.btn { border: 0; cursor: pointer; padding: 14px 26px; }
+.ghost { display: inline-flex; align-items: center; gap: 8px; padding: 12px 20px; border-radius: 999px; cursor: pointer;
+  background: transparent; color: var(--text-primary); border: 1px solid var(--line-strong); font: inherit; font-size: 15px; font-weight: 500;
+  transition: border-color .3s var(--ease), background-color .3s var(--ease); }
+.ghost:hover { border-color: var(--text-secondary); background: rgba(255,238,240,.05); }
+.ghost.danger { color: #ff9aa7; }
+.msg { margin-top: 16px; padding: 12px 16px; border-radius: 12px; font-size: 15px; display: none; }
+.msg.on { display: block; }
+.msg.ok { background: rgba(62,207,142,.1); border: 1px solid rgba(62,207,142,.35); color: #bff0d8; }
+.msg.err { background: rgba(227,28,58,.12); border: 1px solid rgba(227,28,58,.45); color: #ffc9d0; }
+.facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin: 22px 0 4px; }
+.fact { padding: 16px 18px; border-radius: 14px; background: rgba(0,0,0,.28); box-shadow: inset 0 0 0 1px var(--line); }
+.fact span { display: block; font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--text-faint); margin-bottom: 6px; }
+.fact b { font-size: 18px; font-weight: 600; }
+.fact small { display: block; color: var(--text-secondary); font-size: 13px; margin-top: 2px; }
+.lists { margin-top: 18px; border-top: 1px solid var(--line); }
+.item { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px 16px; align-items: center; padding: 16px 0; border-bottom: 1px solid var(--line); }
+.item .nm { font-size: 19px; font-weight: 600; }
+.item .sv { font-family: var(--mono); font-size: 13px; color: var(--text-secondary); overflow-wrap: anywhere; }
+.item .bt { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+.chip-on { display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; border-radius: 999px; font-size: 13px; font-weight: 600;
+  background: rgba(62,207,142,.12); color: #9fe8c6; border: 1px solid rgba(62,207,142,.35); }
+.chip-on::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: #3ecf8e; }
+.empty { color: var(--text-faint); padding: 18px 0; }
+.hint { margin-top: 14px; color: var(--text-faint); font-size: 14px; }
+.hidden { display: none !important; }
+@media (max-width: 640px) { .item { grid-template-columns: minmax(0, 1fr); } .item .bt { justify-content: flex-start; } }
+.foot { position: relative; z-index: 1; border-top: 1px solid var(--line); padding: 30px 0 56px; color: var(--text-faint); font-size: 14px; }
+.foot-row { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 14px 24px; margin-bottom: 22px; }
+.foot nav { display: flex; gap: 24px; flex-wrap: wrap; }
+.foot a { color: var(--text-secondary); text-decoration: none; transition: color .4s var(--ease); }
+.foot a:hover { color: var(--text-primary); }
+.foot .tm { font-size: 12px; line-height: 1.6; max-width: 96ch; margin-top: 8px; }
+
+.js .ri { opacity: 0; transform: translateY(20px); transition: opacity .9s var(--ease), transform .9s var(--ease); transition-delay: calc(var(--i, 0) * 90ms); }
+.js .in .ri, .js .ri.in { opacity: 1; transform: none; }
+
+@media (max-width: 860px) {
+  .card-in { grid-template-columns: minmax(0, 1fr); }
+  .row { grid-template-columns: minmax(0, 1fr) auto; }
+  .row .tx { grid-column: 1 / -1; grid-row: 2; }
+}
+@media (max-width: 720px) {
+  .wrap { width: calc(100% - 32px); }
+  .nav-links a { display: none; }
+  .brand, .brand img { height: 24px; }
+}
+@media (pointer: coarse) {
+  .btn, .lang button, .foot a { min-height: 44px; display: inline-flex; align-items: center; justify-content: center; }
+  .lang button { min-width: 44px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; transition-delay: 0s !important; }
+  .js .ri { opacity: 1; transform: none; }
+}
+</style>
+</head>
+<body>
+  <a class="skip" href="#main" data-i="skip">Skip to content</a>
+  <div class="ambient" aria-hidden="true"></div>
+
+  <header class="nav">
+    <div class="nav-in">
+      <a class="brand" href="index.html" aria-label="LIBEROU PLAYER">
+        <img src="img/logo-nav-sm.png" width="266" height="56" alt="Liberou Player">
+      </a>
+      <nav class="nav-links" aria-label="Main" data-aria="navLabel">
+        <a href="index.html#tv" data-i="navTv">Devices</a>
+        <a href="downloads.html">Downloads</a>
+        <div class="lang" role="group" aria-label="Language" data-aria="langLabel">
+          <button type="button" id="btnPt" aria-pressed="false" lang="pt-BR">PT</button>
+          <button type="button" id="btnEn" aria-pressed="true" lang="en">EN</button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" tabindex="-1">
+    <div class="wrap">
+      <header class="head">
+        <p class="kicker" data-i="kicker">Playlist</p>
+        <h1 data-i="title">Your playlists.</h1>
+        <p class="lede" data-i="lede">Sign in with the provider code you type on your TV and the password of your activation. Here you choose which server your TV opens.</p>
+      </header>
+
+      <section class="panel" id="entrar">
+        <div class="panel-in">
+          <h2 data-i="loginTitle">Sign in</h2>
+          <p class="sub" data-i="loginSub">You got both with your activation. The provider code is the one you type on the TV.</p>
+          <form id="fLogin" autocomplete="off">
+            <div class="fields">
+              <div><label for="code" data-i="fCode">Provider</label><input id="code" class="code" maxlength="16" autocapitalize="characters" spellcheck="false" required></div>
+              <div><label for="pass" data-i="fPass">Password</label><input id="pass" type="password" inputmode="numeric" maxlength="12" required></div>
+            </div>
+            <div class="actions"><button class="btn" type="submit" data-i="btnLogin">Sign in</button></div>
+          </form>
+          <p class="msg" id="msgLogin" role="alert"></p>
+        </div>
+      </section>
+
+      <section class="panel hidden" id="conta">
+        <div class="panel-in">
+          <h2><span data-i="actTitle">Activation</span> <span id="vCode" class="code"></span></h2>
+          <div class="facts">
+            <div class="fact"><span data-i="kState">Status</span><b id="vState"></b></div>
+            <div class="fact"><span data-i="kUntil">Valid until</span><b id="vUntil"></b></div>
+            <div class="fact"><span data-i="kTv">TV</span><b id="vTv"></b><small id="vTvSeen"></small></div>
+          </div>
+          <div class="actions">
+            <button type="button" class="ghost" id="btnReload" data-i="btnReload">Reload</button>
+            <button type="button" class="ghost" id="btnTv" data-i="btnTv">Change TV</button>
+            <button type="button" class="ghost" id="btnOut" data-i="btnOut">Sign out</button>
+          </div>
+          <p class="msg" id="msgConta" role="status"></p>
+        </div>
+      </section>
+
+      <section class="panel hidden" id="listas">
+        <div class="panel-in">
+          <h2 data-i="listsTitle">Playlists</h2>
+          <p class="sub" data-i="listsSub">The one in use is what your TV opens. After switching, close and open the app on the TV. Each provider has its own user and password: on the TV, sign out and sign in again with the same code.</p>
+          <div class="lists" id="lista"></div>
+          <form id="fAdd" autocomplete="off">
+            <input type="hidden" id="editId" value="">
+            <div class="fields">
+              <div><label for="nome" data-i="fName">Name</label><input id="nome" maxlength="60" data-ph="phName" placeholder="Provider A"></div>
+              <div><label for="servidor" data-i="fServer">Server</label><input id="servidor" maxlength="300" autocapitalize="off" spellcheck="false" data-ph="phServer" placeholder="http://server.com:8080" required></div>
+            </div>
+            <div class="actions">
+              <button class="btn" type="submit" id="btnAdd" data-i="btnAdd">Add playlist</button>
+              <button type="button" class="ghost hidden" id="btnCancel" data-i="btnCancel">Cancel</button>
+            </div>
+          </form>
+          <p class="hint" data-i="hint">The server is the address your provider gave you, with the port, like http://server.com:8080.</p>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="foot">
+    <div class="wrap">
+      <div class="foot-row">
+        <p>&copy; 2026 LIBEROU PLAYER</p>
+        <nav aria-label="Legal">
+          <a href="parceiros.html" data-i="footPartners">For providers and resellers</a>
+          <a href="privacy.html" data-i="navPrivacy" data-en="privacy.html" data-pt="privacidade.html">Privacy</a>
+          <a href="terms.html" data-i="navTerms" data-en="terms.html" data-pt="termos.html">Terms</a>
+          <a href="mailto:louzadadigitalhub@gmail.com">louzadadigitalhub@gmail.com</a>
+        </nav>
+      </div>
+      <p class="tm" data-i="tm">Samsung is a trademark of Samsung Electronics Co., Ltd. LG and webOS are trademarks of LG Electronics Inc. ROKU is a trademark and/or registered trademark of Roku, Inc. in the United States and other countries. Android is a trademark of Google LLC. Apple, Mac, macOS, iPhone, iPad, Apple TV and App Store are trademarks of Apple Inc., registered in the U.S. and other countries and regions. Windows, Xbox and Microsoft Store are trademarks of the Microsoft group of companies. Amazon, Fire TV and Vega OS are trademarks of Amazon.com, Inc. or its affiliates. VIDAA is a trademark of its owner. LIBEROU PLAYER is an independent app and is not affiliated with, sponsored or endorsed by these companies.</p>
+    </div>
+  </footer>
+
+<script src="assets/playlist.js"></script>
+</body>
+</html>
