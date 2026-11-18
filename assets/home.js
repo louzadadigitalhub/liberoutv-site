@@ -26,6 +26,10 @@ var I18N = {
     windowsDesc: "Windows PCs and laptops",
     macDesc: "MacBook, iMac and Mac mini",
     iosDesc: "iPhone and iPad",
+    firetvDesc: "Fire TV Stick and TVs with Fire OS or Vega OS",
+    vidaaDesc: "Smart TVs with VIDAA",
+    xboxDesc: "Xbox Series X|S and Xbox One",
+    msstoreDesc: "Windows 10 and 11, from the Microsoft Store",
     soon: "Coming soon",
     live: "Available",
     download: "By download",
@@ -51,7 +55,7 @@ var I18N = {
     a5: "The minimum for the app to work.",
     a5link: "It is all in the privacy policy.",
     legal: "LIBEROU PLAYER does not host, bundle or distribute channels, films or series. Illegal streaming services are not supported. Rated 16+.",
-    tm: "Samsung is a trademark of Samsung Electronics Co., Ltd. LG and webOS are trademarks of LG Electronics Inc. ROKU is a trademark and/or registered trademark of Roku, Inc. in the United States and other countries. Android is a trademark of Google LLC. Apple, Mac, macOS, iPhone, iPad, Apple TV and App Store are trademarks of Apple Inc., registered in the U.S. and other countries and regions. Windows is a trademark of the Microsoft group of companies. LIBEROU PLAYER is an independent app and is not affiliated with, sponsored or endorsed by these companies.",
+    tm: "Samsung is a trademark of Samsung Electronics Co., Ltd. LG and webOS are trademarks of LG Electronics Inc. ROKU is a trademark and/or registered trademark of Roku, Inc. in the United States and other countries. Android is a trademark of Google LLC. Apple, Mac, macOS, iPhone, iPad, Apple TV and App Store are trademarks of Apple Inc., registered in the U.S. and other countries and regions. Windows, Xbox and Microsoft Store are trademarks of the Microsoft group of companies. Amazon, Fire TV and Vega OS are trademarks of Amazon.com, Inc. or its affiliates. VIDAA is a trademark of its owner. LIBEROU PLAYER is an independent app and is not affiliated with, sponsored or endorsed by these companies.",
     navPrivacy: "Privacy",
     navTerms: "Terms",
     skip: "Skip to content",
@@ -85,6 +89,18 @@ var I18N = {
     iosS1: "Open the App Store.",
     iosS2: "Search Liberou Player.",
     iosS3: "Tap Get and open.",
+    firetvS1: "On the home screen, open Appstore.",
+    firetvS2: "Search Liberou Player.",
+    firetvS3: "Get it and open.",
+    vidaaS1: "Press Home and open the VIDAA Store.",
+    vidaaS2: "Search Liberou Player.",
+    vidaaS3: "Install and open.",
+    xboxS1: "On the Xbox, open the Microsoft Store.",
+    xboxS2: "Search Liberou Player.",
+    xboxS3: "Install and open.",
+    msstoreS1: "On Windows, open the Microsoft Store.",
+    msstoreS2: "Search Liberou Player.",
+    msstoreS3: "Install and open.",
     shotAlt1: "LIBEROU PLAYER home screen with fictional titles",
     shotAlt2: "LIBEROU PLAYER movies screen with fictional titles",
     shotAlt3: "LIBEROU PLAYER live channels screen with fictional channels",
@@ -175,6 +191,10 @@ var I18N = {
     windowsDesc: "Computadores e notebooks com Windows",
     macDesc: "MacBook, iMac e Mac mini",
     iosDesc: "iPhone e iPad",
+    firetvDesc: "Fire TV Stick e TVs com Fire OS ou Vega OS",
+    vidaaDesc: "Smart TVs com o sistema VIDAA",
+    xboxDesc: "Xbox Series X|S e Xbox One",
+    msstoreDesc: "Windows 10 e 11, pela loja da Microsoft",
     soon: "Em breve",
     live: "Disponível",
     download: "Por download",
@@ -200,7 +220,7 @@ var I18N = {
     a5: "O mínimo para o app funcionar.",
     a5link: "Está tudo na política de privacidade.",
     legal: "O LIBEROU PLAYER não hospeda, empacota nem distribui canais, filmes ou séries. Não apoiamos serviços ilegais. Classificação 16+.",
-    tm: "Samsung é marca da Samsung Electronics Co., Ltd. LG e webOS são marcas da LG Electronics Inc. ROKU é marca e/ou marca registrada da Roku, Inc. nos Estados Unidos e em outros países. Android é marca da Google LLC. Apple, Mac, macOS, iPhone, iPad, Apple TV e App Store são marcas da Apple Inc., registradas nos Estados Unidos e em outros países e regiões. Windows é marca do grupo de empresas Microsoft. O LIBEROU PLAYER é um app independente, sem vínculo, patrocínio ou endosso dessas empresas.",
+    tm: "Samsung é marca da Samsung Electronics Co., Ltd. LG e webOS são marcas da LG Electronics Inc. ROKU é marca e/ou marca registrada da Roku, Inc. nos Estados Unidos e em outros países. Android é marca da Google LLC. Apple, Mac, macOS, iPhone, iPad, Apple TV e App Store são marcas da Apple Inc., registradas nos Estados Unidos e em outros países e regiões. Windows, Xbox e Microsoft Store são marcas do grupo de empresas Microsoft. Amazon, Fire TV e Vega OS são marcas da Amazon.com, Inc. ou de suas afiliadas. VIDAA é marca do seu titular. O LIBEROU PLAYER é um app independente, sem vínculo, patrocínio ou endosso dessas empresas.",
     navPrivacy: "Privacidade",
     navTerms: "Termos",
     skip: "Pular para o conteúdo",
@@ -234,6 +254,18 @@ var I18N = {
     iosS1: "Abra a App Store.",
     iosS2: "Busque Liberou Player.",
     iosS3: "Toque em Obter e abra.",
+    firetvS1: "Na tela inicial, abra a Appstore.",
+    firetvS2: "Busque Liberou Player.",
+    firetvS3: "Baixe e abra.",
+    vidaaS1: "Aperte Home e abra a VIDAA Store.",
+    vidaaS2: "Busque Liberou Player.",
+    vidaaS3: "Instale e abra.",
+    xboxS1: "No Xbox, abra a Microsoft Store.",
+    xboxS2: "Busque Liberou Player.",
+    xboxS3: "Instale e abra.",
+    msstoreS1: "No Windows, abra a Microsoft Store.",
+    msstoreS2: "Busque Liberou Player.",
+    msstoreS3: "Instale e abra.",
     shotAlt1: "Tela inicial do LIBEROU PLAYER com títulos fictícios",
     shotAlt2: "Tela de filmes do LIBEROU PLAYER com títulos fictícios",
     shotAlt3: "Tela de canais ao vivo do LIBEROU PLAYER com canais fictícios",
@@ -301,7 +333,7 @@ var I18N = {
 };
 
 /* estado de cada plataforma: "soon" (em breve), "live" (disponivel) ou "download" (fora da loja, pelo arquivo) */
-var STORES = { samsung: "soon", lg: "soon", roku: "live", android: "download", appletv: "live", windows: "live", mac: "live", ios: "live" };
+var STORES = { samsung: "soon", lg: "soon", roku: "live", firetv: "soon", vidaa: "soon", xbox: "soon", msstore: "soon", android: "download", appletv: "live", windows: "live", mac: "live", ios: "live" };
 var DIRECT = { windows: true };
 var LINKS = { windows: "downloads.html#windows", android: "downloads.html#android" };
 /* link da App Store pelo idioma da pagina: Brasil em portugues, EUA em ingles */
@@ -310,7 +342,7 @@ var STORE_LINKS = { appletv: true, ios: true, mac: true };
 /* Roku: canal publico 892449, na loja desde 17/11/2026 (so Brasil). A pagina da loja na web nao
    abre a partir do Brasil; o link pelo codigo do canal adiciona o app na conta Roku do cliente */
 var OWN_STORE = { roku: { url: "https://my.roku.com/account/add/DMDMKC5", label: "pnRoku" } };
-var DEVICES = ["samsung", "lg", "roku", "android", "appletv", "windows", "mac", "ios"];
+var DEVICES = ["samsung", "lg", "roku", "firetv", "vidaa", "android", "appletv", "xbox", "windows", "msstore", "mac", "ios"];
 
 function $(s, r) { return (r || document).querySelector(s); }
 function $$(s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); }
