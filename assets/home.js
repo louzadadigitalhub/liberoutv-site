@@ -37,6 +37,7 @@ var I18N = {
     leadLiveLink: "Available now. Get it on the downloads page.",
     pnLink: "Go to downloads",
     pnStore: "View on the App Store",
+    pnRoku: "Add with your Roku account",
     tvHint: "Use your arrow keys, like a remote.",
     q1: "Does Liberou Player come with channels or movies?",
     a1: "No. It is only the player. What you see on screen comes from the service you subscribe to.",
@@ -45,7 +46,7 @@ var I18N = {
     q3: "Where do I get my sign-in details?",
     a3: "From your provider, who looks after your subscription.",
     q4: "Does it work on my device?",
-    a4: "The app is already available for Windows and Android, on the downloads page, and for iPhone, iPad, Mac and Apple TV, on the App Store. The other platforms in the list above are on the way.",
+    a4: "The app is already available for Windows and Android, on the downloads page, for iPhone, iPad, Mac and Apple TV, on the App Store, and for Roku, in the Roku store. The other platforms in the list above are on the way.",
     q5: "What do you keep about me?",
     a5: "The minimum for the app to work.",
     a5link: "It is all in the privacy policy.",
@@ -185,6 +186,7 @@ var I18N = {
     leadLiveLink: "Já está disponível. Baixe na página de downloads.",
     pnLink: "Ir para os downloads",
     pnStore: "Ver na App Store",
+    pnRoku: "Adicionar pela conta Roku",
     tvHint: "Use as setas do teclado, como no controle.",
     q1: "O Liberou Player vem com canais ou filmes?",
     a1: "Não. Ele é só o reprodutor. O que aparece na tela vem do serviço que você assina.",
@@ -193,7 +195,7 @@ var I18N = {
     q3: "Onde consigo os dados para entrar?",
     a3: "Com o seu provedor, que é quem cuida da sua assinatura.",
     q4: "Funciona no meu aparelho?",
-    a4: "O app já está disponível para Windows e Android, na página de downloads, e para iPhone, iPad, Mac e Apple TV, na App Store. As outras plataformas da lista acima estão a caminho.",
+    a4: "O app já está disponível para Windows e Android, na página de downloads, para iPhone, iPad, Mac e Apple TV, na App Store, e para Roku, na loja da Roku. As outras plataformas da lista acima estão a caminho.",
     q5: "O que vocês guardam sobre mim?",
     a5: "O mínimo para o app funcionar.",
     a5link: "Está tudo na política de privacidade.",
@@ -299,12 +301,15 @@ var I18N = {
 };
 
 /* estado de cada plataforma: "soon" (em breve), "live" (disponivel) ou "download" (fora da loja, pelo arquivo) */
-var STORES = { samsung: "soon", lg: "soon", roku: "soon", android: "download", appletv: "live", windows: "live", mac: "live", ios: "live" };
+var STORES = { samsung: "soon", lg: "soon", roku: "live", android: "download", appletv: "live", windows: "live", mac: "live", ios: "live" };
 var DIRECT = { windows: true };
 var LINKS = { windows: "downloads.html#windows", android: "downloads.html#android" };
 /* link da App Store pelo idioma da pagina: Brasil em portugues, EUA em ingles */
 var STORE_URL = { pt: "https://apps.apple.com/br/app/liberou-player/id6827555446", en: "https://apps.apple.com/us/app/liberou-player/id6827555446" };
 var STORE_LINKS = { appletv: true, ios: true, mac: true };
+/* Roku: canal publico 892449, na loja desde 17/11/2026 (so Brasil). A pagina da loja na web nao
+   abre a partir do Brasil; o link pelo codigo do canal adiciona o app na conta Roku do cliente */
+var OWN_STORE = { roku: { url: "https://my.roku.com/account/add/DMDMKC5", label: "pnRoku" } };
 var DEVICES = ["samsung", "lg", "roku", "android", "appletv", "windows", "mac", "ios"];
 
 function $(s, r) { return (r || document).querySelector(s); }
@@ -365,11 +370,12 @@ function renderDevice(dev, animate) {
   $("#pnLead").textContent = t(leadKey(dev));
   var path = STORES[dev] === "download" ? "D" : "S";
   $$("#pnSteps li").forEach(function (li, i) { li.textContent = t(dev + path + (i + 1)); });
-  var link = $("#pnLink"), store = !LINKS[dev] && STORE_LINKS[dev] && (STORE_URL[lang] || STORE_URL.en), href = LINKS[dev] || store;
+  var own = OWN_STORE[dev];
+  var link = $("#pnLink"), store = !LINKS[dev] && ((own && own.url) || (STORE_LINKS[dev] && (STORE_URL[lang] || STORE_URL.en))), href = LINKS[dev] || store;
   link.hidden = !href;
   if (href) {
     link.setAttribute("href", href);
-    $("[data-i]", link).textContent = t(store ? "pnStore" : "pnLink");
+    $("[data-i]", link).textContent = t(store ? ((own && own.label) || "pnStore") : "pnLink");
     if (store) { link.setAttribute("target", "_blank"); link.setAttribute("rel", "noopener"); }
     else { link.removeAttribute("target"); link.removeAttribute("rel"); }
   }

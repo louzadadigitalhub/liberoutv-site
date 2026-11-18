@@ -71,7 +71,7 @@ var I18N = {
     ap2: "On Apple TV, open the App Store on the TV and search Liberou Player.",
     ap3: "Install, open and sign in with the provider code, username and password.",
     appleNote: "Installed from the official store, the app gets its updates through the App Store.",
-    othersNote: "Samsung, LG and Roku are on the way.",
+    othersNote: "Roku is in the Roku store. Samsung and LG are on the way.",
     othersLink: "See every device.",
     /* estes dois sao iguais aos de assets/site.js */
     legal: "LIBEROU PLAYER does not host, bundle or distribute channels, films or series. Illegal streaming services are not supported. Rated 16+.",
@@ -123,7 +123,7 @@ var I18N = {
     ap2: "Na Apple TV, abra a App Store da TV e busque Liberou Player.",
     ap3: "Instale, abra e entre com o código do provedor, o usuário e a senha.",
     appleNote: "Instalado pela loja oficial, o app recebe as atualizações pela própria App Store.",
-    othersNote: "Samsung, LG e Roku estão a caminho.",
+    othersNote: "Roku já está na loja da Roku. Samsung e LG estão a caminho.",
     othersLink: "Ver todos os aparelhos.",
     legal: "O LIBEROU PLAYER não hospeda, empacota nem distribui canais, filmes ou séries. Não apoiamos serviços ilegais. Classificação 16+.",
     tm: "Samsung é marca da Samsung Electronics Co., Ltd. LG e webOS são marcas da LG Electronics Inc. ROKU é marca e/ou marca registrada da Roku, Inc. nos Estados Unidos e em outros países. Android é marca da Google LLC. Apple, Mac, macOS, iPhone, iPad, Apple TV e App Store são marcas da Apple Inc., registradas nos Estados Unidos e em outros países e regiões. Windows é marca do grupo de empresas Microsoft. O LIBEROU PLAYER é um app independente, sem vínculo, patrocínio ou endosso dessas empresas."
