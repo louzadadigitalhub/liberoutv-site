@@ -28,7 +28,7 @@
   <a href="privacidade.html">PT</a>
 </p>
 <h1>Privacy Policy</h1>
-<p class="data">Applies equally to the LIBEROU PLAYER apps on Samsung, LG, Roku, Apple and Amazon Fire TV devices · Last updated: 14 November 2026</p>
+<p class="data">Applies equally to the LIBEROU PLAYER apps on Samsung, LG, Roku, Apple, Android and Amazon Fire TV devices · Last updated: 18 November 2026</p>
 
 <div class="cover">
   <strong>This policy covers the same player in these official stores:</strong>
@@ -37,6 +37,8 @@
     <li>LG Smart TV — LG Content Store</li>
     <li>Roku — Roku Channel Store</li>
     <li>Amazon Fire TV — Amazon Appstore</li>
+    <li>Android (phone, tablet, Android TV, Google TV and TV box) — Google Play</li>
+    <li>Android — installer downloaded from this website</li>
     <li>iPhone, iPad and Apple TV — App Store</li>
     <li>Mac — App Store and the installer downloaded from this site</li>
   </ul>
@@ -46,7 +48,7 @@
 <p>This policy explains what data the LIBEROU PLAYER applications collect, why they collect it, and who it is shared with.</p>
 
 <h2>Who we are</h2>
-<p>LIBEROU PLAYER. Privacy contact: <a href="mailto:louzadadigitalhub@gmail.com">louzadadigitalhub@gmail.com</a>.</p>
+<p>LIBEROU PLAYER is an application by LOUZADA DIGITAL HUB, which is responsible for the processing of the data described here. Privacy contact: <a href="mailto:louzadadigitalhub@gmail.com">louzadadigitalhub@gmail.com</a>.</p>
 
 <h2>What the application collects</h2>
 <p>On each session, and about every 15 minutes while it is open, the application sends the following data to our configuration server:</p>
@@ -59,26 +61,29 @@
           <br>LG: device ID of that platform
           <br>Roku: channel client ID
           <br>iPhone, iPad and Apple TV: identifier for vendor (identifierForVendor), which is not the advertising identifier
-          <br>Mac and Amazon Fire TV: an identifier created by the app itself at installation (on Fire TV it is not the Android ID nor the advertising identifier)</td></tr>
-  <tr><td>Model and manufacturer</td><td>Compatibility diagnosis and support.</td></tr>
+          <br>Mac and Amazon Fire TV: an identifier created by the app itself at installation (on Fire TV it is not the Android ID nor the advertising identifier)
+          <br>Android: the ANDROID_ID, the identifier the Android system gives the app on this device; it is not the advertising identifier</td></tr>
+  <tr><td>Model, manufacturer and platform</td><td>Compatibility diagnosis and support.</td></tr>
   <tr><td>System version and firmware</td>
       <td>Diagnosis and compatibility.
           <br>Samsung: Tizen
           <br>LG: webOS
           <br>Roku: Roku OS
           <br>Apple: iOS, iPadOS, tvOS or macOS
-          <br>Amazon Fire TV: Fire OS</td></tr>
+          <br>Amazon Fire TV: Fire OS
+          <br>Android: Android and its version</td></tr>
   <tr><td>Application version</td><td>Know whether an update is available.</td></tr>
-  <tr><td>Country / language reported by the device</td><td>Pick the closest server region and the interface language.</td></tr>
+  <tr><td>Country / language reported by the device</td><td>Pick the closest server region and the interface language. On Android, it is the region of the device language (the “BR” in “pt-BR”), not your location.</td></tr>
   <tr><td>Username of your subscription</td><td>Tie the session to your account for support.</td></tr>
   <tr><td>Provider code</td><td>To find your provider's server. It is the code you type on the sign-in screen, when the app asks for one.</td></tr>
-  <tr><td>Streaming server address in use</td><td>Technical support and connection diagnosis.</td></tr>
-  <tr><td>IP address</td><td>Recorded by the server when it receives the connection, as with any internet request.</td></tr>
+  <tr><td>Streaming server address in use</td><td>Technical support and connection diagnosis. Only in the apps that send it; the Android app does not.</td></tr>
+  <tr><td>IP address</td><td>Recorded by the server when it receives the connection, as with any internet request. We keep it only to limit wrong code attempts, and it is deleted within 24 hours.</td></tr>
 </table>
 
 <h2>Who we share it with</h2>
-<p>When you sign in with a provider code, that provider, which is the service you subscribe to, can see the data above for the devices using its code: username, device, version, country and last activity. It uses them for support. No other third party receives this data.</p>
-<p>To show the match schedule, the application queries an external sports results service. That service receives the device's IP address, as with any internet request, and does not receive any data from your account.</p>
+<p>When you sign in with a provider code, that provider, which is the service you subscribe to, can see the data above for the devices using its code: username, device model, platform, version, country and last activity. It uses them for support. No other third party receives this data.</p>
+<p>Channel logos and movie posters are downloaded from the addresses given by your provider's server; those servers receive the device's IP address. The Trailer button opens the YouTube app.</p>
+<p>To show the match schedule, the application queries our server (in older versions of some apps, an external sports results service). Whoever answers receives the device's IP address, as with any internet request, and does not receive any data from your account.</p>
 
 <h2>What the application does NOT collect</h2>
 <ul>
@@ -90,19 +95,24 @@
 </ul>
 
 <h2>Your password</h2>
-<p>The password of your subscription is stored only in the device’s local storage (on Apple devices, in the system Keychain), so you do not have to type it every time. It is not sent to our configuration server.</p>
-<p>To play content, the application sends username and password to the streaming server of your subscription, which authenticates access and delivers the catalog. That traffic goes directly from the device to that server.</p>
+<p>The password of your subscription is stored only in the device’s local storage (on Apple devices, in the system Keychain; on Android, in the app’s private storage), so you do not have to type it every time. It is not sent to our configuration server. On Android, the password is not included in the system backup.</p>
+<p>To play content, the application sends username and password to the streaming server of your subscription, which authenticates access and delivers the catalog. That traffic goes directly from the device to that server. The connection to that server may not be encrypted (http): that depends on the provider, not on the application.</p>
 <p>When you sign out from Profile, the data saved on the device is deleted. This is the same on Samsung, LG, Roku, Apple and Amazon Fire TV devices.</p>
+<p>On Android, signing out deletes the saved sign-in. With “Remember my details” checked, the code, username and password stay saved to fill in the sign-in screen; unchecking it deletes them. Channel and movie lists, favorites and “continue watching” stay on the device until you uninstall the app or clear its data in the Android settings.</p>
 
 <h2>Content</h2>
 <p>The application is a media player. It does not host or distribute its own content: it only plays the catalog of the service you already subscribe to, using the credentials you enter. Without a valid login, the application shows no content. This is the same on every platform listed above.</p>
 
 <h2>How long we keep it</h2>
-<p>Session records are kept while your subscription is active and for up to 12 months afterwards, for support and security. They are then deleted or anonymized.</p>
+<p>The data of each device is kept while it uses the application and deleted 12 months after its last use. The usage record of each username is deleted 35 days after its last use. Daily totals, with no one’s name, are kept for billing providers.</p>
 
 <h2>Your rights</h2>
 <p>You may request access, correction, portability, anonymization or deletion of your data, and you may withdraw consent. Write to
 <a href="mailto:louzadadigitalhub@gmail.com">louzadadigitalhub@gmail.com</a> and we will reply within 15 days.</p>
+
+<h2>How to delete your data</h2>
+<p>Write to <a href="mailto:louzadadigitalhub@gmail.com">louzadadigitalhub@gmail.com</a> with the provider code and your username. We delete the records of that username (the devices and the usage record) within 15 days and reply when it is done.</p>
+<p>On the device, you can delete them yourself: sign out from Profile, uncheck “Remember my details” (on Android) or uninstall the application.</p>
 
 <h2>This website</h2>
 <p>The website liberouplayer.com does not use cookies, advertising or tracking tools. It stores two preferences in your browser, the language and the home page animation, and they never leave your device. The site's server records the IP address and the page requested, as with any internet request.</p>
@@ -111,7 +121,7 @@
 <p>The application is rated 16+ and is not directed at children. We do not knowingly collect data from children.</p>
 
 <h2>Changes</h2>
-<p>If this policy changes, we will publish the new version on this same page, with the update date at the top. The update applies to Samsung, LG, Roku, Apple and Amazon Fire TV together.</p>
+<p>If this policy changes, we will publish the new version on this same page, with the update date at the top. The update applies to Samsung, LG, Roku, Apple, Android and Amazon Fire TV together.</p>
 
 <p><a href="terms.html">Terms of Use</a></p>
 </body>
