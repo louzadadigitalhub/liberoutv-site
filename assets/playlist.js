@@ -33,7 +33,8 @@ var I18N = {
     loginSub: "You got both with your activation. The provider code is the one you type on the TV.",
     fCode: "Provider", fPass: "Password", btnLogin: "Sign in",
     actTitle: "Activation", kState: "Status", kUntil: "Valid until", kTv: "TV",
-    btnReload: "Reload", btnTv: "Change TV", btnOut: "Sign out",
+    btnReload: "Reload", btnOut: "Sign out",
+    tvLock: "The first TV that signs in keeps this code for the 12 months. To change TVs, talk to whoever sold it to you.",
     listsTitle: "Playlists",
     listsSub: "The one in use is what your TV opens. After switching, close and open the app on the TV. Each provider has its own user and password: on the TV, sign out and sign in again with the same code.",
     fName: "Name", fServer: "Server", btnAdd: "Add playlist", btnSave: "Save", btnCancel: "Cancel",
@@ -41,8 +42,7 @@ var I18N = {
     phName: "Provider A", phServer: "http://server.com:8080",
     inUse: "In use", use: "Use", edit: "Edit", del: "Delete",
     noLists: "No playlist yet. Add the server of your provider below.",
-    noTv: "No TV yet", seen: "Last seen ", nextChange: "Next TV change: ",
-    confirmTv: "Release the TV? The next TV that signs in with your code keeps the activation. You can do this once every 30 days.",
+    noTv: "No TV yet", seen: "Last seen ",
     confirmDel: "Delete this playlist?",
     reloaded: "Up to date. On the TV, close and open the app to use the playlist in use now.",
     offline: "Could not reach the server. Check your connection and try again.",
@@ -67,7 +67,8 @@ var I18N = {
     loginSub: "Você recebeu os dois com a ativação. O código do provedor é o mesmo que você digita na TV.",
     fCode: "Provider", fPass: "Password", btnLogin: "Entrar",
     actTitle: "Ativação", kState: "Situação", kUntil: "Vale até", kTv: "TV",
-    btnReload: "Recarregar", btnTv: "Trocar de TV", btnOut: "Sair",
+    btnReload: "Recarregar", btnOut: "Sair",
+    tvLock: "A primeira TV que entrar fica com este código pelos 12 meses. Para trocar de TV, fale com quem vendeu.",
     listsTitle: "Playlists",
     listsSub: "A que está em uso é a que a TV abre. Depois de trocar, feche e abra o app na TV. Cada provedor tem o seu usuário e senha: na TV, saia e entre de novo com o mesmo código.",
     fName: "Nome", fServer: "Servidor", btnAdd: "Adicionar playlist", btnSave: "Salvar", btnCancel: "Cancelar",
@@ -75,8 +76,7 @@ var I18N = {
     phName: "Provedor A", phServer: "http://servidor.com:8080",
     inUse: "Em uso", use: "Usar", edit: "Editar", del: "Apagar",
     noLists: "Nenhuma playlist ainda. Adicione abaixo o servidor do seu provedor.",
-    noTv: "Nenhuma TV ainda", seen: "Visto em ", nextChange: "Próxima troca de TV: ",
-    confirmTv: "Soltar a TV? A próxima TV que entrar com o seu código fica com a ativação. Dá para fazer isso uma vez a cada 30 dias.",
+    noTv: "Nenhuma TV ainda", seen: "Visto em ",
     confirmDel: "Apagar esta playlist?",
     reloaded: "Atualizado. Na TV, feche e abra o app para usar a playlist em uso agora.",
     offline: "Não deu para falar com o servidor. Confira a internet e tente de novo.",
@@ -134,8 +134,7 @@ function render(a) {
   $("#vState").textContent = t("states")[a.situacao] || a.situacao_txt;
   $("#vUntil").textContent = a.vence;
   $("#vTv").textContent = a.tv ? a.tv.aparelho : t("noTv");
-  $("#vTvSeen").textContent = a.tv && a.tv.visto ? t("seen") + a.tv.visto : (a.troca_tv_em ? t("nextChange") + a.troca_tv_em : "");
-  $("#btnTv").disabled = !a.tv;
+  $("#vTvSeen").textContent = a.tv && a.tv.visto ? t("seen") + a.tv.visto : "";
   var box = $("#lista");
   box.textContent = "";
   if (!a.playlists.length) {
@@ -206,7 +205,6 @@ $("#fAdd").addEventListener("submit", function (ev) {
 });
 $("#btnCancel").addEventListener("click", resetForm);
 $("#btnReload").addEventListener("click", function () { act("entrar", {}, t("reloaded")); });
-$("#btnTv").addEventListener("click", function () { if (confirm(t("confirmTv"))) act("trocar_tv"); });
 $("#btnOut").addEventListener("click", out);
 $("#btnEn").addEventListener("click", function () { chooseLang("en"); });
 $("#btnPt").addEventListener("click", function () { chooseLang("pt"); });
