@@ -43,6 +43,7 @@ var I18N = {
     pnLink: "Go to downloads",
     pnStore: "View on the App Store",
     pnRoku: "Add with your Roku account",
+    pnMs: "View in Microsoft Store",
     tvHint: "Use your arrow keys, like a remote.",
     q1: "Does Liberou Player come with channels or movies?",
     a1: "No. It is only the player. What you see on screen comes from the service you subscribe to.",
@@ -51,7 +52,7 @@ var I18N = {
     q3: "Where do I get my sign-in details?",
     a3: "From your provider, who looks after your subscription.",
     q4: "Does it work on my device?",
-    a4: "The app is already available for Windows and Android, on the downloads page, for iPhone, iPad, Mac and Apple TV, on the App Store, for Roku, in the Roku store, and for Fire TV Stick, in the Amazon Appstore (devices with Vega OS from November 24). The other platforms in the list above are on the way.",
+    a4: "The app is already available for Windows and Android, on the downloads page, for iPhone, iPad, Mac and Apple TV, on the App Store, for Roku, in the Roku store, for Fire TV Stick, in the Amazon Appstore (devices with Vega OS from November 24), and for Windows also in the Microsoft Store. The other platforms in the list above are on the way.",
     q5: "What do you keep about me?",
     a5: "The minimum for the app to work.",
     a5link: "It is all in the privacy policy.",
@@ -117,7 +118,7 @@ var I18N = {
     lede: "Free for TV, phone and computer. Sign in with the details from your provider and watch what you already subscribe to.",
     cta: "Pick my device",
     cta2: "How it works",
-    avail: "App Store for iPhone, iPad, Mac and Apple TV · Amazon Appstore for Fire TV · Download for Windows and Android",
+    avail: "App Store for iPhone, iPad, Mac and Apple TV · Amazon Appstore for Fire TV · Microsoft Store for Windows · Download for Windows and Android",
     shotCap: "Illustrative image. The titles on screen are fictional.",
     platLabel: "Platforms",
     legA: "Available",
@@ -209,6 +210,7 @@ var I18N = {
     pnLink: "Ir para os downloads",
     pnStore: "Ver na App Store",
     pnRoku: "Adicionar pela conta Roku",
+    pnMs: "Ver na Microsoft Store",
     tvHint: "Use as setas do teclado, como no controle.",
     q1: "O Liberou Player vem com canais ou filmes?",
     a1: "Não. Ele é só o reprodutor. O que aparece na tela vem do serviço que você assina.",
@@ -217,7 +219,7 @@ var I18N = {
     q3: "Onde consigo os dados para entrar?",
     a3: "Com o seu provedor, que é quem cuida da sua assinatura.",
     q4: "Funciona no meu aparelho?",
-    a4: "O app já está disponível para Windows e Android, na página de downloads, para iPhone, iPad, Mac e Apple TV, na App Store, para Roku, na loja da Roku, e para Fire TV Stick, na Amazon Appstore (aparelhos com Vega OS a partir de 24 de novembro). As outras plataformas da lista acima estão a caminho.",
+    a4: "O app já está disponível para Windows e Android, na página de downloads, para iPhone, iPad, Mac e Apple TV, na App Store, para Roku, na loja da Roku, para Fire TV Stick, na Amazon Appstore (aparelhos com Vega OS a partir de 24 de novembro), e para Windows também na Microsoft Store. As outras plataformas da lista acima estão a caminho.",
     q5: "O que vocês guardam sobre mim?",
     a5: "O mínimo para o app funcionar.",
     a5link: "Está tudo na política de privacidade.",
@@ -283,7 +285,7 @@ var I18N = {
     lede: "Grátis para TV, celular e computador. Entre com os dados do seu provedor e assista ao que você já assina.",
     cta: "Escolher meu aparelho",
     cta2: "Como funciona",
-    avail: "App Store para iPhone, iPad, Mac e Apple TV · Amazon Appstore para Fire TV · Download para Windows e Android",
+    avail: "App Store para iPhone, iPad, Mac e Apple TV · Amazon Appstore para Fire TV · Microsoft Store para Windows · Download para Windows e Android",
     shotCap: "Imagem ilustrativa. Os títulos da tela são fictícios.",
     platLabel: "Plataformas",
     legA: "Disponível",
@@ -335,7 +337,7 @@ var I18N = {
 };
 
 /* estado de cada plataforma: "soon" (em breve), "live" (disponivel) ou "download" (fora da loja, pelo arquivo) */
-var STORES = { samsung: "soon", lg: "soon", roku: "live", firetv: "live", vidaa: "soon", xbox: "soon", msstore: "soon", android: "download", appletv: "live", windows: "live", mac: "live", ios: "live" };
+var STORES = { samsung: "soon", lg: "soon", roku: "live", firetv: "live", vidaa: "soon", xbox: "soon", msstore: "live", android: "download", appletv: "live", windows: "live", mac: "live", ios: "live" };
 var DIRECT = { windows: true };
 var LINKS = { windows: "downloads.html#windows", android: "downloads.html#android" };
 /* link da App Store pelo idioma da pagina: Brasil em portugues, EUA em ingles */
@@ -344,7 +346,9 @@ var STORE_LINKS = { appletv: true, ios: true, mac: true };
 /* Fire TV: na Amazon Appstore desde 19/11/2026 (Fire OS); Vega OS so a partir de 24/11, dito no texto proprio (firetvLead) */
 /* Roku: canal publico 892449, na loja desde 17/11/2026 (so Brasil). A pagina da loja na web nao
    abre a partir do Brasil; o link pelo codigo do canal adiciona o app na conta Roku do cliente */
-var OWN_STORE = { roku: { url: "https://my.roku.com/account/add/DMDMKC5", label: "pnRoku" } };
+/* Microsoft Store: na loja desde 19/11/2026 (9P9ZZ4S1VSHN), link pelo idioma da pagina */
+var OWN_STORE = { roku: { url: "https://my.roku.com/account/add/DMDMKC5", label: "pnRoku" },
+  msstore: { url: { pt: "https://apps.microsoft.com/detail/9p9zz4s1vshn?hl=pt-BR&gl=BR", en: "https://apps.microsoft.com/detail/9p9zz4s1vshn?hl=en-US&gl=US" }, label: "pnMs" } };
 var DEVICES = ["samsung", "lg", "roku", "firetv", "vidaa", "android", "appletv", "xbox", "windows", "msstore", "mac", "ios"];
 
 function $(s, r) { return (r || document).querySelector(s); }
@@ -407,7 +411,8 @@ function renderDevice(dev, animate) {
   var path = STORES[dev] === "download" ? "D" : "S";
   $$("#pnSteps li").forEach(function (li, i) { li.textContent = t(dev + path + (i + 1)); });
   var own = OWN_STORE[dev];
-  var link = $("#pnLink"), store = !LINKS[dev] && ((own && own.url) || (STORE_LINKS[dev] && (STORE_URL[lang] || STORE_URL.en))), href = LINKS[dev] || store;
+  var ownUrl = own && (typeof own.url === "string" ? own.url : (own.url[lang] || own.url.en));
+  var link = $("#pnLink"), store = !LINKS[dev] && (ownUrl || (STORE_LINKS[dev] && (STORE_URL[lang] || STORE_URL.en))), href = LINKS[dev] || store;
   link.hidden = !href;
   if (href) {
     link.setAttribute("href", href);
