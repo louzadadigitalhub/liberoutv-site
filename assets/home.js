@@ -27,6 +27,7 @@ var I18N = {
     macDesc: "MacBook, iMac and Mac mini",
     iosDesc: "iPhone and iPad",
     firetvDesc: "Fire TV Stick and TVs with Fire OS or Vega OS",
+    firetvLead: "In the Amazon Appstore now, for Fire TV Stick and TVs with Fire OS. On devices with Vega OS, from November 24. The path:",
     vidaaDesc: "Smart TVs with VIDAA",
     xboxDesc: "Xbox Series X|S and Xbox One",
     msstoreDesc: "Windows 10 and 11, from the Microsoft Store",
@@ -50,7 +51,7 @@ var I18N = {
     q3: "Where do I get my sign-in details?",
     a3: "From your provider, who looks after your subscription.",
     q4: "Does it work on my device?",
-    a4: "The app is already available for Windows and Android, on the downloads page, for iPhone, iPad, Mac and Apple TV, on the App Store, and for Roku, in the Roku store. The other platforms in the list above are on the way.",
+    a4: "The app is already available for Windows and Android, on the downloads page, for iPhone, iPad, Mac and Apple TV, on the App Store, for Roku, in the Roku store, and for Fire TV Stick, in the Amazon Appstore (devices with Vega OS from November 24). The other platforms in the list above are on the way.",
     q5: "What do you keep about me?",
     a5: "The minimum for the app to work.",
     a5link: "It is all in the privacy policy.",
@@ -116,7 +117,7 @@ var I18N = {
     lede: "Free for TV, phone and computer. Sign in with the details from your provider and watch what you already subscribe to.",
     cta: "Pick my device",
     cta2: "How it works",
-    avail: "App Store for iPhone, iPad, Mac and Apple TV · Download for Windows and Android",
+    avail: "App Store for iPhone, iPad, Mac and Apple TV · Amazon Appstore for Fire TV · Download for Windows and Android",
     shotCap: "Illustrative image. The titles on screen are fictional.",
     platLabel: "Platforms",
     legA: "Available",
@@ -192,6 +193,7 @@ var I18N = {
     macDesc: "MacBook, iMac e Mac mini",
     iosDesc: "iPhone e iPad",
     firetvDesc: "Fire TV Stick e TVs com Fire OS ou Vega OS",
+    firetvLead: "Já está na Amazon Appstore, para Fire TV Stick e TVs com Fire OS. Nos aparelhos com Vega OS, a partir de 24 de novembro. O caminho é este:",
     vidaaDesc: "Smart TVs com o sistema VIDAA",
     xboxDesc: "Xbox Series X|S e Xbox One",
     msstoreDesc: "Windows 10 e 11, pela loja da Microsoft",
@@ -215,7 +217,7 @@ var I18N = {
     q3: "Onde consigo os dados para entrar?",
     a3: "Com o seu provedor, que é quem cuida da sua assinatura.",
     q4: "Funciona no meu aparelho?",
-    a4: "O app já está disponível para Windows e Android, na página de downloads, para iPhone, iPad, Mac e Apple TV, na App Store, e para Roku, na loja da Roku. As outras plataformas da lista acima estão a caminho.",
+    a4: "O app já está disponível para Windows e Android, na página de downloads, para iPhone, iPad, Mac e Apple TV, na App Store, para Roku, na loja da Roku, e para Fire TV Stick, na Amazon Appstore (aparelhos com Vega OS a partir de 24 de novembro). As outras plataformas da lista acima estão a caminho.",
     q5: "O que vocês guardam sobre mim?",
     a5: "O mínimo para o app funcionar.",
     a5link: "Está tudo na política de privacidade.",
@@ -281,7 +283,7 @@ var I18N = {
     lede: "Grátis para TV, celular e computador. Entre com os dados do seu provedor e assista ao que você já assina.",
     cta: "Escolher meu aparelho",
     cta2: "Como funciona",
-    avail: "App Store para iPhone, iPad, Mac e Apple TV · Download para Windows e Android",
+    avail: "App Store para iPhone, iPad, Mac e Apple TV · Amazon Appstore para Fire TV · Download para Windows e Android",
     shotCap: "Imagem ilustrativa. Os títulos da tela são fictícios.",
     platLabel: "Plataformas",
     legA: "Disponível",
@@ -333,12 +335,13 @@ var I18N = {
 };
 
 /* estado de cada plataforma: "soon" (em breve), "live" (disponivel) ou "download" (fora da loja, pelo arquivo) */
-var STORES = { samsung: "soon", lg: "soon", roku: "live", firetv: "soon", vidaa: "soon", xbox: "soon", msstore: "soon", android: "download", appletv: "live", windows: "live", mac: "live", ios: "live" };
+var STORES = { samsung: "soon", lg: "soon", roku: "live", firetv: "live", vidaa: "soon", xbox: "soon", msstore: "soon", android: "download", appletv: "live", windows: "live", mac: "live", ios: "live" };
 var DIRECT = { windows: true };
 var LINKS = { windows: "downloads.html#windows", android: "downloads.html#android" };
 /* link da App Store pelo idioma da pagina: Brasil em portugues, EUA em ingles */
 var STORE_URL = { pt: "https://apps.apple.com/br/app/liberou-player/id6827555446", en: "https://apps.apple.com/us/app/liberou-player/id6827555446" };
 var STORE_LINKS = { appletv: true, ios: true, mac: true };
+/* Fire TV: na Amazon Appstore desde 19/11/2026 (Fire OS); Vega OS so a partir de 24/11, dito no texto proprio (firetvLead) */
 /* Roku: canal publico 892449, na loja desde 17/11/2026 (so Brasil). A pagina da loja na web nao
    abre a partir do Brasil; o link pelo codigo do canal adiciona o app na conta Roku do cliente */
 var OWN_STORE = { roku: { url: "https://my.roku.com/account/add/DMDMKC5", label: "pnRoku" } };
@@ -378,6 +381,7 @@ function renderStores() {
 }
 function leadKey(dev) {
   var state = STORES[dev];
+  if (I18N.en[dev + "Lead"]) return dev + "Lead";
   if (state === "download") return "leadDownload";
   if (DIRECT[dev] && state === "live" && LINKS[dev]) return "leadLiveLink";
   if (DIRECT[dev]) return state === "live" ? "leadLiveDirect" : "leadSoonDirect";
